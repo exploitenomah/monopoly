@@ -1,13 +1,13 @@
 import HousingProperty from "./HousingProperty"
 import UtilityProperty from "./UtilityProperty"
 import StationProperty from "./StationProperty"
-import DeckDrawer from "./Space"
+import Space from "./Space"
 
-type TileContent =
+export type TileContent =
   | HousingProperty
   | UtilityProperty
   | StationProperty
-  | DeckDrawer
+  | Space
 
 export default class Tile {
   id: number

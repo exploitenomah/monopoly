@@ -7,7 +7,7 @@ import CHISCOBusStation from "../_data/stations/CHISCO"
 
 const LineOneTiles = [
   new Tile(1, OyigboArea[0]),
-  new Tile(2, new Space("CHEST")),
+  new Tile(2, new Space("COMMUNITY-CHEST")),
   new Tile(3, OyigboArea[1]),
   new Tile(4, new Space("INCOME-TAX")),
   new Tile(5, CHISCOBusStation),

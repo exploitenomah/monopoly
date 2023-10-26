@@ -1,14 +1,9 @@
-
 import StationProperty from "@/app/_classes/StationProperty"
 
-const ABCBusStation = new StationProperty(
-    "ABC Transport",
-    200,
-    {
- oneStationOwned: 25,
+const ABCBusStation = new StationProperty("ABC", 200, {
+  oneStationOwned: 25,
   twoStationsOwned: 50,
   threeStationsOwned: 75,
-  fourStationsOwned: 100
-    }
-      )
+  fourStationsOwned: 100,
+})
 export default ABCBusStation

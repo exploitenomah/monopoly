@@ -3,7 +3,7 @@ import RumuolaArea from "../_data/estates/RumuolaArea"
 import Tile from "../_classes/Tile"
 import Space from "../_classes/Space"
 import GUOBusStation from "../_data/stations/GUO"
-import CWAYWater from "../_data/utilities/CWAY"
+import PHCN from "../_data/utilities/PHCN"
 
 const LineThreeTiles = [
   new Tile(21, ElemeArea[0]),
@@ -13,7 +13,7 @@ const LineThreeTiles = [
   new Tile(25, GUOBusStation),
   new Tile(26, RumuolaArea[0]),
   new Tile(27, RumuolaArea[1]),
-  new Tile(28, CWAYWater),
+  new Tile(28, PHCN),
   new Tile(29, RumuolaArea[2]),
 ]
 

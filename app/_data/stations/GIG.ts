@@ -1,7 +1,7 @@
 import StationProperty from "@/app/_classes/StationProperty"
 
 const GIGBusStation = new StationProperty(
-    "God Is Good",
+    "GIG",
     200,
     {
  oneStationOwned: 25,

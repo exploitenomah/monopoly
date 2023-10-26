@@ -1,10 +1,12 @@
-import Tile from "../Tiles/PropertyTile"
+import Tile from "../Tiles/Tile"
 
-export default function Line({ tiles = [] }: { tiles: any[] }) {
+import TileClass from "@/app/_classes/Tile"
+
+export default function Line({ tiles = [] }: { tiles: TileClass[] }) {
   return (
     <div className="flex flex-row-reverse w-full h-full">
       {tiles.map((tile, idx) => (
-        <Tile key={idx} color={tile.content?.color} />
+        <Tile key={idx} content={tile.content} tileId={tile.id} />
       ))}
     </div>
   )

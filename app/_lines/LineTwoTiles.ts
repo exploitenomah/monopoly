@@ -12,7 +12,7 @@ const LineTwoTiles = [
   new Tile(14, RumuosiArea[2]),
   new Tile(15, ABCBusStation),
   new Tile(16, EliozuArea[0]),
-  new Tile(17, new Space("CHEST")),
+  new Tile(17, new Space("COMMUNITY-CHEST")),
   new Tile(18, EliozuArea[1]),
   new Tile(19, EliozuArea[2]),
 ]

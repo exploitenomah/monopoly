@@ -10,6 +10,7 @@ export interface HousingPropertyRent {
 }
 
 class HousingProperty extends Property {
+  public type = 'HOUSING'
   public housesCount: number = 0
   public hotelsCount: number = 0
   public color?: string

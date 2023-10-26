@@ -1,6 +1,6 @@
-type SpaceName =
+type SpaceType =
   | "CHANCE"
-  | "CHEST"
+  | "COMMUNITY-CHEST"
   | "JAIL"
   | "GO-TO-JAIL"
   | "GO"
@@ -9,8 +9,8 @@ type SpaceName =
   | "SUPER-TAX"
 
 export default class Space {
-  name: SpaceName
-  constructor(name: SpaceName) {
-    this.name = name
+  type: SpaceType
+  constructor(type: SpaceType) {
+    this.type = type
   }
 }

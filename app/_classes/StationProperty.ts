@@ -8,6 +8,7 @@ export interface StationPropertyRent {
 }
 
 class StationProperty extends Property {
+  public type = 'STATION'
   public rent: StationPropertyRent
   constructor(name: string, price: number, rent: StationPropertyRent) {
     super(name, price)
