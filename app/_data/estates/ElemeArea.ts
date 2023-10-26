@@ -5,7 +5,7 @@ const estateColor = '#fe0000'
 const ElemeArea = [
   new HousingProperty(
     "Eleme",
-    60,
+    140,
     {
       default: 4,
       oneHouse: 10,
@@ -14,12 +14,12 @@ const ElemeArea = [
       fourHouses: 160,
       hotel: 250,
     },
-    50,
+    120,
     estateColor
   ),
   new HousingProperty(
     "Rumuokwurushi",
-    60,
+    140,
     {
       default: 4,
       oneHouse: 10,
@@ -28,12 +28,12 @@ const ElemeArea = [
       fourHouses: 160,
       hotel: 250,
     },
-    50,
+    120,
     estateColor
   ),
   new HousingProperty(
     "Oil Mill Road",
-    60,
+    160,
     {
       default: 4,
       oneHouse: 20,
@@ -42,7 +42,7 @@ const ElemeArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    140,
     estateColor
   ),
 ]

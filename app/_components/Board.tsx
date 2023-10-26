@@ -9,7 +9,10 @@ import GoToJail from "./Spaces/GoToJail"
 
 export default function Board() {
   return (
-    <div className="bg-primary-default h-[100vw] w-[100vw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative">
+    <div
+      // style={{ transform: "translateY(-12%) rotateX(35deg)" }}
+      className="board bg-primary-default h-[100vw] w-[100vw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative"
+    >
       <LineOne />
       <Jail />
       <LineTwo />

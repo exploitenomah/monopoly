@@ -5,7 +5,7 @@ const estateColor = '#0f108c'
 const TransAmadiArea = [
   new HousingProperty(
     "New GRA",
-    60,
+    350,
     {
       default: 4,
       oneHouse: 10,
@@ -19,7 +19,7 @@ const TransAmadiArea = [
   ),
   new HousingProperty(
     "Trans Amadi",
-    60,
+    400,
     {
       default: 4,
       oneHouse: 20,

@@ -5,7 +5,7 @@ const estateColor = "#fdff00"
 const RumuolaArea = [
   new HousingProperty(
     "Rumuola",
-    60,
+    180,
     {
       default: 4,
       oneHouse: 10,
@@ -14,12 +14,12 @@ const RumuolaArea = [
       fourHouses: 160,
       hotel: 250,
     },
-    50,
+    160,
     estateColor
   ),
   new HousingProperty(
     "Garrison",
-    60,
+    180,
     {
       default: 4,
       oneHouse: 20,
@@ -28,12 +28,12 @@ const RumuolaArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    160,
     estateColor
   ),
   new HousingProperty(
     "Waterlines",
-    60,
+    200,
     {
       default: 4,
       oneHouse: 20,
@@ -42,7 +42,7 @@ const RumuolaArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    180,
     estateColor
   ),
 ]

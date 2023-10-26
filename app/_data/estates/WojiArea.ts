@@ -5,7 +5,7 @@ const estateColor = "#008836"
 const WojiArea = [
   new HousingProperty(
     "Woji",
-    60,
+    200,
     {
       default: 4,
       oneHouse: 10,
@@ -19,7 +19,7 @@ const WojiArea = [
   ),
   new HousingProperty(
     "Ada George",
-    60,
+    200,
     {
       default: 4,
       oneHouse: 20,
@@ -33,7 +33,7 @@ const WojiArea = [
   ),
   new HousingProperty(
     "Rumuokwuta",
-    60,
+    240,
     {
       default: 4,
       oneHouse: 20,

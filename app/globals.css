@@ -16,6 +16,12 @@
   }
 }
 
+@media (min-width: 1100px) {
+  .board {
+    transform: translateY(-12%) rotateX(35deg);
+  }
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

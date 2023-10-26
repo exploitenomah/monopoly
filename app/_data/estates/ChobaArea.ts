@@ -5,7 +5,7 @@ const estateColor = "#86c7ea"
 const ChobaArea = [
   new HousingProperty(
     "Alakahia",
-    60,
+    80,
     {
       default: 4,
       oneHouse: 10,
@@ -14,12 +14,12 @@ const ChobaArea = [
       fourHouses: 160,
       hotel: 250,
     },
-    50,
+    70,
     estateColor
   ),
   new HousingProperty(
     "Back Of Chem",
-    60,
+    80,
     {
       default: 4,
       oneHouse: 20,
@@ -28,12 +28,12 @@ const ChobaArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    70,
     estateColor
   ),
   new HousingProperty(
     "Choba",
-    60,
+    100,
     {
       default: 4,
       oneHouse: 20,
@@ -42,7 +42,7 @@ const ChobaArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    90,
     estateColor
   ),
 ]

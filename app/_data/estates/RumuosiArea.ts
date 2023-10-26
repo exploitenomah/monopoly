@@ -5,7 +5,7 @@ const estateColor = "#a2449f"
 const RumuosiArea = [
   new HousingProperty(
     "Rumuosi",
-    60,
+    100,
     {
       default: 4,
       oneHouse: 10,
@@ -14,12 +14,12 @@ const RumuosiArea = [
       fourHouses: 160,
       hotel: 250,
     },
-    50,
+    80,
     estateColor
   ),
   new HousingProperty(
     "NTA Road",
-    60,
+    100,
     {
       default: 4,
       oneHouse: 20,
@@ -28,12 +28,12 @@ const RumuosiArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    80,
     estateColor
   ),
   new HousingProperty(
     "Nkpolu",
-    60,
+    120,
     {
       default: 4,
       oneHouse: 20,
@@ -42,7 +42,7 @@ const RumuosiArea = [
       fourHouses: 320,
       hotel: 450,
     },
-    50,
+    100,
     estateColor
   ),
 ]
