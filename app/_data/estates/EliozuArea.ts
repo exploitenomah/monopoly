@@ -5,21 +5,21 @@ const estateColor = "#f7a529"
 const Oyigbo = [
   new HousingProperty(
     "Eliozu",
-    120,
+    180,
     {
-      default: 4,
-      oneHouse: 10,
-      twoHouses: 30,
-      threeHouses: 90,
-      fourHouses: 160,
-      hotel: 250,
+      default: 25,
+      oneHouse: 70,
+      twoHouses: 200,
+      threeHouses: 550,
+      fourHouses: 700,
+      hotel: 950,
     },
     100,
     estateColor
   ),
   new HousingProperty(
     "Rumoudara",
-    120,
+    180,
     {
       default: 4,
       oneHouse: 20,
@@ -33,16 +33,16 @@ const Oyigbo = [
   ),
   new HousingProperty(
     "Tank",
-    140,
+    200,
     {
-      default: 4,
-      oneHouse: 20,
-      twoHouses: 60,
-      threeHouses: 180,
-      fourHouses: 320,
-      hotel: 450,
+      default: 25,
+      oneHouse: 80,
+      twoHouses: 220,
+      threeHouses: 600,
+      fourHouses: 800,
+      hotel: 1000,
     },
-    120,
+    100,
     estateColor
   ),
 ]

@@ -2,45 +2,52 @@ import HousingProperty from "@/app/_classes/HousingProperty"
 
 const estateColor = "#a2449f"
 
+// 10
+// 50
+// 150
+// 450
+// 625
+// 750
+// 70
 const RumuosiArea = [
   new HousingProperty(
     "Rumuosi",
-    100,
+    140,
     {
-      default: 4,
-      oneHouse: 10,
-      twoHouses: 30,
-      threeHouses: 90,
-      fourHouses: 160,
-      hotel: 250,
+      default: 15,
+      oneHouse: 50,
+      twoHouses: 150,
+      threeHouses: 450,
+      fourHouses: 600,
+      hotel: 750,
     },
-    80,
+    100,
     estateColor
   ),
   new HousingProperty(
     "NTA Road",
-    100,
+    140,
     {
-      default: 4,
-      oneHouse: 20,
-      twoHouses: 60,
-      threeHouses: 180,
-      fourHouses: 320,
-      hotel: 450,
+      default: 15,
+      oneHouse: 50,
+      twoHouses: 150,
+      threeHouses: 450,
+      fourHouses: 600,
+      hotel: 750,
     },
-    80,
+    100,
     estateColor
   ),
   new HousingProperty(
     "Nkpolu",
-    120,
+    160,
     {
-      default: 4,
-      oneHouse: 20,
-      twoHouses: 60,
-      threeHouses: 180,
-      fourHouses: 320,
-      hotel: 450,
+      default: 20,
+      oneHouse: 60,
+      twoHouses: 180,
+      threeHouses: 500,
+      fourHouses: 700,
+      hotel: 900,
     },
     100,
     estateColor

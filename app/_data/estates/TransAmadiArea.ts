@@ -1,34 +1,34 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
 
-const estateColor = '#0f108c'
+const estateColor = "#0f108c"
 //#453cdb
 const TransAmadiArea = [
   new HousingProperty(
     "New GRA",
     350,
     {
-      default: 4,
-      oneHouse: 10,
-      twoHouses: 30,
-      threeHouses: 90,
-      fourHouses: 160,
-      hotel: 250,
+      default: 65,
+      oneHouse: 200,
+      twoHouses: 500,
+      threeHouses: 1100,
+      fourHouses: 1300,
+      hotel: 1500,
     },
-    50,
+    200,
     estateColor
   ),
   new HousingProperty(
     "Trans Amadi",
-    400,
+      400,
     {
-      default: 4,
-      oneHouse: 20,
-      twoHouses: 60,
-      threeHouses: 180,
-      fourHouses: 320,
-      hotel: 450,
+      default: 70,
+      oneHouse: 200,
+      twoHouses: 600,
+      threeHouses: 1400,
+      fourHouses: 1700,
+      hotel: 2000,
     },
-    50,
+    200,
     estateColor
   ),
 ]

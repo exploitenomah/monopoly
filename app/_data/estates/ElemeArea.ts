@@ -1,48 +1,48 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
 
-const estateColor = '#fe0000'
+const estateColor = "#fe0000"
 
 const ElemeArea = [
   new HousingProperty(
     "Eleme",
-    140,
+    220,
     {
-      default: 4,
-      oneHouse: 10,
-      twoHouses: 30,
-      threeHouses: 90,
-      fourHouses: 160,
-      hotel: 250,
+      default: 30,
+      oneHouse: 90,
+      twoHouses: 250,
+      threeHouses: 700,
+      fourHouses: 875,
+      hotel: 1050,
     },
-    120,
+    150,
     estateColor
   ),
   new HousingProperty(
     "Rumuokwurushi",
-    140,
+    220,
     {
-      default: 4,
-      oneHouse: 10,
-      twoHouses: 30,
-      threeHouses: 90,
-      fourHouses: 160,
-      hotel: 250,
+      default: 30,
+      oneHouse: 90,
+      twoHouses: 250,
+      threeHouses: 700,
+      fourHouses: 875,
+      hotel: 1050,
     },
-    120,
+    150,
     estateColor
   ),
   new HousingProperty(
     "Oil Mill Road",
-    160,
+    240,
     {
-      default: 4,
-      oneHouse: 20,
-      twoHouses: 60,
-      threeHouses: 180,
-      fourHouses: 320,
-      hotel: 450,
+      default: 35,
+      oneHouse: 100,
+      twoHouses: 300,
+      threeHouses: 750,
+      fourHouses: 900,
+      hotel: 1100,
     },
-    140,
+    150,
     estateColor
   ),
 ]

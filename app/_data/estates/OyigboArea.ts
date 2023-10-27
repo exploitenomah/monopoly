@@ -1,14 +1,14 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
 
-const estateColor = '#364c60'
+const estateColor = "#364c60"
 
 const Oyigbo = [
   new HousingProperty(
     "Kom Kom",
     60,
     {
-      default: 4,
-      oneHouse: 10,
+      default: 5,
+      oneHouse: 15,
       twoHouses: 30,
       threeHouses: 90,
       fourHouses: 160,
@@ -21,8 +21,8 @@ const Oyigbo = [
     "Afam Road",
     60,
     {
-      default: 4,
-      oneHouse: 20,
+      default: 10,
+      oneHouse: 25,
       twoHouses: 60,
       threeHouses: 180,
       fourHouses: 320,
