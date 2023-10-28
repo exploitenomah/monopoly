@@ -22,7 +22,7 @@ export default function Tile({
   tileId,
 }: {
   content: TileContent
-  tileId: number
+  tileId: string
 }) {
   const TileTypeComponent = tiles[content.type as keyof typeof tiles]
 
