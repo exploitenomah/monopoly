@@ -1,6 +1,6 @@
 import StationProperty from "@/app/_classes/StationProperty"
 
-const GIGBusStation = new StationProperty(
+const GIGBusStation = new StationProperty(crypto.randomUUID(),
     "GIG",
     200,
     {
