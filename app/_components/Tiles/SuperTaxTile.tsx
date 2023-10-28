@@ -11,7 +11,7 @@ export default function SuperTaxTile({ classType }: { classType: Space }) {
         height={60}
         alt="super tax"
       /> 
-      pay ₦ 2000
+      pay ₦ 200
     </div>
   )
 }
