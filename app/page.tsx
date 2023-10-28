@@ -3,13 +3,26 @@ import useManageGames from "./_hooks/useManageGames"
 import Game from "./_components/BoardGame"
 import HomeDefaultDisplay from "./_components/Home"
 import useManageKeyInLocalStorage from "./_hooks/useManageKeyInLocalStorage"
+import { useState, useEffect } from "react"
+import LoadingDisplay from "./_components/LoadingDisplay"
 
 function Home() {
   const { games, createNewGame } = useManageGames("MONOPOLY_GAMES", [])
   const [currentGameId, updateCurrentGameId, clearCurrentGameId] =
     useManageKeyInLocalStorage("CURRENT_GAME_ID", null)
-  /// existing game ? choose game to play : new game
+  const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(loadingTimeout)
+    }
+  }, [])
+
+  if (loading) return <LoadingDisplay />
   if (!currentGameId)
     return (
       <HomeDefaultDisplay
