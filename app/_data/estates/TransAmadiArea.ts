@@ -1,9 +1,9 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
 
 const estateColor = "#0f108c"
-//#453cdb
+
 const TransAmadiArea = [
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "New GRA",
     350,
     {
@@ -17,7 +17,7 @@ const TransAmadiArea = [
     200,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Trans Amadi",
       400,
     {

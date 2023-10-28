@@ -3,7 +3,7 @@ import HousingProperty from "@/app/_classes/HousingProperty"
 const estateColor = "#86c7ea"
 
 const ChobaArea = [
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Alakahia",
     100,
     {
@@ -17,7 +17,7 @@ const ChobaArea = [
     100,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Back Of Chem",
     100,
     {
@@ -31,7 +31,7 @@ const ChobaArea = [
     100,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Choba",
     120,
     {

@@ -3,7 +3,7 @@ import HousingProperty from "@/app/_classes/HousingProperty"
 const estateColor = "#fe0000"
 
 const ElemeArea = [
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Eleme",
     220,
     {
@@ -17,7 +17,7 @@ const ElemeArea = [
     150,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Rumuokwurushi",
     220,
     {
@@ -31,7 +31,7 @@ const ElemeArea = [
     150,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Oil Mill Road",
     240,
     {

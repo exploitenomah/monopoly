@@ -3,7 +3,7 @@ import HousingProperty from "@/app/_classes/HousingProperty"
 const estateColor = "#f7a529"
 
 const Oyigbo = [
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Eliozu",
     180,
     {
@@ -17,7 +17,7 @@ const Oyigbo = [
     100,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Rumoudara",
     180,
     {
@@ -31,7 +31,7 @@ const Oyigbo = [
     100,
     estateColor
   ),
-  new HousingProperty(
+  new HousingProperty(crypto.randomUUID(),
     "Tank",
     200,
     {
