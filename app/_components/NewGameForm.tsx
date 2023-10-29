@@ -146,7 +146,7 @@ function FormInput({
       <span className="font-semibold">{label}</span>
       <input
         onChange={(e) => onChange(e.target.name, e.target.value)}
-        className="bg-transparent invalid:focus:border-red-600 invalid:before:content-['this field is required'] py-[0.83rem] px-[1rem] border-solid border border-primary-dark focus:border-dotted focus:border-blue-600 focus:outline-0"
+        className="rounded-lgbg-transparent invalid:focus:border-red-600 py-[0.83rem] px-[1rem] border-solid border border-primary-dark focus:border-dotted focus:border-blue-600 focus:outline-0"
         name={name}
         value={value}
         type={type}
