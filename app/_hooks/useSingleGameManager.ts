@@ -10,7 +10,20 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
   )
   const createNewGame = useGenerateGame(gameDetails)
   const [game, setGame] = useState<BoardGame | null>(null)
-  // const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isAuthorized, setIsAuthorized] = useState(false)
+
+  const authorizeToPlay = useCallback(
+    (password: string) => {
+      if (password === decrypt(game?.password)) {
+        setIsAuthorized(true)
+        return true
+      } else {
+        setIsAuthorized(false)
+        return false
+      }
+    },
+    [game?.password, decrypt]
+  )
 
   useEffect(() => {
     if (game !== null) {
@@ -22,11 +35,15 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
     const gameInLocalStorage = localStorage.getItem(gameDetails.id)
     if (gameInLocalStorage !== null)
       setGame(BoardGame.revive(JSON.parse(gameInLocalStorage)))
-    else setGame(createNewGame())
+    else {
+      setGame(createNewGame())
+      setIsAuthorized(true)
+    }
   }, [gameDetails.id, createNewGame])
 
   return {
     game,
-    // authorizeToPlay,
+    isAuthorized,
+    authorizeToPlay,
   }
 }
