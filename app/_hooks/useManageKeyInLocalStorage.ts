@@ -24,7 +24,7 @@ export default function useManageKeyInLocalStorage(
   }, [])
 
   const clearValue = useCallback(() => {
-    localStorage.remove(key)
+    localStorage.removeItem(key)
     setValue(null)
   }, [key])
 
