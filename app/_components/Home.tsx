@@ -9,7 +9,9 @@ export default function Home({
   games,
   createNewGame,
   updateCurrentGameId,
+  showGameCreationFormByDefault
 }: {
+  showGameCreationFormByDefault: boolean
   games: GameDetails[]
   createNewGame: ({
     name,
@@ -24,7 +26,7 @@ export default function Home({
   }) => void
   updateCurrentGameId: (newGameId: string) => void
 }) {
-  const [showNewGameForm, setShowNewGameForm] = useState(false)
+  const [showNewGameForm, setShowNewGameForm] = useState(showGameCreationFormByDefault)
   const newGameFormRef = useRef<HTMLFormElement | null>(null)
   useOutsideClick(newGameFormRef, () => setShowNewGameForm(false))
 
