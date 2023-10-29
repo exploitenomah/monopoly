@@ -9,9 +9,11 @@ export default function SavedGamesList({
 }) {
   if (games.length === 0) return null
   return (
-    <div className="rounded-lg w-[85vw] max-w-[600px] mx-auto border border-solid border-primary-default py-[0.83rem] px-[1rem] md:px-[1.4rem]">
-      <h2 className="font-semibold text-2xl text-center mb-2">Ongoing Games</h2>
-      <ul className="h-[390px] capitalize text-[1.2rem] font-medium flex flex-col items-start text-left gap-y-3">
+    <div className="rounded-lg w-[85vw] max-w-[600px] mx-auto border border-solid border-primary-default py-[3rem] px-[1rem] md:px-[1.4rem]">
+      <h2 className="sticky top-0 bg-primary-dark font-semibold text-2xl text-center mb-2">
+        Ongoing Games
+      </h2>
+      <ul className="h-[390px] overflow-auto capitalize text-[1.2rem] font-medium flex flex-col items-start text-left gap-y-3">
         {games.map((game) => (
           <GameItem key={game.id} startGame={startGame} {...game} />
         ))}
