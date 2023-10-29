@@ -47,7 +47,7 @@ export default class BoardGame {
     this.communityChestCards = generateCommunityChestCards()
     this.players = Array(totalPlayers)
       .fill(null)
-      .map((_, idx) => new Player(idx + 1, 1500, idx))
+      .map((_, idx) => new Player(idx + 1, 1500))
   }
 
   public setRunningOrder(chosenStart: number) {

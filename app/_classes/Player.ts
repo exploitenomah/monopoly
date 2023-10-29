@@ -1,7 +1,10 @@
 import GameCard from "./GameCard"
 
+
+type PlayerColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet'
+
 export default class Player {
-  public turn: number
+  public turn: number | null = null
   public accountBalance: number
   public id: number
   public properties: string[]
@@ -15,12 +18,13 @@ export default class Player {
   }
   public isInJail: boolean = false
   public currentTilePosition: number = 0
+  public color: PlayerColor | null = null
+  public name: string = ""
 
-  constructor(id: number, accountBalance: number, turn: number) {
+  constructor(id: number, accountBalance: number) {
     this.accountBalance = accountBalance
     this.id = id
     this.properties = []
-    this.turn = turn
   }
 
   public static revive(objectLikePlayer: Player) {
@@ -34,7 +38,8 @@ export default class Player {
       isInJail,
       currentTilePosition,
     } = objectLikePlayer
-    const revivedPlayer = new Player(id, accountBalance, turn)
+    const revivedPlayer = new Player(id, accountBalance)
+    revivedPlayer.turn = turn
     revivedPlayer.properties = properties
     revivedPlayer.isBankrupt = isBankrupt
     revivedPlayer.getOutOfJailCards = getOutOfJailCards
