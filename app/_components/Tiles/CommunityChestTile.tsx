@@ -7,12 +7,13 @@ export default function CommunityChestTile({
   classType: Space
 }) {
   return (
-    <div className="w-full h-full flex items-center justify-center p-3">
+    <div className="w-full h-full flex items-center justify-center p-[4px] md:p-3">
       <Image
         src="/image-files/community-chest.svg"
         width={60}
         height={60}
         alt="community chest"
+        className="w-[50px] auto"
       />
     </div>
   )
