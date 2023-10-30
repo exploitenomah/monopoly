@@ -3,6 +3,7 @@ import useGenerateGame from "./useGenerateGame"
 import useEncryptAndDecrypt from "./useEncryptAndDecrypt"
 import { GameDetails } from "../types"
 import BoardGame from "@/app/_classes/BoardGame"
+import { PlayerDetail } from "../types"
 
 export default function useSingleGameManager(gameDetails: GameDetails) {
   const { decrypt } = useEncryptAndDecrypt(
@@ -25,6 +26,22 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
     [game?.password, decrypt]
   )
 
+  const initializeGame = useCallback(
+    (playersDetails: PlayerDetail[]) => {
+      if (game) {
+        setGame((prev) => {
+          if (prev !== null) {
+            const updatedGame = BoardGame.revive(
+              JSON.parse(JSON.stringify(game))
+            )
+            return updatedGame.initialize(playersDetails)
+          } else return prev
+        })
+      }
+    },
+    [game]
+  )
+
   useEffect(() => {
     if (game !== null) {
       localStorage.setItem(gameDetails.id, JSON.stringify(game))
@@ -45,5 +62,6 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
     game,
     isAuthorized,
     authorizeToPlay,
+    initializeGame,
   }
 }
