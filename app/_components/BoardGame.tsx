@@ -6,7 +6,7 @@ import InitializationForm from "./InitializationDisplay"
 import GameNavButton from "./GameNavButton"
 import GameSideBar from "./GameSideBar"
 import { useState } from "react"
-import BoardGame from '../_classes/BoardGame'
+import BoardGame from "../_classes/BoardGame"
 
 export default function GameBoard({
   gameDetails,
@@ -47,7 +47,9 @@ function MainGame({ game }: { game: BoardGame }) {
   const [showSideBar, setShowSideBar] = useState(false)
   return (
     <>
-      <GameNavButton toggleShowSideBar={() => setShowSideBar(prev => !prev)} />
+      <GameNavButton
+        toggleShowSideBar={() => setShowSideBar((prev) => !prev)}
+      />
       <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} />
       <div style={{ perspective: "1000px" }}>
         <Board game={game} />
