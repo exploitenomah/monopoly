@@ -10,6 +10,7 @@ import LineOne from "../_lines/LineOne"
 import LineTwo from "../_lines/LineTwo"
 import LineThree from "../_lines/LineThree"
 import LineFour from "../_lines/LineFour"
+import { PlayerDetail } from "../types"
 
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
 
@@ -33,6 +34,8 @@ export default class BoardGame {
     LineFour,
   }
   public hasSetRunningOrder: boolean = false
+  public isInitialized: boolean = false
+  public currentTurn?: number
 
   constructor(
     name: string,
@@ -47,7 +50,7 @@ export default class BoardGame {
     this.communityChestCards = generateCommunityChestCards()
     this.players = Array(totalPlayers)
       .fill(null)
-      .map((_, idx) => new Player(idx + 1, 1500))
+      .map((_, idx) => new Player(idx, 1500))
   }
 
   public setRunningOrder(chosenStart: number) {
@@ -65,6 +68,29 @@ export default class BoardGame {
     this.runningOrder = runningOrder
     return this
   }
+
+  public initialize(players: PlayerDetail[]) {
+    this.players = this.players.map((player, idx) => {
+      player.name = players[idx].name
+      player.color = players[idx].color
+      return player
+    })
+    const highestRoller = [...players].sort(
+      (a, b) => b.rollValue - a.rollValue
+    )[0]
+    const idOfPlayerWithHighestRoll = this.players.find(
+      (it) => it.name === highestRoller.name
+    )?.id
+    this.setRunningOrder(idOfPlayerWithHighestRoll as number)
+    this.players = this.players.map((player, idx) => {
+      player.turn = this.runningOrder.indexOf(player.id)
+      return player
+    })
+    this.currentTurn = 0
+    this.isInitialized = true
+    return this
+  }
+
   public static revive(objectLikeBoardGame: BoardGame) {
     const {
       name,
@@ -76,6 +102,8 @@ export default class BoardGame {
       runningOrder,
       properties,
       hasSetRunningOrder,
+      isInitialized,
+      currentTurn,
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -93,6 +121,8 @@ export default class BoardGame {
     } as typeof revivedBoardGame.properties
     revivedBoardGame.hasSetRunningOrder = hasSetRunningOrder
     revivedBoardGame.players = players.map((player) => Player.revive(player))
+    revivedBoardGame.isInitialized = isInitialized
+    revivedBoardGame.currentTurn = currentTurn
     return revivedBoardGame
   }
 }
