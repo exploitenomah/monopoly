@@ -9,6 +9,7 @@ class  Property {
   public redemptionValue: number
   public name: string
   public id: string
+  public contents: Player[] = []
 
   constructor(id:string, name: string, price: number) {
     this.id = id
@@ -27,6 +28,7 @@ class  Property {
       isMortgaged,
       mortgageValue,
       redemptionValue,
+      contents,
       id,
     } = objectLikeProperty
     const revivedProperty = new Property(
@@ -41,6 +43,7 @@ class  Property {
     revivedProperty.isMortgaged=  isMortgaged
     revivedProperty.mortgageValue= mortgageValue
     revivedProperty.redemptionValue= redemptionValue
+    revivedProperty.contents = contents.map(player => Player.revive(player))
     return revivedProperty
   }
 }
