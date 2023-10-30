@@ -1,6 +1,5 @@
-
 import Space from "../_classes/Space"
 
-const Jail = new Space("JAIL")
+const Jail = new Space(crypto.randomUUID(), "JAIL")
 
-export default  Jail
+export default Jail
