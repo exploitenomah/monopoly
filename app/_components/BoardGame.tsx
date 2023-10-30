@@ -2,7 +2,7 @@ import Board from "./Board"
 import useSingleGameManager from "../_hooks/useSingleGameManager"
 import { GameDetails } from "../types"
 import AuthorizationForm from "./AuthorizationForm"
-import InitializationForm from "./InitializationForm"
+import InitializationForm from "./InitializationDisplay"
 
 export default function GameBoard({
   gameDetails,
