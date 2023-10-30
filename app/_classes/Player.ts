@@ -15,7 +15,7 @@ export default class Player {
     communityChest: null,
   }
   public isInJail: boolean = false
-  public currentTilePosition: number = 0
+  public currentPosition: number = 0
   public color: PlayerColor | null = null
   public name: string = ""
 
@@ -34,7 +34,7 @@ export default class Player {
       isBankrupt,
       getOutOfJailCards,
       isInJail,
-      currentTilePosition,
+      currentPosition,
       name,
       color,
     } = objectLikePlayer
@@ -44,7 +44,7 @@ export default class Player {
     revivedPlayer.isBankrupt = isBankrupt
     revivedPlayer.getOutOfJailCards = getOutOfJailCards
     revivedPlayer.isInJail = isInJail
-    revivedPlayer.currentTilePosition = currentTilePosition
+    revivedPlayer.currentPosition = currentPosition
     revivedPlayer.name = name
     revivedPlayer.color = color
     return revivedPlayer
