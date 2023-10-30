@@ -15,6 +15,10 @@ import { PlayerDetail } from "../types"
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
 
 export default class BoardGame {
+  public Go: Space = new Space(crypto.randomUUID(), "GO")
+  public GoToJail: Space = new Space(crypto.randomUUID(), "GO-TO-JAIL")
+  public Jail: Space = new Space(crypto.randomUUID(), "JAIL")
+  public FreeParking: Space = new Space(crypto.randomUUID(), "FREE-PARKING")
   public name: string
   public id: string
   public password: string
@@ -86,6 +90,7 @@ export default class BoardGame {
       player.turn = this.runningOrder.indexOf(player.id)
       return player
     })
+    this.Go.contents = this.players.map((player) => player)
     this.currentTurn = 0
     this.isInitialized = true
     return this
@@ -104,6 +109,10 @@ export default class BoardGame {
       hasSetRunningOrder,
       isInitialized,
       currentTurn,
+      Go,
+      GoToJail,
+      FreeParking,
+      Jail
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -123,6 +132,10 @@ export default class BoardGame {
     revivedBoardGame.players = players.map((player) => Player.revive(player))
     revivedBoardGame.isInitialized = isInitialized
     revivedBoardGame.currentTurn = currentTurn
+    revivedBoardGame.Go = Space.revive(Go)
+    revivedBoardGame.GoToJail = Space.revive(GoToJail)
+    revivedBoardGame.FreeParking = Space.revive(FreeParking)
+    revivedBoardGame.Jail = Space.revive(Jail)
     return revivedBoardGame
   }
 }
