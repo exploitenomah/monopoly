@@ -29,7 +29,7 @@ export default function AuthorizationForm({
       <h1 className="text-3xl text-center mb-5">
         Continue from where you left off!
       </h1>
-      <form onSubmit={handleSubmit} className='mt-4'>
+      <form onSubmit={handleSubmit} className="mt-4">
         <label className="flex flex-col items-start gap-y-2">
           <span className="text-xl font-normal">
             Enter the password for{" "}
@@ -47,7 +47,7 @@ export default function AuthorizationForm({
             } rounded-lg w-full py-[0.83rem] px-[1rem] border-2 border-solid border-primary-dark bg-transparent invalid:focus:border-red-600 focus:border-dotted focus:border-blue-600 focus:outline-0`}
           />
         </label>
-        <button className="block rounded-lg font-bold text-[1rem] shadow-2xl hover:scale-[1.03] active:scale-[0.98] bg-primary-dark/70 text-primary-default w-full max-w-[200px] mx-auto my-3 py-[0.83rem] px-[1rem]">
+        <button className="block rounded-lg font-bold text-[1rem] shadow-2xl hover:scale-[1.03] active:scale-[0.98] bg-primary-dark text-primary-default w-full max-w-[200px] mx-auto my-3 py-[0.83rem] px-[1rem]">
           Continue Game
         </button>
       </form>
