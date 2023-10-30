@@ -8,9 +8,10 @@ export default function SuperTaxTile({ classType }: { classType: Space }) {
       <Image
         src="/image-files/super-tax.svg"
         width={60}
-        height={60}
+        height={30}
         alt="super tax"
-      /> 
+        className="hidden md:inline-block"
+      />
       pay ₦ 200
     </div>
   )

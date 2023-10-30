@@ -1,6 +1,9 @@
 import Image from "next/image"
+import Space from '@/app/_classes/Space'
 
-export default function GoToJail() {
+export default function GoToJail({ classType }: {
+  classType: Space
+}) {
   return (
     <div className="bg-orange-900 w-full h-full">
       <Image

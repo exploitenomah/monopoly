@@ -1,6 +1,9 @@
 import Image from "next/image"
+import Space from '@/app/_classes/Space'
 
-export default function FreeParking() {
+export default function FreeParking({ classType }: {
+  classType: Space
+}) {
   return (
     <div className="w-full h-full">
       <Image

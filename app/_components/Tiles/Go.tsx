@@ -1,6 +1,9 @@
 import Image from "next/image"
+import Space from '@/app/_classes/Space'
 
-export default function Go() {
+export default function Go({ classType }: {
+  classType: Space
+}) {
   return (
     <div className="bg-blue-900 w-full h-full">
       <Image
