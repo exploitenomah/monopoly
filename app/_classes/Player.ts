@@ -1,7 +1,5 @@
 import GameCard from "./GameCard"
-
-
-type PlayerColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet'
+import { PlayerColor } from "../types"
 
 export default class Player {
   public turn: number | null = null
@@ -37,6 +35,8 @@ export default class Player {
       getOutOfJailCards,
       isInJail,
       currentTilePosition,
+      name,
+      color,
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
@@ -45,6 +45,8 @@ export default class Player {
     revivedPlayer.getOutOfJailCards = getOutOfJailCards
     revivedPlayer.isInJail = isInJail
     revivedPlayer.currentTilePosition = currentTilePosition
+    revivedPlayer.name = name
+    revivedPlayer.color = color
     return revivedPlayer
   }
 }
