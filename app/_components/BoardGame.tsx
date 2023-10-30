@@ -3,6 +3,10 @@ import useSingleGameManager from "../_hooks/useSingleGameManager"
 import { GameDetails } from "../types"
 import AuthorizationForm from "./AuthorizationForm"
 import InitializationForm from "./InitializationDisplay"
+import GameNavButton from "./GameNavButton"
+import GameSideBar from "./GameSideBar"
+import { useState } from "react"
+import BoardGame from '../_classes/BoardGame'
 
 export default function GameBoard({
   gameDetails,
@@ -36,9 +40,18 @@ export default function GameBoard({
       />
     )
 
+  return <MainGame game={game} />
+}
+
+function MainGame({ game }: { game: BoardGame }) {
+  const [showSideBar, setShowSideBar] = useState(false)
   return (
-    <div style={{ perspective: "1000px" }}>
-      <Board game={game} />
-    </div>
+    <>
+      <GameNavButton toggleShowSideBar={() => setShowSideBar(prev => !prev)} />
+      <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} />
+      <div style={{ perspective: "1000px" }}>
+        <Board game={game} />
+      </div>
+    </>
   )
 }
