@@ -1,3 +1,4 @@
+import Player from "./Player"
 type SpaceType =
   | "CHANCE"
   | "COMMUNITY-CHEST"
@@ -11,12 +12,16 @@ type SpaceType =
 export default class Space {
   public type: SpaceType
   public id: string
+  public contents: Player[] = []
+
   constructor(id: string, type: SpaceType) {
     this.type = type
     this.id = id
   }
   public static revive(objectLikeSpace: Space) {
-    const { id , type } = objectLikeSpace
-    return new Space(id, type)
+    const { id, type, contents } = objectLikeSpace
+    const revivedSpace = new Space(id, type)
+    revivedSpace.contents = contents.map((content) => Player.revive(content))
+    return revivedSpace
   }
 }
