@@ -1,9 +1,11 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
+import { v4 as uuidv4 } from "uuid"
 
 const estateColor = "#fe0000"
 
 const ElemeArea = [
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Eleme",
     220,
     {
@@ -17,7 +19,8 @@ const ElemeArea = [
     150,
     estateColor
   ),
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Rumuokwurushi",
     220,
     {
@@ -31,7 +34,8 @@ const ElemeArea = [
     150,
     estateColor
   ),
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Oil Mill Road",
     240,
     {

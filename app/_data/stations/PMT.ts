@@ -1,6 +1,7 @@
 import StationProperty from "@/app/_classes/StationProperty"
+import { v4 as uuidv4 } from "uuid"
 
-const CHISCOBusStation = new StationProperty(crypto.randomUUID(), "PMT", 200, {
+const CHISCOBusStation = new StationProperty(uuidv4(), "PMT", 200, {
   oneStationOwned: 25,
   twoStationsOwned: 50,
   threeStationsOwned: 100,

@@ -1,9 +1,11 @@
 import HousingProperty from "@/app/_classes/HousingProperty"
+import { v4 as uuidv4 } from "uuid"
 
 const estateColor = "#008836"
 
 const WojiArea = [
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Woji",
     300,
     {
@@ -17,7 +19,8 @@ const WojiArea = [
     200,
     estateColor
   ),
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Ada George",
     300,
     {
@@ -31,7 +34,8 @@ const WojiArea = [
     200,
     estateColor
   ),
-  new HousingProperty(crypto.randomUUID(),
+  new HousingProperty(
+    uuidv4(),
     "Rumuokwuta",
     320,
     {
