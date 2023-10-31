@@ -37,12 +37,12 @@ function Home() {
       />
     )
   return (
-    <Game  
+    <Game
       createNewGame={() => {
         clearCurrentGameId()
         setShowGameCreationForm(true)
       }}
-      clearCurrentGameId={clearCurrentGameId} 
+      clearCurrentGameId={clearCurrentGameId}
       gameDetails={games.filter((it) => it.id === currentGameId)[0]}
     />
   )
@@ -50,7 +50,7 @@ function Home() {
 
 export default function HomeWrapper() {
   return (
-    <main className="w-screen h-screen flex justify-center items-center bg-primary-dark">
+    <main className="w-screen h-screen flex justify-center items-center bg-primary-dark overflow-hidden">
       <Home />
     </main>
   )
