@@ -11,14 +11,18 @@ import LineTwo from "../_lines/LineTwo"
 import LineThree from "../_lines/LineThree"
 import LineFour from "../_lines/LineFour"
 import { PlayerDetail } from "../types"
+import Go from "../_lines/GO"
+import GoToJail from "../_lines/GoToJail"
+import Jail from "../_lines/Jail"
+import FreeParking from "../_lines/FreeParking"
 
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
 
 export default class BoardGame {
-  public Go: Space = new Space(crypto.randomUUID(), "GO")
-  public GoToJail: Space = new Space(crypto.randomUUID(), "GO-TO-JAIL")
-  public Jail: Space = new Space(crypto.randomUUID(), "JAIL")
-  public FreeParking: Space = new Space(crypto.randomUUID(), "FREE-PARKING")
+  public Go: Space = Go
+  public GoToJail: Space = GoToJail
+  public Jail: Space = Jail
+  public FreeParking: Space = FreeParking
   public name: string
   public id: string
   public password: string
@@ -96,6 +100,80 @@ export default class BoardGame {
     return this
   }
 
+  private updateCurrentTurn() {
+    const newTurn = (this.currentTurn || 0) + 1
+    if (newTurn > this.players.length - 1) this.currentTurn = 0
+    else this.currentTurn = newTurn
+    return this
+  }
+
+  private updateLineContents(player: Player | null) {
+    if (player) {
+      this.properties.LineOne = BoardGame.editLineContents(
+        this.properties.LineOne,
+        player
+      )
+      this.Go = BoardGame.editSpaceContents(this.Go, player) as Space
+      this.properties.LineTwo = BoardGame.editLineContents(
+        this.properties.LineTwo,
+        player
+      )
+      this.Jail = BoardGame.editSpaceContents(this.Jail, player) as Space
+      this.properties.LineThree = BoardGame.editLineContents(
+        this.properties.LineThree,
+        player
+      )
+      this.FreeParking = BoardGame.editSpaceContents(
+        this.FreeParking,
+        player
+      ) as Space
+      this.properties.LineFour = BoardGame.editLineContents(
+        this.properties.LineFour,
+        player
+      )
+      this.GoToJail = BoardGame.editSpaceContents(
+        this.GoToJail,
+        player
+      ) as Space
+    }
+    return this
+  }
+
+  public advancePlayer(advancement: number, isDouble: boolean) {
+    let shouldUpdateCurrentTurn = true
+    let advancingPlayer = null
+    this.players.forEach((player) => {
+      if (player.turn === this.currentTurn) {
+        advancingPlayer = player
+        shouldUpdateCurrentTurn =
+          isDouble === false || player.doubleRollsCount >= 2
+        return player.advance(advancement, isDouble)
+      } else return player
+    })
+    console.log(shouldUpdateCurrentTurn, advancingPlayer)
+    advancingPlayer && this.updateLineContents(advancingPlayer)
+    shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    return this
+  }
+
+  static editLineContents(line: Line, player: Player) {
+    line.forEach((property) => {
+      BoardGame.editSpaceContents(property, player)
+    })
+    return line
+  }
+
+  static editSpaceContents(
+    space: HousingProperty | UtilityProperty | StationProperty | Space,
+    player: Player
+  ) {
+    space.contents = space.contents.filter((it) => it.id !== player.id)
+    if (space.position === player.currentPosition) {
+      space.contents.push(player)
+    }
+    return space
+  }
+
   public static revive(objectLikeBoardGame: BoardGame) {
     const {
       name,
@@ -112,7 +190,7 @@ export default class BoardGame {
       Go,
       GoToJail,
       FreeParking,
-      Jail
+      Jail,
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
