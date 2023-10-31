@@ -26,20 +26,25 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
     [game?.password, decrypt]
   )
 
-  const initializeGame = useCallback(
-    (playersDetails: PlayerDetail[]) => {
-      if (game) {
-        setGame((prev) => {
-          if (prev !== null) {
-            const updatedGame = BoardGame.revive(
-              JSON.parse(JSON.stringify(game))
-            )
-            return updatedGame.initialize(playersDetails)
-          } else return prev
-        })
-      }
+  const initializeGame = useCallback((playersDetails: PlayerDetail[]) => {
+    setGame((prev) => {
+      if (prev !== null) {
+        return copyBoardGame(prev).initialize(playersDetails)
+      } else return prev
+    })
+  }, [])
+
+  const advanceCurrentPlayer = useCallback(
+    (rollValue: number, isDouble: boolean) => {
+      setGame((prev) => {
+        if (prev !== null) {
+          const gameCopy = copyBoardGame(prev)
+          gameCopy.advancePlayer(rollValue, isDouble)
+          return gameCopy
+        } else return prev
+      })
     },
-    [game]
+    []
   )
 
   useEffect(() => {
@@ -63,5 +68,10 @@ export default function useSingleGameManager(gameDetails: GameDetails) {
     isAuthorized,
     authorizeToPlay,
     initializeGame,
+    advanceCurrentPlayer,
   }
+}
+
+function copyBoardGame(game: BoardGame) {
+  return BoardGame.revive(JSON.parse(JSON.stringify(game)))
 }
