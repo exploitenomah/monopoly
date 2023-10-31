@@ -1,6 +1,6 @@
 import Player from "./Player"
 
-class  Property {
+class Property {
   public isOwned: boolean = false
   public owner: null | Player = null
   public price: number
@@ -10,13 +10,19 @@ class  Property {
   public name: string
   public id: string
   public contents: Player[] = []
+  public position?: number
 
-  constructor(id:string, name: string, price: number) {
+  constructor(id: string, name: string, price: number) {
     this.id = id
     this.name = name
     this.price = price
     this.mortgageValue = this.price / 2
     this.redemptionValue = this.mortgageValue + 0.1 * this.mortgageValue
+  }
+
+  public setPosition(position: number) {
+    this.position = position
+    return this
   }
 
   public static revive(objectLikeProperty: Property) {
@@ -30,20 +36,18 @@ class  Property {
       redemptionValue,
       contents,
       id,
+      position
     } = objectLikeProperty
-    const revivedProperty = new Property(
-      id,
-      name,
-      price
-    )
-    revivedProperty.name= name
-    revivedProperty.price= price
-    revivedProperty.isOwned= isOwned
-    revivedProperty.owner= owner 
-    revivedProperty.isMortgaged=  isMortgaged
-    revivedProperty.mortgageValue= mortgageValue
-    revivedProperty.redemptionValue= redemptionValue
-    revivedProperty.contents = contents.map(player => Player.revive(player))
+    const revivedProperty = new Property(id, name, price)
+    revivedProperty.name = name
+    revivedProperty.price = price
+    revivedProperty.isOwned = isOwned
+    revivedProperty.owner = owner
+    revivedProperty.isMortgaged = isMortgaged
+    revivedProperty.mortgageValue = mortgageValue
+    revivedProperty.redemptionValue = redemptionValue
+    revivedProperty.contents = contents.map((player) => Player.revive(player))
+    revivedProperty.setPosition(position as number)
     return revivedProperty
   }
 }

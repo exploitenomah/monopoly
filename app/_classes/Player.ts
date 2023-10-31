@@ -18,11 +18,35 @@ export default class Player {
   public currentPosition: number = 0
   public color: PlayerColor | null = null
   public name: string = ""
+  public doubleRollsCount: number = 0
+  public isRollingForDoubles: boolean = false
+  public countOfTimesRolledForDoublesToGetOutOfJail: number = 0
 
   constructor(id: number, accountBalance: number) {
     this.accountBalance = accountBalance
     this.id = id
     this.properties = []
+  }
+
+  private collectSalary() {
+    this.accountBalance = this.accountBalance + 200
+  }
+
+  public advance(value: number, isDouble: boolean) {
+    if (isDouble) this.doubleRollsCount += 1
+    else this.doubleRollsCount = 0
+
+    if (this.doubleRollsCount >= 3) {
+      this.isInJail = true
+      this.doubleRollsCount = 0
+      return this
+    }
+    const newPosition = value + this.currentPosition
+    if (newPosition >= 39) {
+      this.currentPosition = newPosition - 39
+      this.collectSalary()
+    } else this.currentPosition = newPosition
+    return this
   }
 
   public static revive(objectLikePlayer: Player) {
@@ -37,6 +61,9 @@ export default class Player {
       currentPosition,
       name,
       color,
+      doubleRollsCount,
+      isRollingForDoubles,
+      countOfTimesRolledForDoublesToGetOutOfJail,
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
@@ -47,6 +74,10 @@ export default class Player {
     revivedPlayer.currentPosition = currentPosition
     revivedPlayer.name = name
     revivedPlayer.color = color
+    revivedPlayer.doubleRollsCount = doubleRollsCount
+    revivedPlayer.isRollingForDoubles = isRollingForDoubles
+    revivedPlayer.countOfTimesRolledForDoublesToGetOutOfJail =
+      countOfTimesRolledForDoublesToGetOutOfJail
     return revivedPlayer
   }
 }

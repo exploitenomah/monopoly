@@ -1,5 +1,5 @@
 import Property from "./Property"
-
+import Player from './Player'
 export interface HousingPropertyRent {
   default: number
   oneHouse: number
@@ -18,7 +18,7 @@ class HousingProperty extends Property {
   public pricePerHouse: number
 
   constructor(
-    id:string,
+    id: string,
     name: string,
     price: number,
     rent: HousingPropertyRent,
@@ -45,7 +45,9 @@ class HousingProperty extends Property {
       isMortgaged,
       mortgageValue,
       redemptionValue,
-      id
+      id,
+      position,
+      contents,
     } = objectLikeHousingProperty
     const revivedHousingProperty = new HousingProperty(
       id,
@@ -67,6 +69,8 @@ class HousingProperty extends Property {
     revivedHousingProperty.isMortgaged = isMortgaged
     revivedHousingProperty.mortgageValue = mortgageValue
     revivedHousingProperty.redemptionValue = redemptionValue
+    revivedHousingProperty.setPosition(position as number)
+    revivedHousingProperty.contents = contents.map((el) => Player.revive(el))
     return revivedHousingProperty
   }
 }

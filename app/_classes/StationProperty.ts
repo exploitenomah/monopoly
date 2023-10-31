@@ -1,4 +1,5 @@
 import Property from "./Property"
+import Player from './Player'
 
 export interface StationPropertyRent {
   oneStationOwned: number
@@ -25,7 +26,9 @@ class StationProperty extends Property {
       isMortgaged,
       mortgageValue,
       redemptionValue,
-      id
+      position,
+      id,
+      contents
     } = objectLikeStationProperty
     const revivedStationProperty = new StationProperty(id, name, price, rent)
     revivedStationProperty.rent = rent
@@ -36,6 +39,8 @@ class StationProperty extends Property {
     revivedStationProperty.isMortgaged = isMortgaged
     revivedStationProperty.mortgageValue = mortgageValue
     revivedStationProperty.redemptionValue = redemptionValue
+    revivedStationProperty.setPosition(position as number)
+    revivedStationProperty.contents = contents.map(content => Player.revive(content))
     return revivedStationProperty
   }
 }
