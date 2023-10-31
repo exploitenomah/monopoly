@@ -6,6 +6,7 @@ import {
   FormEventHandler,
 } from "react"
 import useGetRandomName from "../_hooks/useGetRandomName"
+import { v4 as uuidv4 } from "uuid"
 
 export default function NewGameForm({
   show,
@@ -27,7 +28,7 @@ export default function NewGameForm({
     name: "",
     password: "",
     totalPlayers: 2,
-    id: crypto.randomUUID(),
+    id: uuidv4(),
   })
   const getRandomName = useGetRandomName()
   const handleChange = useCallback((name: string, value: any) => {
@@ -40,7 +41,7 @@ export default function NewGameForm({
         name: "",
         password: "",
         totalPlayers: 2,
-        id: crypto.randomUUID(),
+        id: uuidv4(),
       }),
     []
   )

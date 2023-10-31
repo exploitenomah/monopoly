@@ -28,9 +28,12 @@ export default function Tile({
   const TileTypeComponent = tiles[content.type as keyof typeof tiles]
 
   return (
-    <div className="w-full break-all text-center text-primary-dark font-bold text-[0.25rem] md:text-[0.6rem] lg:text-[0.8rem]">
+    <div className="relative w-full break-all text-center text-primary-dark font-bold text-[0.25rem] min-[450px]:text-[0.45rem] md:text-[0.6rem] lg:text-[0.8rem]">
       <TileTypeComponent classType={content as any} />
-      <ContentsHolder contents={content.contents}/>
+      <ContentsHolder
+        contents={content.contents}
+        position={content.position as number}
+      />
     </div>
   )
 }

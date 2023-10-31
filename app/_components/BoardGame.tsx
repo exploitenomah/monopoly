@@ -6,8 +6,8 @@ import InitializationForm from "./InitializationDisplay"
 import GameNavButton from "./GameNavButton"
 import GameSideBar from "./GameSideBar"
 import { useState } from "react"
-import BoardGame from "../_classes/BoardGame"
-
+import Banner from "./Banner"
+import useHandleNotification from "../_hooks/useHandleNotifications"
 export default function GameBoard({
   gameDetails,
   clearCurrentGameId,
@@ -40,20 +40,30 @@ export default function GameBoard({
       />
     )
 
-  return <MainGame game={game} />
+  return <MainGame gameDetails={gameDetails} />
 }
 
-function MainGame({ game }: { game: BoardGame }) {
+function MainGame({ gameDetails }: { gameDetails: GameDetails }) {
+  const { game, advanceCurrentPlayer } = useSingleGameManager(gameDetails)
   const [showSideBar, setShowSideBar] = useState(false)
+  const { notifications } = useHandleNotification(game)
   return (
-    <>
+    <div>
+      <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>
+        <Banner notification={notifications[notifications.length - 1]} />
+      </div>
       <GameNavButton
         toggleShowSideBar={() => setShowSideBar((prev) => !prev)}
       />
       <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} />
-      <div style={{ perspective: "1000px" }}>
-        <Board game={game} />
+      <div
+        style={{
+          perspective: "1000px",
+          filter: showSideBar ? "blur(3px)" : "",
+        }}
+      >
+        <Board advanceCurrentPlayer={advanceCurrentPlayer} game={game} />
       </div>
-    </>
+    </div>
   )
 }

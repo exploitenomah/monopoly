@@ -1,18 +1,24 @@
 import { PlayerColor } from "../types"
-//colors[color as keyof typeof colors]
+
 const colors = {
-  red: "",
+  red: "pink",
   orange: "brown",
-  yellow: "",
+  yellow: "black",
   green: "crimson",
-  blue: "",
-  indigo: "",
+  blue: "#3cf8ff",
+  indigo: "magenta",
   violet: "purple",
 }
-export default function LocationToken({ color }: { color: PlayerColor }) {
+export default function LocationToken({
+  color,
+  position,
+}: {
+  color: PlayerColor
+  position: number
+}) {
   return (
-    <div className="">
-      <div className="absolute w-full">
+    <div style={{ transform: getTransformation(position) }}>
+      <div className="absolute w-full z-[90] scale-[0.5] md:scale-[1]">
         <div className="pin">
           <div
             style={{
@@ -34,4 +40,16 @@ export default function LocationToken({ color }: { color: PlayerColor }) {
       </div>
     </div>
   )
+}
+
+function getTransformation(position: number) {
+  let rotation = 0
+  if (position <= 9) return `rotate(${rotation}deg)`
+  else if (position <= 10) rotation = 316
+  else if (position <= 19) rotation = 239
+  else if (position <= 20) rotation = 341
+  else if (position <= 29) rotation = 180
+  else if (position <= 30) rotation = 0
+  else rotation = 90
+  return `rotate(${rotation}deg)`
 }

@@ -60,6 +60,7 @@ export default function Initialization({
             setPlayersDetails([])
             setIsInitializationStarted(true)
             setHighestRoller(null)
+            setTakenNames([])
           }}
         />
       )}
