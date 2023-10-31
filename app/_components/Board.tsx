@@ -8,9 +8,15 @@ import FreeParking from "./Spaces/FreeParking"
 import GoToJail from "./Spaces/GoToJail"
 import BoardGame from "@/app/_classes/BoardGame"
 import BoardCenter from "./BoardCenter"
+import { GameDetails } from "../types"
 
-export default function Board({ game }: { game: BoardGame | null }) {
-
+export default function Board({
+  game,
+  advanceCurrentPlayer,
+}: {
+  advanceCurrentPlayer: (advancement: number, isDouble: boolean) => void
+  game: BoardGame | null
+}) {
   if (!game) return <></>
   return (
     <div className="board bg-primary-default h-[100vw] w-[100vw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative">
@@ -22,7 +28,10 @@ export default function Board({ game }: { game: BoardGame | null }) {
       <GoToJail goToJail={game.GoToJail} />
       <LineFour tiles={game.properties.LineFour} />
       <Go go={game.Go} />
-      <BoardCenter game={game} />
+      <BoardCenter
+        advanceCurrentPlayer={advanceCurrentPlayer}
+        game={game}
+      />
     </div>
   )
 }
