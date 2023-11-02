@@ -8,6 +8,14 @@ import GameSideBar from "./GameSideBar"
 import { useState } from "react"
 import Banner from "./Banner"
 import useHandleNotification from "../_hooks/useHandleNotifications"
+import { useAppSelector, useAppDispatch } from "../_redux/hooks"
+import {
+  authorize,
+  setGame,
+  initGame,
+  advanceCurrentPlayer,
+} from "../_redux/game.slice"
+
 export default function GameBoard({
   gameDetails,
   clearCurrentGameId,
@@ -17,15 +25,23 @@ export default function GameBoard({
   clearCurrentGameId: () => void
   createNewGame: () => void
 }) {
-  const { game, isAuthorized, authorizeToPlay, initializeGame } =
-    useSingleGameManager(gameDetails)
+  const { game, isAuthorized } = useAppSelector((store) => store.Game)
+  const appDispatch = useAppDispatch()
+  useSingleGameManager({
+    gameDetails,
+    game,
+    setGame: (newGame) => {
+      appDispatch(setGame(newGame))
+    },
+  })
 
   if (!game) return <></>
 
   if (!isAuthorized)
     return (
       <AuthorizationForm
-        verifyPassword={authorizeToPlay}
+        // verifyPassword={authorizeToPlay}
+        verifyPassword={(password: string) => appDispatch(authorize(password))}
         gameDetails={gameDetails}
         resetToDefaultView={clearCurrentGameId}
         createNewGame={createNewGame}
@@ -35,16 +51,18 @@ export default function GameBoard({
   if (game?.isInitialized === false)
     return (
       <InitializationForm
-        finalize={initializeGame}
+        finalize={(playersDetails) => appDispatch(initGame(playersDetails))}
         totalPlayers={game?.players.length}
       />
     )
 
-  return <MainGame gameDetails={gameDetails} />
+  return <MainGame />
 }
 
-function MainGame({ gameDetails }: { gameDetails: GameDetails }) {
-  const { game, advanceCurrentPlayer } = useSingleGameManager(gameDetails)
+function MainGame() {
+  // { gameDetails }: { gameDetails: GameDetails }
+  const { game } = useAppSelector((store) => store.Game)
+  const appDispatch = useAppDispatch()
   const [showSideBar, setShowSideBar] = useState(false)
   const { notifications } = useHandleNotification(game)
   return (
@@ -62,7 +80,12 @@ function MainGame({ gameDetails }: { gameDetails: GameDetails }) {
           filter: showSideBar ? "blur(3px)" : "",
         }}
       >
-        <Board advanceCurrentPlayer={advanceCurrentPlayer} game={game} />
+        <Board
+          advanceCurrentPlayer={(rollValue, isDouble) =>
+            appDispatch(advanceCurrentPlayer({ rollValue, isDouble }))
+          }
+          game={game}
+        />
       </div>
     </div>
   )
