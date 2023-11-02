@@ -5,7 +5,7 @@ import AuthorizationForm from "./AuthorizationForm"
 import InitializationForm from "./InitializationDisplay"
 import GameNavButton from "./GameNavButton"
 import GameSideBar from "./GameSideBar"
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import Banner from "./Banner"
 import useHandleNotification from "../_hooks/useHandleNotifications"
 import { useAppSelector, useAppDispatch } from "../_redux/hooks"
@@ -14,6 +14,7 @@ import {
   setGame,
   initGame,
   advanceCurrentPlayer,
+  sendPrisonersToJail
 } from "../_redux/game.slice"
 
 export default function GameBoard({
@@ -59,11 +60,17 @@ export default function GameBoard({
 }
 
 function MainGame() {
-  // { gameDetails }: { gameDetails: GameDetails }
+
   const { game } = useAppSelector((store) => store.Game)
   const appDispatch = useAppDispatch()
   const [showSideBar, setShowSideBar] = useState(false)
   const { notifications } = useHandleNotification(game)
+
+  useEffect(() => {
+    if(game?.players.some(player => player.isInJail && player.currentPosition !== 10)){
+      appDispatch(sendPrisonersToJail())
+    }
+  }, [game, appDispatch])
   return (
     <div>
       <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>
