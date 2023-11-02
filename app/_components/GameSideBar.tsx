@@ -16,7 +16,7 @@ export default function GameSideBar({
         show
           ? "translate-x-0 shadow-[-19px_20px_20px_20px_#00000024]"
           : "translate-x-[100%]"
-      } right-0 fixed h-screen w-[90vw] max-w-[450px] bg-primary-default z-30 duration-300 transition-transform`}
+      } right-0 top-0 fixed h-screen w-[90vw] max-w-[450px] bg-primary-default z-30 duration-300 transition-transform`}
     ></div>
   )
 }
