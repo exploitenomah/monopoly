@@ -63,7 +63,7 @@ function GameDice({
     <>
       <div
         onClick={roll}
-        className="dice-container grid grid-auto-cols gap-[25px] items-center justify-center"
+        className="dice-container grid grid-flow-col gap-x-[35px] items-center justify-center"
       >
         <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
         <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />

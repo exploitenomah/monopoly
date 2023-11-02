@@ -32,7 +32,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+.dice-container {
+  transform: rotateY(45deg) scale(0.7);
+}
 
+@media only screen and (min-width: 1024px) {
+  .dice-container {
+    transform: rotateY(45deg) scaleY(1.2);
+  }
+}
 .dot {
   width: 12px;
   height: 12px;
