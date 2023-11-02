@@ -70,30 +70,20 @@ function GameDice({
     const resetTimeout = setTimeout(() => {
       const rollValue = diceOne.rollValue + diceTwo.rollValue
       if (!isNaN(rollValue) && hasRolled === true) {
-        advanceCurrentPlayer(
-          rollValue,
-          diceOne.rollValue === diceTwo.rollValue
-        )
+        advanceCurrentPlayer(rollValue, diceOne.rollValue === diceTwo.rollValue)
         setHasRolled(false)
       }
     }, 600)
     return () => {
       clearTimeout(resetTimeout)
     }
-  }, [
-    diceOne.rollValue,
-    diceTwo.rollValue,
-    advanceCurrentPlayer,
-    hasRolled,
-  ])
+  }, [diceOne.rollValue, diceTwo.rollValue, advanceCurrentPlayer, hasRolled])
 
   useEffect(() => {
     if (currentPlayer) {
       if (currentPlayer.isInJail && !currentPlayer.isRollingForDoubles)
         setShowPrisonerOptions(true)
-      // else setShowPrisonerOptions(false)
     }
-    console.log(currentPlayer?.isInJail)
   }, [currentPlayer?.isInJail])
 
   if (showPrisonerOptions)
@@ -123,7 +113,6 @@ function InJailOptions({
   currentPlayer?: Player
   hidePrisonerOptions: () => void
 }) {
-  console.log(currentPlayer)
   const appDispatch = useAppDispatch()
 
   return (
@@ -140,7 +129,10 @@ function InJailOptions({
         <div className="flex flex-wrap gap-4 justify-center items-center mt-5">
           {currentPlayer && currentPlayer.accountBalance >= 500 ? (
             <button
-              onClick={() => appDispatch(getOutOfJail("PAY-500"))}
+              onClick={() => {
+                appDispatch(getOutOfJail("PAY-500"))
+                hidePrisonerOptions()
+              }}
               className="text-[1rem] underline font-semibold text-center"
             >
               Pay 500
