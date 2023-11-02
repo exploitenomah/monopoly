@@ -29,23 +29,61 @@ export default class Player {
   }
 
   private collectSalary() {
+    if (this.isBankrupt) return this
     this.accountBalance = this.accountBalance + 200
   }
 
   public advance(value: number, isDouble: boolean) {
-    if (isDouble) this.doubleRollsCount += 1
-    else this.doubleRollsCount = 0
+    if (isDouble) {
+      if (this.isInJail) {
+        this.isInJail = false
+        this.countOfTimesRolledForDoublesToGetOutOfJail = 0
+        this.isRollingForDoubles = false
+      } else {
+        this.doubleRollsCount += 1
+      }
+    } else {
+      if (
+        this.isInJail &&
+        this.countOfTimesRolledForDoublesToGetOutOfJail >= 3 &&
+        this.isRollingForDoubles
+      ) {
+        this.countOfTimesRolledForDoublesToGetOutOfJail = 0
+        this.isRollingForDoubles = false
+        this.isInJail = false
+      } else {
+        this.doubleRollsCount = 0
+        this.isRollingForDoubles = false
+      }
+    }
 
     if (this.doubleRollsCount >= 3) {
       this.isInJail = true
       this.doubleRollsCount = 0
       return this
     }
+    if (this.isInJail) return this
     const newPosition = value + this.currentPosition
     if (newPosition >= 39) {
       this.currentPosition = newPosition - 39
       this.collectSalary()
     } else this.currentPosition = newPosition
+    return this
+  }
+
+  public pay500ToGetOutOfJail() {
+    this.isBankrupt = this.accountBalance === 0
+    if (this.accountBalance < 500) {
+      return this
+    }
+    this.isInJail = false
+    this.accountBalance = this.accountBalance - 500
+    return this
+  }
+
+  public rollForDoubleToGetOutOfJail() {
+    this.isRollingForDoubles = true
+    this.countOfTimesRolledForDoublesToGetOutOfJail += 1
     return this
   }
 
