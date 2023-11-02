@@ -48,10 +48,13 @@ const gameSlice = createSlice({
       payload: GetOutOfJailChoice
     }) => {
       state.game = copyBoardGame(state.game as BoardGame).getCurrentPlayerOutOfJail(payload)
+    },
+    sendPrisonersToJail: (state, action: { payload: undefined }) => {
+      state.game = copyBoardGame(state.game as BoardGame).sendPrisonersToJail()
     }
   },
 })
 
-export const { setGame, authorize, initGame, advanceCurrentPlayer, getOutOfJail } =
+export const { setGame, authorize, initGame, advanceCurrentPlayer, getOutOfJail, sendPrisonersToJail  } =
   gameSlice.actions
 export default gameSlice.reducer
