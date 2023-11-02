@@ -19,6 +19,14 @@ export default function LocationToken({
   return (
     <div style={{ transform: getTransformation(position) }}>
       <div className="absolute w-full z-[90] scale-[0.5] md:scale-[1]">
+        <div
+          style={{
+            background: color,
+            border: `2px solid ${colors[color]}`,
+            transform: "rotateX(-5deg) translateY(-130%) translateX(-10%)",
+          }}
+          className="w-[2.4rem] h-[2.4rem] absolute inset-0 z-[30] left-1/2 rounded-full hidden md:block"
+        ></div>
         <div className="pin">
           <div
             style={{
