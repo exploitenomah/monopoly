@@ -10,9 +10,10 @@ const LineFour = [
   new Space(uuidv4(), "COMMUNITY-CHEST").setPosition(33),
   WojiArea[2].setPosition(34),
   GIGBusStation.setPosition(35),
-  TransAmadiArea[0].setPosition(36),
-  new Space(uuidv4(), "SUPER-TAX").setPosition(37),
-  TransAmadiArea[1].setPosition(38),
+  new Space(uuidv4(), "CHANCE").setPosition(36),
+  TransAmadiArea[0].setPosition(37),
+  new Space(uuidv4(), "SUPER-TAX").setPosition(38),
+  TransAmadiArea[1].setPosition(39),
 ]
 
 export default LineFour
