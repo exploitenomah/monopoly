@@ -1,11 +1,10 @@
 "use client"
 
-import { createSlice, createAction } from "@reduxjs/toolkit"
-import { GameDetails } from "../types"
-import { PlayerDetail } from "../types"
+import { createSlice } from "@reduxjs/toolkit"
 import BoardGame from "@/app/_classes/BoardGame"
 import { decrypt } from "@/app/_utils/auth"
-import { checkIsMatchingAction, copyBoardGame } from "./utils"
+import {  copyBoardGame } from "./utils"
+import { GetOutOfJailChoice } from '@/app/types'
 
 const initialState: {
   game: BoardGame | null
@@ -45,9 +44,14 @@ const gameSlice = createSlice({
         )
       }
     },
+    getOutOfJail: (state, { payload}: {
+      payload: GetOutOfJailChoice
+    }) => {
+      state.game = copyBoardGame(state.game as BoardGame).getCurrentPlayerOutOfJail(payload)
+    }
   },
 })
 
-export const { setGame, authorize, initGame, advanceCurrentPlayer } =
+export const { setGame, authorize, initGame, advanceCurrentPlayer, getOutOfJail } =
   gameSlice.actions
 export default gameSlice.reducer
