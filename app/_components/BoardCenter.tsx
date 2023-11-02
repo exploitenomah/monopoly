@@ -51,8 +51,9 @@ function GameDice({
       const rollValue = diceOne.rollValue + diceTwo.rollValue
       if (!isNaN(rollValue) && hasRolled === true) {
         advanceCurrentPlayer(rollValue, diceOne.rollValue === diceTwo.rollValue)
+        setHasRolled(false)
       }
-    }, 500)
+    }, 600)
     return () => {
       clearTimeout(resetTimeout)
     }
@@ -62,8 +63,7 @@ function GameDice({
     <>
       <div
         onClick={roll}
-        className="flex items-center justify-center gap-7 scale-[0.6] md:scale-[1]"
-        // style={{ transform: "rotateX()" }}
+        className="dice-container grid grid-auto-cols gap-[25px] items-center justify-center"
       >
         <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
         <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
