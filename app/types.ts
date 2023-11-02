@@ -18,3 +18,5 @@ export type PlayerDetail = {
   color: PlayerColor
   rollValue: number
 }
+
+export type GetOutOfJailChoice = 'ROLL-FOR-DOUBLE' | 'PAY-500' | 'USE-GAMECARD'
