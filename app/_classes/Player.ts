@@ -64,8 +64,8 @@ export default class Player {
     }
     if (this.isInJail) return this
     const newPosition = value + this.currentPosition
-    if (newPosition >= 39) {
-      this.currentPosition = newPosition - 39
+    if (newPosition >= 40) {
+      this.currentPosition = newPosition - 40
       this.collectSalary()
     } else this.currentPosition = newPosition
     return this
