@@ -10,7 +10,7 @@ export default function AuthorizationForm({
   gameDetails: GameDetails
   resetToDefaultView: () => void
   createNewGame: () => void
-  verifyPassword: (password: string) => boolean
+  verifyPassword: (password: string) => void
 }) {
   const [password, setPassword] = useState("")
   const [isPasswordWrong, setIsPasswordWrong] = useState(false)
@@ -18,8 +18,8 @@ export default function AuthorizationForm({
   const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault()
-      if (password.length < 1 || !verifyPassword(password))
-        return setIsPasswordWrong(true)
+      verifyPassword(password)
+      setIsPasswordWrong(true)
     },
     [password, verifyPassword]
   )
