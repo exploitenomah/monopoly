@@ -37,10 +37,9 @@ export default function GameBoard({
 
   if (!game) return <></>
 
-  if (!isAuthorized)
+  if (!isAuthorized && game.isInitialized === true)
     return (
       <AuthorizationForm
-        // verifyPassword={authorizeToPlay}
         verifyPassword={(password: string) => appDispatch(authorize(password))}
         gameDetails={gameDetails}
         resetToDefaultView={clearCurrentGameId}
@@ -48,7 +47,7 @@ export default function GameBoard({
       />
     )
 
-  if (game?.isInitialized === false)
+  if (game.isInitialized === false)
     return (
       <InitializationForm
         finalize={(playersDetails) => appDispatch(initGame(playersDetails))}
