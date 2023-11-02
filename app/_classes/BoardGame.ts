@@ -10,7 +10,7 @@ import LineOne from "../_lines/LineOne"
 import LineTwo from "../_lines/LineTwo"
 import LineThree from "../_lines/LineThree"
 import LineFour from "../_lines/LineFour"
-import { PlayerDetail } from "../types"
+import { PlayerDetail, GetOutOfJailChoice } from "../types"
 import Go from "../_lines/GO"
 import GoToJail from "../_lines/GoToJail"
 import Jail from "../_lines/Jail"
@@ -146,13 +146,37 @@ export default class BoardGame {
       if (player.turn === this.currentTurn) {
         advancingPlayer = player
         shouldUpdateCurrentTurn =
-          isDouble === false || player.doubleRollsCount >= 2
+          isDouble === false || player.doubleRollsCount >= 2 || player.isInJail
         return player.advance(advancement, isDouble)
       } else return player
     })
-    console.log(shouldUpdateCurrentTurn, advancingPlayer)
     advancingPlayer && this.updateLineContents(advancingPlayer)
     shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    return this
+  }
+
+  public getCurrentPlayerOutOfJail(choice: GetOutOfJailChoice) {
+    const currentPlayer = this.players.find(
+      (it) => it.turn === this.currentTurn
+    )
+    if (currentPlayer) {
+      this.players.forEach((player) => {
+        if (player.id === currentPlayer.id) {
+          switch (choice) {
+            case "USE-GAMECARD":
+              return this
+            case "PAY-500":
+              player.pay500ToGetOutOfJail()
+              return this
+            case "ROLL-FOR-DOUBLE":
+              player.rollForDoubleToGetOutOfJail()
+              return this
+            default:
+              return this
+          }
+        }
+      })
+    }
     return this
   }
 
