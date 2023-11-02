@@ -180,6 +180,16 @@ export default class BoardGame {
     return this
   }
 
+  public sendPrisonersToJail() {
+    this.players.forEach((player) => {
+      if (player.isInJail && player.currentPosition !== 10) {
+        player.currentPosition = 10
+        this.updateLineContents(player)
+      }
+    })
+    return this
+  }
+
   static editLineContents(line: Line, player: Player) {
     line.forEach((property) => {
       BoardGame.editSpaceContents(property, player)
