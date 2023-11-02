@@ -14,6 +14,7 @@ export default function useDice(millisecondsToRollFor?: number) {
   }, [millisecondsToRollFor])
 
   const reset = useCallback(() => {
+    setIsRolling(false)
     setRollValue(NaN)
   }, [])
 
