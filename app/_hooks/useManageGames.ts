@@ -1,15 +1,15 @@
 import { useEffect, useState, useCallback } from "react"
 import useEncryptAndDecrypt from "./useEncryptAndDecrypt"
-import { Game } from "../types"
+import { GameDetails } from "../types"
 
 export default function useManageGames(
   localStorageKey: string,
-  initialValue: Game[]
+  initialValue: GameDetails[]
 ) {
   const { encrypt } = useEncryptAndDecrypt(
     process.env.NEXT_PUBLIC_JS_CRYPTO_KEY as string
-  ) 
-  const [games, setGames] = useState<Game[]>(initialValue)
+  )
+  const [games, setGames] = useState<GameDetails[]>(initialValue)
 
   const createNewGame = useCallback(
     ({
@@ -45,7 +45,7 @@ export default function useManageGames(
     if (gamesInLocalStorageString) {
       const gamesInLocalStorage = JSON.parse(
         gamesInLocalStorageString
-      ) as Game[]
+      ) as GameDetails[]
       setGames(gamesInLocalStorage)
     }
   }, [localStorageKey])
