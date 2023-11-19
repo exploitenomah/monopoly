@@ -20,14 +20,14 @@ import {
 
 const GameCardType = "CHANCE"
 const AdvanceToGo = new GameCard(
-  "Advance Go (Collect 200)",
+  "Advance Go (Collect ₦200)",
   advanceToGo,
   GameCardType,
   1
 )
 
 const AdvanceToOilMillRoad = new GameCard(
-  "Advance to Oil Mill Road, if you pass Go, collect 200",
+  "Advance to Oil Mill Road, if you pass Go, collect ₦200",
   advanceToOilMillRoad,
   GameCardType,
   2
@@ -39,7 +39,7 @@ const AdvanceToTransAmadi = new GameCard(
   3
 )
 const AdvanceToRumuosi = new GameCard(
-  "Advance to Rumuosi, if you pass Go, collect 200",
+  "Advance to Rumuosi, if you pass Go, collect ₦200",
   advanceToRumuosi,
   GameCardType,
   4
@@ -57,7 +57,7 @@ const AdvanceToTheNearestUtility = new GameCard(
   6
 )
 const BankPaysDividendOfFifty = new GameCard(
-  "Bank pays you dividend of 50",
+  "Bank pays you dividend of ₦50",
   bankPaysDividendOfFifty,
   GameCardType,
   7
@@ -75,37 +75,37 @@ const GoBackThreeSpaces = new GameCard(
   9
 )
 const MakeGeneralRepairs = new GameCard(
-  "Make general repairs on all your property. For each house pay £25. For each hotel pay £100",
+  "Make general repairs on all your property. For each house pay ₦25. For each hotel pay ₦100",
   makeGeneralRepairs,
   GameCardType,
   10
 )
 const SpeedingFine = new GameCard(
-  "Speeding fine £15",
+  "Speeding fine ₦15",
   speedingFine,
   GameCardType,
   11
 )
 const TakeATripToGIGMotors = new GameCard(
-  "Take a trip to GIG Motors. If you pass Go, collect £200",
+  "Take a trip to GIG Motors. If you pass Go, collect ₦200",
   takeATripToGIGMotors,
   GameCardType,
   12
 )
 const ChairmanOfTheBoard = new GameCard(
-  "You have been elected Chairman of the Board. Pay each player £50",
+  "You have been elected Chairman of the Board. Pay each player ₦50",
   chairmanOfTheBoard,
   GameCardType,
   13
 )
 const BuildingLoanMatures = new GameCard(
-  "Your building loan matures. Collect £150",
+  "Your building loan matures. Collect ₦150",
   buildingLoanMatures,
   GameCardType,
   14
 )
 const XmasFundMatures = new GameCard(
-  "Your Xmas fund matures. Collect £100",
+  "Your Xmas fund matures. Collect ₦100",
   xmasFundMatures,
   GameCardType,
   15
