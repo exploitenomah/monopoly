@@ -8,7 +8,6 @@ import FreeParking from "./Spaces/FreeParking"
 import GoToJail from "./Spaces/GoToJail"
 import BoardGame from "@/app/_classes/BoardGame"
 import BoardCenter from "./BoardCenter"
-import { GameDetails } from "../types"
 
 export default function Board({
   game,
@@ -20,18 +19,15 @@ export default function Board({
   if (!game) return <></>
   return (
     <div className="board bg-primary-default h-[100vw] w-[100vw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative">
-      <LineOne tiles={game.properties.LineOne} />
+      <LineOne tiles={game.properties[1]} />
       <Jail jail={game.Jail} />
-      <LineTwo tiles={game.properties.LineTwo} />
+      <LineTwo tiles={game.properties[2]} />
       <FreeParking freeParking={game.FreeParking} />
-      <LineThree tiles={game.properties.LineThree} />
+      <LineThree tiles={game.properties[3]} />
       <GoToJail goToJail={game.GoToJail} />
-      <LineFour tiles={game.properties.LineFour} />
+      <LineFour tiles={game.properties[4]} />
       <Go go={game.Go} />
-      <BoardCenter
-        advanceCurrentPlayer={advanceCurrentPlayer}
-        game={game}
-      />
+      <BoardCenter advanceCurrentPlayer={advanceCurrentPlayer} game={game} />
     </div>
   )
 }
