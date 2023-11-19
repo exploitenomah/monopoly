@@ -7,45 +7,53 @@ import { useState, useEffect } from "react"
 import LoadingDisplay from "./_components/LoadingDisplay"
 
 function Home() {
-  const { games, createNewGame } = useManageGames("MONOPOLY_GAMES", [])
-  const [currentGameId, updateCurrentGameId, clearCurrentGameId] =
-    useManageKeyInLocalStorage("CURRENT_GAME_ID", null)
-  const [loading, setLoading] = useState(true)
-  const [showGameCreationForm, setShowGameCreationForm] = useState(false)
+  try {
+    const { games, createNewGame } = useManageGames("MONOPOLY_GAMES", [])
+    const [currentGameId, updateCurrentGameId, clearCurrentGameId] =
+      useManageKeyInLocalStorage("CURRENT_GAME_ID", null)
+    const [loading, setLoading] = useState(true)
+    const [showGameCreationForm, setShowGameCreationForm] = useState(false)
 
-  useEffect(() => {
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false)
-    }, 3000)
+    useEffect(() => {
+      const loadingTimeout = setTimeout(() => {
+        setLoading(false)
+      }, 3000)
 
-    return () => {
-      clearTimeout(loadingTimeout)
-    }
-  }, [])
+      return () => {
+        clearTimeout(loadingTimeout)
+      }
+    }, [])
 
-  if (loading) return <LoadingDisplay />
-  if (!currentGameId)
+    if (loading) return <LoadingDisplay />
+    if (!currentGameId)
+      return (
+        <HomeDefaultDisplay
+          games={games}
+          createNewGame={(newGame) => {
+            createNewGame(newGame)
+            updateCurrentGameId(newGame.id)
+          }}
+          showGameCreationFormByDefault={showGameCreationForm}
+          updateCurrentGameId={updateCurrentGameId}
+        />
+      )
     return (
-      <HomeDefaultDisplay
-        games={games}
-        createNewGame={(newGame) => {
-          createNewGame(newGame)
-          updateCurrentGameId(newGame.id)
+      <Game
+        createNewGame={() => {
+          clearCurrentGameId()
+          setShowGameCreationForm(true)
         }}
-        showGameCreationFormByDefault={showGameCreationForm}
-        updateCurrentGameId={updateCurrentGameId}
+        clearCurrentGameId={clearCurrentGameId}
+        gameDetails={games.filter((it) => it.id === currentGameId)[0]}
       />
     )
-  return (
-    <Game
-      createNewGame={() => {
-        clearCurrentGameId()
-        setShowGameCreationForm(true)
-      }}
-      clearCurrentGameId={clearCurrentGameId}
-      gameDetails={games.filter((it) => it.id === currentGameId)[0]}
-    />
-  )
+  } catch (err) {
+    useEffect(() => {
+      localStorage.clear()
+      // window.reload()
+    }, [])
+    return <></>
+  }
 }
 
 export default function HomeWrapper() {
