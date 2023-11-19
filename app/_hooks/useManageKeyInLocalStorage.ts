@@ -14,7 +14,7 @@ export default function useManageKeyInLocalStorage(
 
   useEffect(() => {
     const valueInLs = localStorage.getItem(key)
-    if (valueInLs) {
+    if (valueInLs !== null) {
       setValue(JSON.parse(valueInLs))
     }
   }, [key])
