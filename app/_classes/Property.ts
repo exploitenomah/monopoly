@@ -2,7 +2,7 @@ import Player from "./Player"
 
 class Property {
   public isOwned: boolean = false
-  public owner: null | Player = null
+  public owner: null | number = null
   public price: number
   public isMortgaged: boolean = false
   public mortgageValue: number
@@ -36,7 +36,7 @@ class Property {
       redemptionValue,
       contents,
       id,
-      position
+      position,
     } = objectLikeProperty
     const revivedProperty = new Property(id, name, price)
     revivedProperty.name = name
