@@ -16,6 +16,25 @@ class StationProperty extends Property {
     this.rent = rent
   }
 
+  public static calculateRent(property: StationProperty, properties: StationProperty[]){
+    const stations = properties.filter((it) => it.type === "STATION")
+      const stationsOwnedBySameOwner = stations.filter(
+        (it) => typeof it.owner === "number" && it.owner === property.owner
+      ).length
+      switch (stationsOwnedBySameOwner) {
+        case 1:
+          return (property as StationProperty).rent.oneStationOwned
+        case 2:
+          return (property as StationProperty).rent.twoStationsOwned
+        case 3:
+          return (property as StationProperty).rent.threeStationsOwned
+        case 4:
+          return (property as StationProperty).rent.fourStationsOwned
+        default:
+          return 0
+      }
+  }
+
   public static revive(objectLikeStationProperty: StationProperty) {
     const {
       rent,
@@ -28,7 +47,7 @@ class StationProperty extends Property {
       redemptionValue,
       position,
       id,
-      contents
+      contents,
     } = objectLikeStationProperty
     const revivedStationProperty = new StationProperty(id, name, price, rent)
     revivedStationProperty.rent = rent
