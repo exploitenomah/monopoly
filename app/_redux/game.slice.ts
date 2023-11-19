@@ -3,8 +3,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 import BoardGame from "@/app/_classes/BoardGame"
 import { decrypt } from "@/app/_utils/auth"
-import {  copyBoardGame } from "./utils"
-import { GetOutOfJailChoice } from '@/app/types'
+import { copyBoardGame } from "./utils"
+import { GetOutOfJailChoice } from "@/app/types"
 
 const initialState: {
   game: BoardGame | null
@@ -24,7 +24,7 @@ const gameSlice = createSlice({
     authorize: (state, action) => {
       state.isAuthorized =
         state.game !== null &&
-       decrypt(
+        decrypt(
           state.game?.password as string,
           process.env.NEXT_PUBLIC_JS_CRYPTO_KEY as string
         ) === action.payload
@@ -44,17 +44,57 @@ const gameSlice = createSlice({
         )
       }
     },
-    getOutOfJail: (state, { payload}: {
-      payload: GetOutOfJailChoice
-    }) => {
-      state.game = copyBoardGame(state.game as BoardGame).getCurrentPlayerOutOfJail(payload)
+    getOutOfJail: (
+      state,
+      {
+        payload,
+      }: {
+        payload: GetOutOfJailChoice
+      }
+    ) => {
+      state.game = copyBoardGame(
+        state.game as BoardGame
+      ).getCurrentPlayerOutOfJail(payload)
     },
     sendPrisonersToJail: (state, action: { payload: undefined }) => {
       state.game = copyBoardGame(state.game as BoardGame).sendPrisonersToJail()
-    }
+    },
+    playerAction: (state, action: { payload: number }) => {
+      state.game = copyBoardGame(state.game as BoardGame).handlePlayerAction(
+        action.payload
+      )
+    },
+    declineToPurchase: (state, action: { payload: number }) => {
+      state.game = copyBoardGame(state.game as BoardGame).declineToPurchase(
+        action.payload
+      )
+    },
+    cancelBidding: (state) => {
+      state.game = copyBoardGame(state.game as BoardGame).cancelBidding()
+    },
+    sellToHighestBidder: (state, { payload: {
+      bidValue, playerId
+    } }: {
+      payload: {
+        bidValue: number,
+        playerId: number
+      }
+    }) => {
+      state.game = copyBoardGame(state.game as BoardGame).sellToHighestBidder(playerId, bidValue)
+    },
   },
 })
 
-export const { setGame, authorize, initGame, advanceCurrentPlayer, getOutOfJail, sendPrisonersToJail  } =
-  gameSlice.actions
+export const {
+  setGame,
+  authorize,
+  initGame,
+  advanceCurrentPlayer,
+  getOutOfJail,
+  sendPrisonersToJail,
+  playerAction,
+  declineToPurchase,
+  cancelBidding,
+  sellToHighestBidder
+} = gameSlice.actions
 export default gameSlice.reducer
