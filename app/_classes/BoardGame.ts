@@ -17,6 +17,8 @@ import Jail from "../_lines/Jail"
 import FreeParking from "../_lines/FreeParking"
 
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
+export const chanceTiles = [7, 22, 36]
+export const communityChestTiles = [2, 17, 33]
 
 export default class BoardGame {
   public Go: Space = Go
@@ -31,19 +33,23 @@ export default class BoardGame {
   public communityChestCards: GameCard[]
   public runningOrder: number[] = []
   public properties: {
-    LineOne: Line
-    LineTwo: Line
-    LineThree: Line
-    LineFour: Line
+    1: Line
+    2: Line
+    3: Line
+    4: Line
   } = {
-    LineOne,
-    LineTwo,
-    LineThree,
-    LineFour,
+    1: LineOne,
+    2: LineTwo,
+    3: LineThree,
+    4: LineFour,
   }
   public hasSetRunningOrder: boolean = false
   public isInitialized: boolean = false
   public currentTurn?: number
+  public shouldUpdateCurrentTurn: boolean = true
+  public currentChanceCard: { card: GameCard; owner: number } | null = null
+  public currentChestCard: { card: GameCard; owner: number } | null = null
+  public positionUpForBidding?: number
 
   constructor(
     name: string,
@@ -109,26 +115,26 @@ export default class BoardGame {
 
   private updateLineContents(player: Player | null) {
     if (player) {
-      this.properties.LineOne = BoardGame.editLineContents(
-        this.properties.LineOne,
+      this.properties[1] = BoardGame.editLineContents(
+        this.properties[1],
         player
       )
       this.Go = BoardGame.editSpaceContents(this.Go, player) as Space
-      this.properties.LineTwo = BoardGame.editLineContents(
-        this.properties.LineTwo,
+      this.properties[2] = BoardGame.editLineContents(
+        this.properties[2],
         player
       )
       this.Jail = BoardGame.editSpaceContents(this.Jail, player) as Space
-      this.properties.LineThree = BoardGame.editLineContents(
-        this.properties.LineThree,
+      this.properties[3] = BoardGame.editLineContents(
+        this.properties[3],
         player
       )
       this.FreeParking = BoardGame.editSpaceContents(
         this.FreeParking,
         player
       ) as Space
-      this.properties.LineFour = BoardGame.editLineContents(
-        this.properties.LineFour,
+      this.properties[4] = BoardGame.editLineContents(
+        this.properties[4],
         player
       )
       this.GoToJail = BoardGame.editSpaceContents(
@@ -139,9 +145,101 @@ export default class BoardGame {
     return this
   }
 
+  public declineToPurchase(playerId: number) {
+    this.positionUpForBidding = this.players.find(
+      (it) => it.id === playerId
+    )?.currentPosition
+    const player = this.players.find((player) => player.id === playerId)
+    if (player) {
+      player.hasActed = true
+      player.justLandedOn = undefined
+    }
+    return this
+  }
+
+  public cancelBidding() {
+    this.positionUpForBidding = undefined
+    this.shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    return this
+  }
+
+  public sellToHighestBidder(playerId: number, bidPrice: number) {
+    this.purchasePropertyWithBidPrice(
+      playerId,
+      this.positionUpForBidding as number,
+      bidPrice
+    )
+    this.shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    this.positionUpForBidding = undefined
+    return this
+  }
+
+  public handlePlayerAction(playerId: number) {
+    const player = this.players.find((player) => player.id === playerId)
+    if (player) {
+      if (
+        this.currentChanceCard &&
+        chanceTiles.includes(player.currentPosition)
+      ) {
+        this.currentChanceCard.card.handleAction(this, player.id)
+        if (
+          this.currentChanceCard?.card.content.toLowerCase() !==
+          "Get Out of Jail Free".toLowerCase()
+        ) {
+          const [first, ...rest] = this.chanceCards
+          this.chanceCards = [...rest, first]
+        } else {
+          this.chanceCards = this.chanceCards.filter(
+            (it) =>
+              it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
+          )
+          player.getOutOfJailCards.chance = this.currentChanceCard.card
+        }
+        this.currentChanceCard = null
+      } else if (
+        this.currentChestCard &&
+        communityChestTiles.includes(player.currentPosition)
+      ) {
+        this.currentChestCard.card.handleAction(this, player.id)
+        if (
+          this.currentChanceCard?.card.content.toLowerCase() !==
+          "Get Out of Jail Free".toLowerCase()
+        ) {
+          const [first, ...rest] = this.communityChestCards
+          this.communityChestCards = [...rest, first]
+        } else {
+          this.communityChestCards = this.communityChestCards.filter(
+            (it) =>
+              it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
+          )
+          player.getOutOfJailCards.communityChest = this.currentChestCard.card
+        }
+        this.currentChanceCard = null
+        this.currentChestCard = null
+      } else if (player.currentPosition === 38) {
+        player.accountBalance -= 100
+      } else if (player.currentPosition === 4) {
+        player.accountBalance -= 200
+      } else {
+        const property = BoardGame.findProperty(this, player.currentPosition)
+        if (property) {
+          if (property.owner === null) {
+            this.buyPropertyWithDefaultPrice(player.id)
+          } else {
+            this.handleRentCollection(player, property)
+          }
+        }
+      }
+      player.justLandedOn = undefined
+      player.hasActed = true
+    }
+    this.shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    return this
+  }
+
   public advancePlayer(advancement: number, isDouble: boolean) {
     let shouldUpdateCurrentTurn = true
-    let advancingPlayer = null
+    let advancingPlayer: Player | null = null
     this.players.forEach((player) => {
       if (player.turn === this.currentTurn) {
         advancingPlayer = player
@@ -150,8 +248,111 @@ export default class BoardGame {
         return player.advance(advancement, isDouble)
       } else return player
     })
-    advancingPlayer && this.updateLineContents(advancingPlayer)
-    shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    this.shouldUpdateCurrentTurn = shouldUpdateCurrentTurn
+    if (advancingPlayer) {
+      this.updateAdvancingPlayer((advancingPlayer as Player).id)
+      this.updateLineContents(advancingPlayer)
+    }
+    return this
+  }
+
+  public updateAdvancingPlayer(playerId: number) {
+    const player = this.players.find((it) => it.id === playerId)
+    if (!player) return this
+    if (player.currentPosition === 30) {
+      this.sendPlayerToJail(player.id)
+    }
+    const specialTiles = [10, 20, 0]
+    if (!specialTiles.includes(player.currentPosition)) {
+      player.justLandedOn = player.currentPosition
+      player.hasActed = false
+      if (
+        [...chanceTiles, ...communityChestTiles].includes(
+          player.currentPosition
+        )
+      ) {
+        this.handleChanceOrChestLanding(player)
+      }
+    } else {
+      this.shouldUpdateCurrentTurn && this.updateCurrentTurn()
+    }
+    return this
+  }
+
+  public handleRentCollection(
+    player: Player,
+    property: HousingProperty | StationProperty | UtilityProperty
+  ) {
+    if (typeof property.owner === "number" && property.owner !== player.id) {
+      const rentAmount = BoardGame.calculatePropertyRent(
+        property,
+        Object.values(this.properties).reduce((acc, it) => [
+          ...acc,
+          ...it,
+        ]) as any
+      )
+      this.players.forEach((it) => {
+        if (it.id === player.id) {
+          it.accountBalance -= rentAmount
+        }
+        if (it.id === property.owner) {
+          it.accountBalance += rentAmount
+        }
+      })
+    }
+  }
+
+  public handleChanceOrChestLanding(player: Player) {
+    if (chanceTiles.includes(player.currentPosition)) {
+      this.currentChanceCard = {
+        card: this.chanceCards[0],
+        owner: player.id,
+      }
+    } else {
+      this.currentChestCard = {
+        card: this.communityChestCards[0],
+        owner: player.id,
+      }
+    }
+  }
+
+  public buyPropertyWithDefaultPrice(playerId: number) {
+    this.players.forEach((player) => {
+      if (player.id === playerId) {
+        const property = BoardGame.findProperty(this, player.currentPosition)
+        if (player.properties.find((it) => it === property.id)) return
+        else if (property && property.owner === null) {
+          if (player.accountBalance >= property.price) {
+            property.owner = player.id
+            property.isOwned = true
+            player.accountBalance -= property.price
+            player.properties.push(property.id)
+          }
+        }
+      }
+    })
+    return this
+  }
+
+  public purchasePropertyWithBidPrice(
+    playerId: number,
+    propertyPosition: number,
+    bidPrice: number
+  ) {
+    this.players.forEach((player) => {
+      if (player.id === playerId) {
+        const property = BoardGame.findProperty(this, propertyPosition)
+        if (player.properties.find((it) => it === property.id)) return
+        else if (property && property.owner === null) {
+          if (player.accountBalance >= bidPrice) {
+            property.owner = player.id
+            property.isOwned = true
+            player.accountBalance -= bidPrice
+            player.properties.push(property.id)
+          }
+        }
+      }
+    })
     return this
   }
 
@@ -190,6 +391,17 @@ export default class BoardGame {
     return this
   }
 
+  public sendPlayerToJail(playerId: number) {
+    this.players.forEach((player) => {
+      if (player.id === playerId) {
+        player.currentPosition = 10
+        player.isInJail = true
+        this.updateLineContents(player)
+      }
+    })
+    return this
+  }
+
   static editLineContents(line: Line, player: Player) {
     line.forEach((property) => {
       BoardGame.editSpaceContents(property, player)
@@ -206,6 +418,52 @@ export default class BoardGame {
       space.contents.push(player)
     }
     return space
+  }
+
+  static calculatePropertyRent(
+    property: HousingProperty | StationProperty | UtilityProperty,
+    properties: (HousingProperty | StationProperty | UtilityProperty)[],
+    dieValue?: number
+  ) {
+    if (property.type === "HOUSING")
+      return HousingProperty.calculateRent(
+        property as HousingProperty,
+        properties as HousingProperty[]
+      )
+    else if (property.type === "STATION")
+      return StationProperty.calculateRent(
+        property as StationProperty,
+        properties as StationProperty[]
+      )
+    else if (property.type === "UTILITY")
+      return UtilityProperty.calculateRent(
+        property as UtilityProperty,
+        properties as UtilityProperty[],
+        dieValue
+      )
+    else return 0
+  }
+
+  static findProperty(game: BoardGame, propertyPosition: number) {
+    let property
+    if (propertyPosition <= 10) {
+      property = game.properties[1].find(
+        (it) => it.position === propertyPosition
+      )
+    } else if (propertyPosition <= 20) {
+      property = game.properties[2].find(
+        (it) => it.position === propertyPosition
+      )
+    } else if (propertyPosition <= 30) {
+      property = game.properties[3].find(
+        (it) => it.position === propertyPosition
+      )
+    } else if (propertyPosition <= 40) {
+      property = game.properties[4].find(
+        (it) => it.position === propertyPosition
+      )
+    }
+    return property as HousingProperty | StationProperty | UtilityProperty
   }
 
   public static revive(objectLikeBoardGame: BoardGame) {
@@ -225,6 +483,10 @@ export default class BoardGame {
       GoToJail,
       FreeParking,
       Jail,
+      shouldUpdateCurrentTurn,
+      currentChanceCard,
+      currentChestCard,
+      positionUpForBidding,
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -235,10 +497,10 @@ export default class BoardGame {
     )
     revivedBoardGame.runningOrder = runningOrder
     revivedBoardGame.properties = {
-      LineOne: reviveProperties(properties.LineOne),
-      LineTwo: reviveProperties(properties.LineTwo),
-      LineThree: reviveProperties(properties.LineThree),
-      LineFour: reviveProperties(properties.LineFour),
+      1: reviveProperties(properties[1]),
+      2: reviveProperties(properties[2]),
+      3: reviveProperties(properties[3]),
+      4: reviveProperties(properties[4]),
     } as typeof revivedBoardGame.properties
     revivedBoardGame.hasSetRunningOrder = hasSetRunningOrder
     revivedBoardGame.players = players.map((player) => Player.revive(player))
@@ -248,6 +510,17 @@ export default class BoardGame {
     revivedBoardGame.GoToJail = Space.revive(GoToJail)
     revivedBoardGame.FreeParking = Space.revive(FreeParking)
     revivedBoardGame.Jail = Space.revive(Jail)
+    revivedBoardGame.positionUpForBidding = positionUpForBidding
+    revivedBoardGame.shouldUpdateCurrentTurn = shouldUpdateCurrentTurn
+    revivedBoardGame.currentChanceCard = currentChanceCard
+      ? {
+          ...currentChanceCard,
+          card: GameCard.revive(currentChanceCard.card),
+        }
+      : currentChanceCard
+    revivedBoardGame.currentChestCard = currentChestCard
+      ? { ...currentChestCard, card: GameCard.revive(currentChestCard.card) }
+      : currentChestCard
     return revivedBoardGame
   }
 }
