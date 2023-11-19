@@ -1,24 +1,34 @@
 import Property from "./Property"
 import Player from "./Player"
 
-export interface UtilityPropertyRent {
-  default: (valueRolled: number) => number
-}
-
 class UtilityProperty extends Property {
   public type = "UTILITY"
   public category: string
-  public rent = function (value: number) {
-    return value * 10
-  }
+
   constructor(id: string, name: string, price: number, category: string) {
     super(id, name, price)
     this.category = category
   }
 
+  public static calculateRent(
+    property: UtilityProperty,
+    properties: UtilityProperty[],
+    dieValue?: number
+  ) {
+    const allUtilitiesOwnedByPropertyOwner = properties.filter(
+      (prop) =>
+        prop.type === "UTILITY" &&
+        prop.owner === (property as UtilityProperty).owner
+    )
+    if (allUtilitiesOwnedByPropertyOwner.length === 2) {
+      return 10 * ((dieValue || 1) * 2)
+    } else {
+      return 10 * (dieValue || 1)
+    }
+  }
+
   public static revive(objectLikeUtilityProperty: UtilityProperty) {
     const {
-      rent,
       name,
       price,
       isOwned,
@@ -37,7 +47,6 @@ class UtilityProperty extends Property {
       price,
       category
     )
-    revivedUtilityProperty.rent = rent
     revivedUtilityProperty.name = name
     revivedUtilityProperty.price = price
     revivedUtilityProperty.isOwned = isOwned
