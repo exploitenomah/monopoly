@@ -1,91 +1,132 @@
-import Player from "@/app/_classes/Player"
+import BoardGame from "@/app/_classes/BoardGame"
 
-export const advanceToGo = function (playerId: number, players: Player[]) {
-  return players
-}
-
-export const bankErrorInFavour = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const advanceToGo = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      game.advancePlayer(40 - player.currentPosition, false)
+    }
+  })
+  return game
 }
 
-export const doctorsFee = function (playerId: number, players: Player[]) {
-  return players
+export const bankErrorInFavour = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 200
+    }
+  })
+  return game
 }
-export const fromSaleOfStock = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+
+export const doctorsFee = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance -= 50
+    }
+  })
+  return game
 }
-export const getOutOfJailFree = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const fromSaleOfStock = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 200
+    }
+  })
+  return game
 }
-export const goToJail = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const holidayFundMatures = function (playerId: number, players: Player[]) {
-  return players
+export const goToJail = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.isInJail = true
+    }
+  })
+  return game
 }
-export const incomeTaxRefund = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const holidayFundMatures = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 50
+    }
+  })
+  return game
 }
-export const lifeInsuranceMatures = function (playerId: number, players: Player[]) {
-  return players
+export const incomeTaxRefund = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 200
+    }
+  })
+  return game
 }
-export const itsYourBirthday = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const lifeInsuranceMatures = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 100
+    }
+  })
+  return game
 }
-export const payHospital = function (playerId: number, players: Player[]) {
-  return players
+export const itsYourBirthday = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 10 * (game.players.length - 1)
+    } else {
+      player.accountBalance -= 10
+    }
+  })
+  return game
 }
-export const paySchoolFees = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const payHospital = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance -= 100
+    }
+  })
+  return game
 }
-export const receiveConsultancyFee = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+
+export const paySchoolFees = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance -= 100
+    }
+  })
+  return game
 }
-export const assessedForStreetRepairs = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const receiveConsultancyFee = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 20
+    }
+  })
+  return game
 }
-export const secondPrizeInBeautyContest = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const assessedForStreetRepairs = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const inheritOneHundred = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const secondPrizeInBeautyContest = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 10
+    }
+  })
+  return game
+}
+
+export const inheritOneHundred = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 100
+    }
+  })
+  return game
 }
 
 export const communityChestIdMapping = {
-    1: advanceToGo,
+  1: advanceToGo,
   2: bankErrorInFavour,
   3: doctorsFee,
   4: fromSaleOfStock,
