@@ -3,9 +3,7 @@ import { PlayerColor, PlayerDetail } from "../types"
 import useDice from "../_hooks/useDice"
 import Dice from "./Dice"
 
-
-export default 
-function Form({
+export default function Form({
   colorOptions,
   currentPlayer,
   handlePlayerDetail,
@@ -109,13 +107,12 @@ function Form({
           </h3>
           {!isNaN(diceOne.rollValue) && !isNaN(diceTwo.rollValue) && (
             <p className="font-semibold text-md">
-              You rolled a total of {diceOne.rollValue + diceTwo.rollValue}
+              You rolled a total of{" "}
+              <b className="font-bold">
+                {diceOne.rollValue + diceTwo.rollValue}
+              </b>
             </p>
           )}
-          <div className="flex items-center justify-around">
-            <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
-            <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
-          </div>
           <button
             disabled={hasRolled}
             onClick={() => {
@@ -125,9 +122,11 @@ function Form({
               setError("")
             }}
             type="button"
-            className="rounded-lg font-bold text-[1rem] shadow-lg shadow-inset hover:scale-[1.03] active:scale-[0.98] underline text-primary-dark w-full max-w-[150px] mx-auto py-[0.83rem] px-[1rem] disabled:bg-gray-300/50 disabled:cursor-not-allowed disabled:active:scale-[1] disabled:hover:scale-[1]"
+            className="flex items-center justify-center gap-x-8 disabled:opacity-50"
+            name="dice"
           >
-            Roll
+            <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
+            <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
           </button>
         </div>
         <button
