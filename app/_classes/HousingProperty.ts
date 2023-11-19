@@ -1,5 +1,5 @@
 import Property from "./Property"
-import Player from './Player'
+import Player from "./Player"
 export interface HousingPropertyRent {
   default: number
   oneHouse: number
@@ -29,6 +29,37 @@ class HousingProperty extends Property {
     this.color = color
     this.rent = rent
     this.pricePerHouse = pricePerHouse
+  }
+
+  public static calculateRent(
+    property: HousingProperty,
+    properties: HousingProperty[]
+  ) {
+    let totalPropertiesOfType = 3
+    if (property.position === 37 || property.position === 39)
+      totalPropertiesOfType = 2
+    if (property.housesCount === 0 && property.hotelsCount === 0) {
+      if (
+        (properties as HousingProperty[]).filter(
+          (prop) =>
+            prop.owner === property.owner && prop.color === property.color
+        ).length === totalPropertiesOfType
+      )
+        return property.rent.default * 2
+      else return property.rent.default
+    } else if (property.housesCount === 1) {
+      return property.rent.oneHouse
+    } else if (property.housesCount === 2) {
+      return property.rent.twoHouses
+    } else if (property.housesCount === 3) {
+      return property.rent.threeHouses
+    } else if (property.housesCount === 4) {
+      return property.rent.fourHouses
+    } else if (property.hotelsCount >= 1) {
+      return property.rent.hotel * property.hotelsCount
+    } else {
+      return property.rent.default
+    }
   }
 
   public static revive(objectLikeHousingProperty: HousingProperty) {
