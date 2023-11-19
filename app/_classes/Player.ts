@@ -23,6 +23,8 @@ export default class Player {
   public countOfTimesRolledForDoublesToGetOutOfJail: number = 0
   public justLandedOn?: number
   public hasActed?: boolean
+  public totalHousesOwned: number = 0
+  public totalHotelsOwned: number = 0
 
   constructor(id: number, accountBalance: number) {
     this.accountBalance = accountBalance
@@ -106,6 +108,8 @@ export default class Player {
       countOfTimesRolledForDoublesToGetOutOfJail,
       justLandedOn,
       hasActed,
+      totalHousesOwned,
+      totalHotelsOwned
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
@@ -122,6 +126,8 @@ export default class Player {
     revivedPlayer.properties = properties
     revivedPlayer.justLandedOn = justLandedOn
     revivedPlayer.hasActed = hasActed
+    revivedPlayer.totalHousesOwned = totalHousesOwned
+    revivedPlayer.totalHotelsOwned = totalHotelsOwned
     return revivedPlayer
   }
 }
