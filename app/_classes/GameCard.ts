@@ -1,8 +1,9 @@
 import Player from "./Player"
 import { chanceIdMapping } from "../_data/cards/chanceActionHandlers"
 import { communityChestIdMapping } from "../_data/cards/communityChestActionHandlers"
+import BoardGame from './BoardGame'
 
-type Action = (playerId: number, otherPlayers: Player[]) => Player[]
+type Action = (game: BoardGame, playerId: number) => BoardGame
 
 type CardType = "COMMUNITY-CHEST" | "CHANCE"
 
