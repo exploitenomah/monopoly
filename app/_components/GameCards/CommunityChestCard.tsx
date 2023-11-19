@@ -5,14 +5,13 @@ export default function CommunityChestCard({
   card,
   zIndex,
   isCurrent,
-  handleDone
+  handleDone,
 }: {
   card: GameCard
   zIndex: number
   isCurrent?: boolean
   handleDone: () => void
 }) {
-
   return (
     <Card
       style={
@@ -23,7 +22,10 @@ export default function CommunityChestCard({
               position: "absolute",
               zIndex: 16,
               transform:
-                "rotateY(-180deg) rotate(180deg) translateX(0%) translateY(160%) rotate(-45deg) scale(1.6) rotateX(20deg)",
+                "rotateY(-180deg) rotate(135deg) translateY(160%) scale(1.3) rotateX(20deg) translateX(-55%)",
+              width: "50vw",
+              maxWidth: "300px", 
+              minHeight: "200px",
             }
           : {
               perspective: "800px",
@@ -32,6 +34,8 @@ export default function CommunityChestCard({
               right: "1%",
               top: "2%",
               borderRadius: "16px",
+              width: "50vw",
+              maxWidth: "100%",
             }
       }
     >
@@ -39,22 +43,28 @@ export default function CommunityChestCard({
         style={{
           backgroundImage: "url(/image-files/community-chest-card.png)",
           boxShadow: "-8px 7px 9px 0px #00000005",
-          transform: isCurrent ? "rotatex(22deg)" : "",
+          transform: isCurrent
+            ? "rotateX(20deg) rotateY(180deg) rotateZ(180deg)"
+            : "",
+          top: isCurrent ? "5%" : "0",
         }}
         className="bg-cover bg-center absolute top-0 left-0 w-full min-h-full hover:animate-test rounded-[16px]"
       />
       <div
-        className="p-3 absolute top-0 left-0 w-full min-h-full bg-[#89d7f6] flex items-center justify-center flex-col rounded-[16px] text-center"
+        className="text-primary-dark py-4 px-6 absolute top-0 left-0 w-full min-h-full bg-[#89d7f6] flex items-center justify-center flex-col rounded-[16px] text-center"
         style={{
           transform: isCurrent
-            ? "rotatex(20deg) rotateY(180deg) rotateZ(180deg)"
+            ? "rotateX(20deg) rotateY(180deg) rotateZ(180deg)"
             : "rotateY(180deg)",
           backfaceVisibility: isCurrent ? "visible" : "hidden",
           top: isCurrent ? "5%" : "0",
         }}
       >
         {card.content}
-        <button onClick={handleDone} className="shadow-lg rounded-lg p-3 mt-3 text-primary-dark border border-current">
+        <button
+          onClick={handleDone}
+          className="shadow-lg rounded-lg p-3 mt-3 text-primary-dark border border-current"
+        >
           ok
         </button>
       </div>

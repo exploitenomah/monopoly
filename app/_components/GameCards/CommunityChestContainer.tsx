@@ -20,7 +20,12 @@ export default function CommunityChestContainer({
 
   return (
     <CardsContainer
-      style={{ bottom: "15%", right: "8%", transform: "rotate(-45deg" }}
+      style={{
+        bottom: "15%",
+        right: "8%",
+        transform: "rotate(-45deg)",
+        zIndex: 2,
+      }}
     >
       {cards.map((card, idx, arr) => (
         <CommunityChestCard

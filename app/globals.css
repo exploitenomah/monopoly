@@ -16,11 +16,9 @@
   }
 }
 
-@media (min-width: 1100px) {
-  .board {
-    /* transform: translateY(-12%) rotateX(35deg); */
-    transform: translateY(-12%) rotateX(50deg) translateZ(-50px);
-  }
+.board {
+  /* transform: translateY(-12%) rotateX(35deg); */
+  transform: translateY(-12%) rotateX(50deg) translateZ(-50px);
 }
 
 body {

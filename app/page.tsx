@@ -58,7 +58,7 @@ function Home() {
 
 export default function HomeWrapper() {
   return (
-    <main className="w-screen h-screen flex justify-center items-center bg-primary-dark overflow-hidden">
+    <main className="w-screen h-[100dvh] flex justify-center items-center bg-primary-dark overflow-hidden">
       <Home />
     </main>
   )

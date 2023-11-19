@@ -18,7 +18,7 @@ export default function Board({
 }) {
   if (!game) return <></>
   return (
-    <div className="board bg-primary-default h-[100vw] w-[100vw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative">
+    <div className="board bg-primary-default h-[90dvw] w-[90dvw] sm:h-[85vw] sm:w-[85vw] md:h-[80vw] md:w-[80vw] lg:h-[100vh] lg:w-[100vh] relative">
       <LineOne tiles={game.properties[1]} />
       <Jail jail={game.Jail} />
       <LineTwo tiles={game.properties[2]} />

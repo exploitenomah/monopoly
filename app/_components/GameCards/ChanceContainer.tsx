@@ -19,7 +19,7 @@ export default function ChanceContainer({
   const appDispatch = useAppDispatch()
   return (
     <CardsContainer
-      style={{ top: "15%", left: "8%", transform: "rotate(135deg" }}
+      style={{ top: "15%", left: "8%", transform: "rotate(135deg", zIndex: 1 }}
     >
       {cards.map((card, idx, arr) => (
         <ChanceCard
