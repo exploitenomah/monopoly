@@ -1,90 +1,80 @@
-import Player from "@/app/_classes/Player"
+import BoardGame from "@/app/_classes/BoardGame"
 
-export const advanceToOilMillRoad = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const advanceToOilMillRoad = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      if (player.currentPosition >= 24)
+        game.advancePlayer(40 - player.currentPosition + 24, false)
+      else game.advancePlayer(24 - player.currentPosition, false)
+    }
+  })
+  return game
 }
 
-export const advanceToGo = function (playerId: number, players: Player[]) {
-  return players
+export const advanceToGo = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      console.log(player.id)
+      game.advancePlayer(40 - player.currentPosition, false)
+    }
+  })
+  return game
 }
 
-export const advanceToTransAmadi = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const advanceToTransAmadi = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      game.advancePlayer(39 - player.currentPosition, false)
+    }
+  })
+  return game
 }
 
-export const advanceToRumuosi = function (playerId: number, players: Player[]) {
-  return players
+export const advanceToRumuosi = function (game: BoardGame, playerId: number) {
+  return game
 }
 export const advanceToTheNearestStation = function (
-  playerId: number,
-  players: Player[]
+  game: BoardGame,
+  playerId: number
 ) {
-  return players
+  return game
 }
 export const advanceToTheNearestUtility = function (
-  playerId: number,
-  players: Player[]
+  game: BoardGame,
+  playerId: number
 ) {
-  return players
+  return game
 }
-export const bankPaysDividendOfFifty = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const bankPaysDividendOfFifty = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const getOutOfJailFree = function (playerId: number, players: Player[]) {
-  return players
+export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const goBackThreeSpaces = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const goToJail = function (playerId: number, players: Player[]) {
-  return players
+export const goToJail = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const makeGeneralRepairs = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const makeGeneralRepairs = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const speedingFine = function (playerId: number, players: Player[]) {
-  return players
+export const speedingFine = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const takeATripToGIGMotors = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const takeATripToGIGMotors = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const chairmanOfTheBoard = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const buildingLoanMatures = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const buildingLoanMatures = function (game: BoardGame, playerId: number) {
+  return game
 }
-export const xmasFundMatures = function (
-  playerId: number,
-  players: Player[]
-) {
-  return players
+export const xmasFundMatures = function (game: BoardGame, playerId: number) {
+  return game
 }
-
 
 export const chanceIdMapping = {
   1: advanceToOilMillRoad,
@@ -102,5 +92,5 @@ export const chanceIdMapping = {
   13: chairmanOfTheBoard,
   14: buildingLoanMatures,
   15: xmasFundMatures,
-  16: goToJail
+  16: goToJail,
 }
