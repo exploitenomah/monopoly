@@ -21,6 +21,8 @@ export default class Player {
   public doubleRollsCount: number = 0
   public isRollingForDoubles: boolean = false
   public countOfTimesRolledForDoublesToGetOutOfJail: number = 0
+  public justLandedOn?: number
+  public hasActed?: boolean
 
   constructor(id: number, accountBalance: number) {
     this.accountBalance = accountBalance
@@ -102,10 +104,11 @@ export default class Player {
       doubleRollsCount,
       isRollingForDoubles,
       countOfTimesRolledForDoublesToGetOutOfJail,
+      justLandedOn,
+      hasActed,
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
-    revivedPlayer.properties = properties
     revivedPlayer.isBankrupt = isBankrupt
     revivedPlayer.getOutOfJailCards = getOutOfJailCards
     revivedPlayer.isInJail = isInJail
@@ -116,6 +119,9 @@ export default class Player {
     revivedPlayer.isRollingForDoubles = isRollingForDoubles
     revivedPlayer.countOfTimesRolledForDoublesToGetOutOfJail =
       countOfTimesRolledForDoublesToGetOutOfJail
+    revivedPlayer.properties = properties
+    revivedPlayer.justLandedOn = justLandedOn
+    revivedPlayer.hasActed = hasActed
     return revivedPlayer
   }
 }
