@@ -51,7 +51,7 @@ const GetOutOfJailFree = new GameCard(
   GameCardType,
   5
 )
-const GoToJail = new GameCard("Get Out of Jail Free", goToJail, GameCardType, 6)
+const GoToJail = new GameCard("Go To Jail", goToJail, GameCardType, 6)
 
 const HolidayFundMatures = new GameCard(
   "Holiday fund matures. Receive ₦100",
