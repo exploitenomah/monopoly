@@ -218,26 +218,34 @@ function PlayerActionOptions({
           }`
         } else if (currentPositionProperty.owner === null) {
           return `${currentPlayer.name}, you have landed on ${currentPositionProperty.name}. It is unbought. Would you like to purchase it?`
-        }
+        } else if (
+          currentPositionProperty.owner !== null &&
+          currentPositionProperty?.owner === currentPlayer.id
+        )
+          return "Because you own this property, you do not pay rent. You can either transact or pass onto the next turn"
       } else {
-        return ""
+        return "Because you own this property, you do not pay rent. You can either transact or pass onto the next turn"
       }
     }
   }, [currentPlayer, rollValue])
   const showActionOptions = useMemo(() => {
     return (
-      currentPlayer?.justLandedOn === currentPlayer?.currentPosition &&
-      currentPlayer?.hasActed === false &&
-      !currentPlayerIsOnChanceOrChest
+      (currentPlayer?.justLandedOn === currentPlayer?.currentPosition &&
+        currentPlayer?.hasActed === false &&
+        !currentPlayerIsOnChanceOrChest) ||
+      (currentPlayer?.hasJustAdvanced === true &&
+        game.hasHandledAdvancement === false)
     )
   }, [
     currentPlayer?.justLandedOn,
     currentPlayer?.hasActed,
     currentPlayer?.currentPosition,
     currentPlayerIsOnChanceOrChest,
+    currentPlayer?.hasJustAdvanced,
+    game.hasHandledAdvancement,
   ])
 
-  if (!showActionOptions) return null
+  if (!showActionOptions || !currentPositionProperty) return null
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
       <CenterCard>
