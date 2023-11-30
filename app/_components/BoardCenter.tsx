@@ -30,15 +30,17 @@ export default function BoardCenter({
         height={100}
         className="z-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-45deg] w-[80%] h-auto"
       />
-      {!game.currentChestCard && !game.currentChanceCard && (
-        <div className="absolute z-20 w-full h-full flex items-center justify-center">
-          <GameDiceContainer
-            advanceCurrentPlayer={advanceCurrentPlayer}
-            currentPlayer={currentPlayer}
-            game={game}
-          />
-        </div>
-      )}
+      <div
+        className={`${
+          !game.currentChestCard && !game.currentChanceCard ? "z-[20]" : "z-[1]"
+        } absolute w-full h-full flex items-center justify-center`}
+      >
+        <GameDiceContainer
+          advanceCurrentPlayer={advanceCurrentPlayer}
+          currentPlayer={currentPlayer}
+          game={game}
+        />
+      </div>
       <ChanceContainer
         currentCard={game.currentChanceCard}
         cards={game?.chanceCards || []}
