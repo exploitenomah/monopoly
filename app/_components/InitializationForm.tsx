@@ -114,7 +114,7 @@ export default function Form({
             </p>
           )}
           <button
-            disabled={hasRolled}
+            disabled={hasRolled && !diceOne.isRolling && !diceTwo.isRolling}
             onClick={() => {
               diceOne.roll()
               diceTwo.roll()
