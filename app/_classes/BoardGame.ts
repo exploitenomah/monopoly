@@ -50,6 +50,7 @@ export default class BoardGame {
   public currentChanceCard: { card: GameCard; owner: number } | null = null
   public currentChestCard: { card: GameCard; owner: number } | null = null
   public positionUpForBidding?: number
+  public hasHandledAdvancement?: boolean
 
   constructor(
     name: string,
@@ -221,6 +222,14 @@ export default class BoardGame {
       } else if (player.currentPosition === 4) {
         player.accountBalance -= 200
       } else {
+        if (
+          this.hasHandledAdvancement === false &&
+          player.hasJustAdvanced === true
+        ) {
+          player.hasJustAdvanced = undefined
+          this.hasHandledAdvancement = undefined
+          this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
+        }
         const property = BoardGame.findProperty(this, player.currentPosition)
         if (property) {
           if (property.owner === null) {
@@ -237,19 +246,40 @@ export default class BoardGame {
     return this
   }
 
-  public advancePlayer(advancement: number, isDouble: boolean) {
+  public handleLandingOnPosition(player: Player) {
+    player.hasJustAdvanced = true
+    this.hasHandledAdvancement = false
+    this.shouldUpdateCurrentTurn = false
+    player.hasActed = false
+    player.justLandedOn = player.currentPosition
+    this.currentTurn = player.turn as number
+  }
+
+  public advancePlayer(advancement: number, isDouble?: boolean) {
     let shouldUpdateCurrentTurn = true
     let advancingPlayer: Player | null = null
     this.players.forEach((player) => {
       if (player.turn === this.currentTurn) {
         advancingPlayer = player
         shouldUpdateCurrentTurn =
-          isDouble === false || player.doubleRollsCount >= 2 || player.isInJail
-        return player.advance(advancement, isDouble)
+          isDouble === undefined ||
+          isDouble === false ||
+          (player.doubleRollsCount >= 2 && isDouble) ||
+          player.isInJail
+        player.prevRollWasDouble =
+          typeof isDouble === "boolean" ? isDouble : !shouldUpdateCurrentTurn
+        return player.advance(advancement, isDouble || false)
       } else return player
     })
     this.shouldUpdateCurrentTurn = shouldUpdateCurrentTurn
     if (advancingPlayer) {
+      if (
+        [...chanceTiles, ...communityChestTiles].includes(
+          (advancingPlayer as Player).currentPosition
+        )
+      ) {
+        this.handleChanceOrChestLanding(advancingPlayer)
+      }
       this.updateAdvancingPlayer((advancingPlayer as Player).id)
       this.updateLineContents(advancingPlayer)
     }
@@ -266,13 +296,6 @@ export default class BoardGame {
     if (!specialTiles.includes(player.currentPosition)) {
       player.justLandedOn = player.currentPosition
       player.hasActed = false
-      if (
-        [...chanceTiles, ...communityChestTiles].includes(
-          player.currentPosition
-        )
-      ) {
-        this.handleChanceOrChestLanding(player)
-      }
     } else {
       this.shouldUpdateCurrentTurn && this.updateCurrentTurn()
     }
@@ -487,6 +510,7 @@ export default class BoardGame {
       currentChanceCard,
       currentChestCard,
       positionUpForBidding,
+      hasHandledAdvancement,
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -521,6 +545,7 @@ export default class BoardGame {
     revivedBoardGame.currentChestCard = currentChestCard
       ? { ...currentChestCard, card: GameCard.revive(currentChestCard.card) }
       : currentChestCard
+    revivedBoardGame.hasHandledAdvancement = hasHandledAdvancement
     return revivedBoardGame
   }
 }
