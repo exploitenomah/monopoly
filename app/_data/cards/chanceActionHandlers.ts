@@ -68,7 +68,8 @@ export const advanceToTheNearestStation = function (
       if (player.currentPosition < 5) nearestStation = 5
       else if (player.currentPosition < 15) nearestStation = 15
       else if (player.currentPosition < 25) nearestStation = 25
-      else nearestStation = 30
+      else if (player.currentPosition >= 35) nearestStation = 45
+      else nearestStation = 35
 
       game.advancePlayer(
         nearestStation - player.currentPosition,
@@ -111,6 +112,11 @@ export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
   return game
 }
 export const goToJail = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.isInJail = true
+    }
+  })
   return game
 }
 export const makeGeneralRepairs = function (game: BoardGame, playerId: number) {
