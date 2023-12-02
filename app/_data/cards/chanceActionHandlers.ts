@@ -99,18 +99,26 @@ export const advanceToTheNearestUtility = function (
   })
   return game
 }
+
 export const bankPaysDividendOfFifty = function (
   game: BoardGame,
   playerId: number
 ) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 50
+    }
+  })
   return game
 }
+
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
   return game
 }
 export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
   return game
 }
+
 export const goToJail = function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
@@ -119,12 +127,27 @@ export const goToJail = function (game: BoardGame, playerId: number) {
   })
   return game
 }
+
 export const makeGeneralRepairs = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      const costOfHouseRepairs = player.totalHousesOwned * 25
+      const costOfHotelRepairs = player.totalHotelsOwned * 100
+      player.accountBalance -= costOfHouseRepairs + costOfHotelRepairs
+    }
+  })
   return game
 }
+
 export const speedingFine = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance -= 15
+    }
+  })
   return game
 }
+
 export const takeATripToGIGMotors = function (
   game: BoardGame,
   playerId: number
@@ -145,15 +168,34 @@ export const takeATripToGIGMotors = function (
 }
 
 export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player, _idx, players) => {
+    if(player.id === playerId){
+      player.accountBalance -= (players.length * 50)
+    }else {
+      player.accountBalance += 50
+    }
+  })
   return game
 }
+
 export const buildingLoanMatures = function (
   game: BoardGame,
   playerId: number
 ) {
+  game.players.forEach((player, _idx, players) => {
+    if(player.id === playerId){
+      player.accountBalance += 150
+    }
+  })
   return game
 }
+
 export const xmasFundMatures = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player, _idx, players) => {
+    if(player.id === playerId){
+      player.accountBalance += 100
+    }
+  })
   return game
 }
 
