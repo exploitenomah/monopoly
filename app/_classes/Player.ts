@@ -37,6 +37,17 @@ export default class Player {
   private collectSalary() {
     if (this.isBankrupt) return this
     this.accountBalance = this.accountBalance + 200
+    return this
+  }
+
+  public regress(count: number) {
+    const newPosition = this.currentPosition - count
+    if (Math.sign(newPosition) === -1) {
+      this.currentPosition = 40 - Math.abs(newPosition)
+    } else {
+      this.currentPosition = newPosition
+    }
+    return this
   }
 
   public advance(value: number, isDouble: boolean) {
@@ -113,7 +124,7 @@ export default class Player {
       totalHousesOwned,
       totalHotelsOwned,
       hasJustAdvanced,
-      prevRollWasDouble
+      prevRollWasDouble,
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
