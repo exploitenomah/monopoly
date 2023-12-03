@@ -13,16 +13,18 @@ const faces = {
 export default function Dice({
   rollValue,
   isRolling,
+  disabled,
 }: {
   rollValue: number
   isRolling: boolean
+  disabled: boolean
 }) {
   const generatePositiveOrNegative = useCallback(() => {
     const sign = Math.random() < 0.5 ? -1 : 1
     return Math.random() * sign
   }, [])
 
-  const diceRef = useRef<HTMLDivElement | null>(null)
+  const diceRef = useRef<HTMLButtonElement | null>(null)
   const diceRotateValue = useMemo(() => {
     if (isNaN(rollValue)) return `-0.4,-0.9,-0.3,165deg`
     return faces[rollValue as keyof typeof faces]
@@ -63,47 +65,48 @@ export default function Dice({
 
   return (
     <>
-      <div
+      <button
+        disabled={disabled}
         ref={diceRef}
         className={`${isRolling ? "rolling" : ""} dice`}
         style={{
           transform: `perspective(1000px) rotate3d(${diceRotateValue})`,
         }}
       >
-        <div id="one">
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="one">
           <span className="dot"></span>
-        </div>
-        <div id="two">
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-        <div id="three">
+        </span>
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="two">
           <span className="dot"></span>
           <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-        <div id="four">
+        </span>
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="three">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-        <div id="five">
+        </span>
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="four">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-        <div id="six">
+        </span>
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="five">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
+        </span>
+        <span className={`${disabled ? "blur-[4px]" : ""}`} id="six">
           <span className="dot"></span>
-        </div>
-      </div>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+        </span>
+      </button>
     </>
   )
 }
