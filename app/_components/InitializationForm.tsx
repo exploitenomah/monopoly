@@ -113,21 +113,28 @@ export default function Form({
               </b>
             </p>
           )}
-          <button
-            disabled={hasRolled && !diceOne.isRolling && !diceTwo.isRolling}
+          <div
             onClick={() => {
               diceOne.roll()
               diceTwo.roll()
               setHasRolled(true)
               setError("")
             }}
-            type="button"
+            role="button"
             className="flex items-center justify-center gap-x-8 disabled:opacity-50"
-            name="dice"
+            title="dice"
           >
-            <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
-            <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
-          </button>
+            <Dice
+              disabled={hasRolled && !diceOne.isRolling && !diceTwo.isRolling}
+              rollValue={diceOne.rollValue}
+              isRolling={diceOne.isRolling}
+            />
+            <Dice
+              disabled={hasRolled && !diceOne.isRolling && !diceTwo.isRolling}
+              rollValue={diceTwo.rollValue}
+              isRolling={diceTwo.isRolling}
+            />
+          </div>
         </div>
         <button
           type="submit"
