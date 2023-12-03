@@ -36,6 +36,7 @@ export default function BoardCenter({
         } absolute w-full h-full flex items-center justify-center`}
       >
         <GameDiceContainer
+          diceDisabled={(game.currentChestCard || game.currentChanceCard) ? true : false}
           advanceCurrentPlayer={advanceCurrentPlayer}
           currentPlayer={currentPlayer}
           game={game}

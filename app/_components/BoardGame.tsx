@@ -64,7 +64,7 @@ function MainGame() {
   const { game } = useAppSelector((store) => store.Game)
   const appDispatch = useAppDispatch()
   const [showSideBar, setShowSideBar] = useState(false)
-  const { notifications } = useHandleNotification(game)
+  const { notification } = useHandleNotification(game)
 
   useEffect(() => {
     if(game?.players.some(player => player.isInJail && player.currentPosition !== 10)){
@@ -74,7 +74,7 @@ function MainGame() {
   return (
     <div>
       <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>
-        <Banner notification={notifications[notifications.length - 1]} />
+        <Banner notification={notification} />
       </div>
       <GameNavButton
         toggleShowSideBar={() => setShowSideBar((prev) => !prev)}

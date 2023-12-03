@@ -68,7 +68,8 @@ export const advanceToTheNearestStation = function (
       if (player.currentPosition < 5) nearestStation = 5
       else if (player.currentPosition < 15) nearestStation = 15
       else if (player.currentPosition < 25) nearestStation = 25
-      else nearestStation = 30
+      else if (player.currentPosition >= 35) nearestStation = 45
+      else nearestStation = 35
 
       game.advancePlayer(
         nearestStation - player.currentPosition,
@@ -98,27 +99,62 @@ export const advanceToTheNearestUtility = function (
   })
   return game
 }
+
 export const bankPaysDividendOfFifty = function (
   game: BoardGame,
   playerId: number
 ) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance += 50
+    }
+  })
   return game
 }
+
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
   return game
 }
+
 export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      game.regressPlayer(3, player.prevRollWasDouble)
+      game.handleLandingOnPosition(player)
+    }
+  })
   return game
 }
+
 export const goToJail = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.isInJail = true
+    }
+  })
   return game
 }
+
 export const makeGeneralRepairs = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      const costOfHouseRepairs = player.totalHousesOwned * 25
+      const costOfHotelRepairs = player.totalHotelsOwned * 100
+      player.accountBalance -= costOfHouseRepairs + costOfHotelRepairs
+    }
+  })
   return game
 }
+
 export const speedingFine = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.accountBalance -= 15
+    }
+  })
   return game
 }
+
 export const takeATripToGIGMotors = function (
   game: BoardGame,
   playerId: number
@@ -139,15 +175,34 @@ export const takeATripToGIGMotors = function (
 }
 
 export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player, _idx, players) => {
+    if (player.id === playerId) {
+      player.accountBalance -= players.length * 50
+    } else {
+      player.accountBalance += 50
+    }
+  })
   return game
 }
+
 export const buildingLoanMatures = function (
   game: BoardGame,
   playerId: number
 ) {
+  game.players.forEach((player, _idx, players) => {
+    if (player.id === playerId) {
+      player.accountBalance += 150
+    }
+  })
   return game
 }
+
 export const xmasFundMatures = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player, _idx, players) => {
+    if (player.id === playerId) {
+      player.accountBalance += 100
+    }
+  })
   return game
 }
 
