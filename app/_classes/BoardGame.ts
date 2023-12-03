@@ -247,20 +247,32 @@ export default class BoardGame {
   }
 
   public handleLandingOnPosition(player: Player) {
-    player.hasJustAdvanced = true
-    this.hasHandledAdvancement = false
-    this.shouldUpdateCurrentTurn = false
-    player.hasActed = false
-    player.justLandedOn = player.currentPosition
-    this.currentTurn = player.turn as number
+    if (
+      player.currentPosition !== 0 &&
+      player.currentPosition !== 10 &&
+      player.currentPosition !== 20 &&
+      player.currentPosition !== 30
+    ) {
+      player.hasJustAdvanced = true
+      this.hasHandledAdvancement = false
+      this.shouldUpdateCurrentTurn = false
+      player.hasActed = false
+      player.justLandedOn = player.currentPosition
+      this.currentTurn = player.turn as number
+    } else {
+      if (
+        player.prevRollWasDouble === false ||
+        player.prevRollWasDouble === undefined ||
+        this.shouldUpdateCurrentTurn
+      )
+        this.updateCurrentTurn()
+    }
   }
 
-  public advancePlayer(advancement: number, isDouble?: boolean) {
+  private handleIsDoubleRollByCurrentTurn(isDouble?: boolean) {
     let shouldUpdateCurrentTurn = true
-    let advancingPlayer: Player | null = null
     this.players.forEach((player) => {
       if (player.turn === this.currentTurn) {
-        advancingPlayer = player
         shouldUpdateCurrentTurn =
           isDouble === undefined ||
           isDouble === false ||
@@ -268,25 +280,53 @@ export default class BoardGame {
           player.isInJail
         player.prevRollWasDouble =
           typeof isDouble === "boolean" ? isDouble : !shouldUpdateCurrentTurn
-        return player.advance(advancement, isDouble || false)
-      } else return player
+      }
     })
     this.shouldUpdateCurrentTurn = shouldUpdateCurrentTurn
-    if (advancingPlayer) {
-      if (
-        [...chanceTiles, ...communityChestTiles].includes(
-          (advancingPlayer as Player).currentPosition
-        )
-      ) {
-        this.handleChanceOrChestLanding(advancingPlayer)
-      }
-      this.updateAdvancingPlayer((advancingPlayer as Player).id)
-      this.updateLineContents(advancingPlayer)
-    }
     return this
   }
 
-  public updateAdvancingPlayer(playerId: number) {
+  public regressPlayer(regression: number, isDouble?: boolean) {
+    let playerInQuestion: Player | undefined = undefined
+    this.handleIsDoubleRollByCurrentTurn(isDouble)
+    this.players.forEach((player) => {
+      if (player.turn === this.currentTurn) {
+        player.regress(regression, isDouble || false)
+        playerInQuestion = player
+      }
+    })
+    this.handlePlayerAfterMotion(playerInQuestion)
+    return this
+  }
+
+  public advancePlayer(advancement: number, isDouble?: boolean) {
+    this.handleIsDoubleRollByCurrentTurn(isDouble)
+    let advancingPlayer: Player | undefined = undefined
+    this.players.forEach((player) => {
+      if (player.turn === this.currentTurn) {
+        player.advance(advancement, isDouble || false)
+        advancingPlayer = player
+      }
+    })
+    this.handlePlayerAfterMotion(advancingPlayer)
+    return this
+  }
+
+  public handlePlayerAfterMotion(player?: Player) {
+    if (player) {
+      if (
+        [...chanceTiles, ...communityChestTiles].includes(
+          (player as Player).currentPosition
+        )
+      ) {
+        this.handleChanceOrChestLanding(player)
+      }
+      this.updatePlayerDataAfterMotion((player as Player).id)
+      this.updateLineContents(player)
+    }
+  }
+
+  public updatePlayerDataAfterMotion(playerId: number) {
     const player = this.players.find((it) => it.id === playerId)
     if (!player) return this
     if (player.currentPosition === 30) {
