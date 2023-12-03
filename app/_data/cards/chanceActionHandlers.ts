@@ -115,7 +115,14 @@ export const bankPaysDividendOfFifty = function (
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
   return game
 }
+
 export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      game.regressPlayer(3, player.prevRollWasDouble)
+      game.handleLandingOnPosition(player)
+    }
+  })
   return game
 }
 
@@ -169,9 +176,9 @@ export const takeATripToGIGMotors = function (
 
 export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
   game.players.forEach((player, _idx, players) => {
-    if(player.id === playerId){
-      player.accountBalance -= (players.length * 50)
-    }else {
+    if (player.id === playerId) {
+      player.accountBalance -= players.length * 50
+    } else {
       player.accountBalance += 50
     }
   })
@@ -183,7 +190,7 @@ export const buildingLoanMatures = function (
   playerId: number
 ) {
   game.players.forEach((player, _idx, players) => {
-    if(player.id === playerId){
+    if (player.id === playerId) {
       player.accountBalance += 150
     }
   })
@@ -192,7 +199,7 @@ export const buildingLoanMatures = function (
 
 export const xmasFundMatures = function (game: BoardGame, playerId: number) {
   game.players.forEach((player, _idx, players) => {
-    if(player.id === playerId){
+    if (player.id === playerId) {
       player.accountBalance += 100
     }
   })
