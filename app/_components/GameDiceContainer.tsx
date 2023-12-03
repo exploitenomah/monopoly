@@ -29,10 +29,12 @@ export default function GameDiceContainer({
   currentPlayer,
   advanceCurrentPlayer,
   game,
+  diceDisabled
 }: {
   advanceCurrentPlayer: (rollValue: number, isDouble: boolean) => void
   currentPlayer?: Player
   game: BoardGame
+  diceDisabled: boolean
 }) {
   const [hasRolled, setHasRolled] = useState(false)
   const diceOne = useDice(500)
@@ -88,8 +90,8 @@ export default function GameDiceContainer({
         onClick={roll}
         className="dice-container grid grid-flow-col gap-x-[35px] items-center justify-center"
       >
-        <Dice rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
-        <Dice rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
+        <Dice disabled={diceDisabled} rollValue={diceOne.rollValue} isRolling={diceOne.isRolling} />
+        <Dice disabled={diceDisabled} rollValue={diceTwo.rollValue} isRolling={diceTwo.isRolling} />
       </div>
       <PlayerActionOptions
         game={game}
