@@ -3,7 +3,8 @@ import BoardGame from "@/app/_classes/BoardGame"
 export const advanceToGo = function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
-      game.advancePlayer(40 - player.currentPosition, false)
+      game.advancePlayer(40 - player.currentPosition, player.prevRollWasDouble)
+      game.handleLandingOnPosition(player)
     }
   })
   return game
