@@ -40,7 +40,7 @@ export default class Player {
     return this
   }
 
-  public regress(count: number) {
+  public regress(count: number, isDouble: boolean) {
     const newPosition = this.currentPosition - count
     if (Math.sign(newPosition) === -1) {
       this.currentPosition = 40 - Math.abs(newPosition)
@@ -51,6 +51,17 @@ export default class Player {
   }
 
   public advance(value: number, isDouble: boolean) {
+    this.checkAndUpdateJailStatus(isDouble)
+    if (this.isInJail) return this
+    const newPosition = value + this.currentPosition
+    if (newPosition >= 40) {
+      this.currentPosition = newPosition - 40
+      this.collectSalary()
+    } else this.currentPosition = newPosition
+    return this
+  }
+
+  private checkAndUpdateJailStatus(isDouble: boolean) {
     if (isDouble) {
       if (this.isInJail) {
         this.isInJail = false
@@ -73,19 +84,11 @@ export default class Player {
         this.isRollingForDoubles = false
       }
     }
-
     if (this.doubleRollsCount >= 3) {
       this.isInJail = true
       this.doubleRollsCount = 0
       return this
     }
-    if (this.isInJail) return this
-    const newPosition = value + this.currentPosition
-    if (newPosition >= 40) {
-      this.currentPosition = newPosition - 40
-      this.collectSalary()
-    } else this.currentPosition = newPosition
-    return this
   }
 
   public pay500ToGetOutOfJail() {
