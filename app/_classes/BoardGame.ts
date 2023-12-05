@@ -419,8 +419,8 @@ export default class BoardGame {
             case "USE-GAMECARD":
               this.getPlayerOutOfJailWithGameCard(currentPlayer.id)
               return this
-            case "PAY-500":
-              player.pay500ToGetOutOfJail()
+            case "PAY-50":
+              player.pay50ToGetOutOfJail()
               return this
             case "ROLL-FOR-DOUBLE":
               player.rollForDoubleToGetOutOfJail()
