@@ -295,6 +295,7 @@ export default class BoardGame {
       if (player.turn === this.currentTurn) {
         player.advance(advancement, isDouble || false)
         advancingPlayer = player
+        if (player.isInJail) player.currentPosition = 10
       }
     })
     this.handlePlayerAfterMotion(advancingPlayer)
