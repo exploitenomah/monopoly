@@ -38,6 +38,14 @@ export const fromSaleOfStock = function (game: BoardGame, playerId: number) {
 }
 
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+  game.communityChestCards = game.communityChestCards.filter(
+    (it) => it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
+  )
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.getOutOfJailCards.communityChest = game.currentChestCard?.card || null
+    }
+  })
   return game
 }
 

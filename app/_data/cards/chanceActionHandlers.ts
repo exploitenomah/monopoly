@@ -88,7 +88,8 @@ export const advanceToTheNearestUtility = function (
   game.players.forEach((player) => {
     if (player.id === playerId) {
       let nearestUtility
-      if (player.currentPosition < 12) nearestUtility = 12
+      if (player.currentPosition < 12 || player.currentPosition >= 28)
+        nearestUtility = 12
       else nearestUtility = 28
       game.advancePlayer(
         nearestUtility - player.currentPosition,
@@ -113,6 +114,14 @@ export const bankPaysDividendOfFifty = function (
 }
 
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+  game.chanceCards = game.chanceCards.filter(
+    (it) => it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
+  )
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.getOutOfJailCards.chance = game.currentChanceCard?.card || null
+    }
+  })
   return game
 }
 

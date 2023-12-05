@@ -45,13 +45,13 @@ const AdvanceToRumuosi = new GameCard(
   4
 )
 const AdvanceToTheNearestStation = new GameCard(
-  "Advance to the nearest Station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled",
+  "Advance to the nearest Station. If unowned, you may buy it from the Bank. If owned, pay the rent amount due.",
   advanceToTheNearestStation,
   GameCardType,
   5
 )
 const AdvanceToTheNearestUtility = new GameCard(
-  "Advance to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown",
+  "Advance to the nearest Utility. If unowned, you may buy it from the Bank. If owned, pay the rent amount due.",
   advanceToTheNearestUtility,
   GameCardType,
   6
@@ -112,24 +112,23 @@ const XmasFundMatures = new GameCard(
 )
 const GoToJail = new GameCard("Go to Jail", goToJail, GameCardType, 16)
 
-
 export default function generateChanceCards() {
   return [
-  AdvanceToGo,
-  AdvanceToOilMillRoad,
-  AdvanceToTransAmadi,
-  AdvanceToRumuosi,
-  AdvanceToTheNearestStation,
-  AdvanceToTheNearestUtility,
-  BankPaysDividendOfFifty,
-  GetOutOfJailFree,
-  GoBackThreeSpaces,
-  MakeGeneralRepairs,
-  SpeedingFine,
-  TakeATripToGIGMotors,
-  ChairmanOfTheBoard,
-  BuildingLoanMatures,
-  XmasFundMatures,
-  GoToJail,
-]
+    AdvanceToGo,
+    AdvanceToOilMillRoad,
+    AdvanceToTransAmadi,
+    AdvanceToRumuosi,
+    AdvanceToTheNearestStation,
+    AdvanceToTheNearestUtility,
+    BankPaysDividendOfFifty,
+    GetOutOfJailFree,
+    GoBackThreeSpaces,
+    MakeGeneralRepairs,
+    SpeedingFine,
+    TakeATripToGIGMotors,
+    ChairmanOfTheBoard,
+    BuildingLoanMatures,
+    XmasFundMatures,
+    GoToJail,
+  ]
 }

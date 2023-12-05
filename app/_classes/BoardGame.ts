@@ -184,17 +184,10 @@ export default class BoardGame {
       ) {
         this.currentChanceCard.card.handleAction(this, player.id)
         if (
-          this.currentChanceCard?.card.content.toLowerCase() !==
-          "Get Out of Jail Free".toLowerCase()
+          !BoardGame.isGetOutOfJailFree(this.currentChanceCard?.card.content)
         ) {
           const [first, ...rest] = this.chanceCards
           this.chanceCards = [...rest, first]
-        } else {
-          this.chanceCards = this.chanceCards.filter(
-            (it) =>
-              it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
-          )
-          player.getOutOfJailCards.chance = this.currentChanceCard.card
         }
         this.currentChanceCard = null
       } else if (
@@ -203,33 +196,17 @@ export default class BoardGame {
       ) {
         this.currentChestCard.card.handleAction(this, player.id)
         if (
-          this.currentChanceCard?.card.content.toLowerCase() !==
-          "Get Out of Jail Free".toLowerCase()
+          !BoardGame.isGetOutOfJailFree(this.currentChanceCard?.card.content)
         ) {
           const [first, ...rest] = this.communityChestCards
           this.communityChestCards = [...rest, first]
-        } else {
-          this.communityChestCards = this.communityChestCards.filter(
-            (it) =>
-              it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
-          )
-          player.getOutOfJailCards.communityChest = this.currentChestCard.card
         }
-        this.currentChanceCard = null
         this.currentChestCard = null
       } else if (player.currentPosition === 38) {
         player.accountBalance -= 100
       } else if (player.currentPosition === 4) {
         player.accountBalance -= 200
       } else {
-        if (
-          this.hasHandledAdvancement === false &&
-          player.hasJustAdvanced === true
-        ) {
-          player.hasJustAdvanced = undefined
-          this.hasHandledAdvancement = undefined
-          this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
-        }
         const property = BoardGame.findProperty(this, player.currentPosition)
         if (property) {
           if (property.owner === null) {
@@ -238,6 +215,14 @@ export default class BoardGame {
             this.handleRentCollection(player, property)
           }
         }
+      }
+      if (
+        this.hasHandledAdvancement === false &&
+        player.hasJustAdvanced === true
+      ) {
+        player.hasJustAdvanced = undefined
+        this.hasHandledAdvancement = undefined
+        this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
       }
       player.justLandedOn = undefined
       player.hasActed = true
@@ -383,7 +368,7 @@ export default class BoardGame {
     this.players.forEach((player) => {
       if (player.id === playerId) {
         const property = BoardGame.findProperty(this, player.currentPosition)
-        if (player.properties.find((it) => it === property.id)) return
+        if (player.properties.includes(property.id)) return
         else if (property && property.owner === null) {
           if (player.accountBalance >= property.price) {
             property.owner = player.id
@@ -428,6 +413,7 @@ export default class BoardGame {
         if (player.id === currentPlayer.id) {
           switch (choice) {
             case "USE-GAMECARD":
+              this.getPlayerOutOfJailWithGameCard(currentPlayer.id)
               return this
             case "PAY-500":
               player.pay500ToGetOutOfJail()
@@ -441,6 +427,32 @@ export default class BoardGame {
         }
       })
     }
+    return this
+  }
+
+  public getPlayerOutOfJailWithGameCard(id: number) {
+    this.players.forEach((player) => {
+      if (player.id === id) {
+        console.log(player.isInJail)
+        player.isInJail =
+          player.getOutOfJailCards.chance === null &&
+          player.getOutOfJailCards.communityChest === null
+        if (player.getOutOfJailCards.chance !== null) {
+          this.chanceCards = [
+            ...this.chanceCards,
+            player.getOutOfJailCards.chance,
+          ]
+          player.getOutOfJailCards.chance = null
+        } else if (player.getOutOfJailCards.communityChest !== null) {
+          this.communityChestCards = [
+            ...this.communityChestCards,
+            player.getOutOfJailCards.communityChest,
+          ]
+          player.getOutOfJailCards.communityChest = null
+        }
+        console.log("balablue", player, "balablue")
+      }
+    })
     return this
   }
 
@@ -527,6 +539,10 @@ export default class BoardGame {
       )
     }
     return property as HousingProperty | StationProperty | UtilityProperty
+  }
+
+  public static isGetOutOfJailFree(text?: string) {
+    return text?.toLowerCase() === "Get Out of Jail Free".toLowerCase()
   }
 
   public static revive(objectLikeBoardGame: BoardGame) {

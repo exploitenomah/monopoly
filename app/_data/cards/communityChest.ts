@@ -60,7 +60,7 @@ const HolidayFundMatures = new GameCard(
   7
 )
 const IncomeTaxRefund = new GameCard(
-  "Income tax refund. Collect ₦20",
+  "Income tax refund. Collect ₦200",
   incomeTaxRefund,
   GameCardType,
   8
