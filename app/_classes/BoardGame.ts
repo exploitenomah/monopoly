@@ -187,7 +187,6 @@ export default class BoardGame {
           !BoardGame.isGetOutOfJailFree(this.currentChanceCard?.card.content)
         ) {
           const [first, ...rest] = this.chanceCards
-          console.log(first)
           this.chanceCards = [...rest, first]
         }
         this.currentChanceCard = null
@@ -200,7 +199,6 @@ export default class BoardGame {
           !BoardGame.isGetOutOfJailFree(this.currentChanceCard?.card.content)
         ) {
           const [first, ...rest] = this.communityChestCards
-          console.log(first)
           this.communityChestCards = [...rest, first]
         }
         this.currentChestCard = null
@@ -209,14 +207,6 @@ export default class BoardGame {
       } else if (player.currentPosition === 4) {
         player.accountBalance -= 200
       } else {
-        if (
-          this.hasHandledAdvancement === false &&
-          player.hasJustAdvanced === true
-        ) {
-          player.hasJustAdvanced = undefined
-          this.hasHandledAdvancement = undefined
-          this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
-        }
         const property = BoardGame.findProperty(this, player.currentPosition)
         if (property) {
           if (property.owner === null) {
@@ -225,6 +215,14 @@ export default class BoardGame {
             this.handleRentCollection(player, property)
           }
         }
+      }
+      if (
+        this.hasHandledAdvancement === false &&
+        player.hasJustAdvanced === true
+      ) {
+        player.hasJustAdvanced = undefined
+        this.hasHandledAdvancement = undefined
+        this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
       }
       player.justLandedOn = undefined
       player.hasActed = true
@@ -370,7 +368,7 @@ export default class BoardGame {
     this.players.forEach((player) => {
       if (player.id === playerId) {
         const property = BoardGame.findProperty(this, player.currentPosition)
-        if (player.properties.find((it) => it === property.id)) return
+        if (player.properties.includes(property.id)) return
         else if (property && property.owner === null) {
           if (player.accountBalance >= property.price) {
             property.owner = player.id
