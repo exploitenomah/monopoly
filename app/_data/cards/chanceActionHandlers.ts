@@ -114,6 +114,14 @@ export const bankPaysDividendOfFifty = function (
 }
 
 export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+  game.chanceCards = game.chanceCards.filter(
+    (it) => it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
+  )
+  game.players.forEach((player) => {
+    if (player.id === playerId) {
+      player.getOutOfJailCards.chance = game.currentChanceCard?.card || null
+    }
+  })
   return game
 }
 

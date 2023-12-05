@@ -144,7 +144,10 @@ function InJailOptions({
         </button>
         {(currentPlayer?.getOutOfJailCards.chance !== null ||
           currentPlayer?.getOutOfJailCards.communityChest !== null) && (
-          <button className="w-full capitalize bg-primary-dark px-3 py-4 mx-auto max-w-[250px] rounded-lg text-primary-default">
+          <button onClick={() => {
+            appDispatch(getOutOfJail("USE-GAMECARD"))
+            hidePrisonerOptions()
+          }} className="w-full capitalize bg-primary-dark px-3 py-4 mx-auto max-w-[250px] rounded-lg text-primary-default">
             use get out of jail card
           </button>
         )}
