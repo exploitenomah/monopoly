@@ -202,28 +202,32 @@ export default class BoardGame {
           this.communityChestCards = [...rest, first]
         }
         this.currentChestCard = null
-      } else if (player.currentPosition === 38) {
-        player.accountBalance -= 100
-      } else if (player.currentPosition === 4) {
-        player.accountBalance -= 200
       } else {
-        const property = BoardGame.findProperty(this, player.currentPosition)
-        if (property) {
-          if (property.owner === null) {
-            this.buyPropertyWithDefaultPrice(player.id)
-          } else {
-            this.handleRentCollection(player, property)
+        if (player.currentPosition === 38) {
+          player.accountBalance -= 100
+        } else if (player.currentPosition === 4) {
+          player.accountBalance -= 200
+        } else {
+          const property = BoardGame.findProperty(this, player.currentPosition)
+          if (property) {
+            if (property.owner === null) {
+              this.buyPropertyWithDefaultPrice(player.id)
+            } else {
+              this.handleRentCollection(player, property)
+            }
           }
         }
+        if (
+          this.hasHandledAdvancement === false &&
+          player.hasJustAdvanced === true
+        ) {
+          player.hasJustAdvanced = undefined
+          this.hasHandledAdvancement = undefined
+          console.log(player.prevRollWasDouble)
+          this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
+        }
       }
-      if (
-        this.hasHandledAdvancement === false &&
-        player.hasJustAdvanced === true
-      ) {
-        player.hasJustAdvanced = undefined
-        this.hasHandledAdvancement = undefined
-        this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
-      }
+
       player.justLandedOn = undefined
       player.hasActed = true
     }
