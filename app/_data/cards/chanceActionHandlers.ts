@@ -88,7 +88,8 @@ export const advanceToTheNearestUtility = function (
   game.players.forEach((player) => {
     if (player.id === playerId) {
       let nearestUtility
-      if (player.currentPosition < 12) nearestUtility = 12
+      if (player.currentPosition < 12 || player.currentPosition >= 28)
+        nearestUtility = 12
       else nearestUtility = 28
       game.advancePlayer(
         nearestUtility - player.currentPosition,
