@@ -15,6 +15,7 @@ import Go from "../_lines/GO"
 import GoToJail from "../_lines/GoToJail"
 import Jail from "../_lines/Jail"
 import FreeParking from "../_lines/FreeParking"
+import shuffleArray from "@/app/_utils/shuffleArray"
 
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
 export const chanceTiles = [7, 22, 36]
@@ -61,8 +62,8 @@ export default class BoardGame {
     this.name = name
     this.id = id
     this.password = password
-    this.chanceCards = generateChanceCards()
-    this.communityChestCards = generateCommunityChestCards()
+    this.chanceCards = shuffleArray(generateChanceCards())
+    this.communityChestCards = shuffleArray(generateCommunityChestCards())
     this.players = Array(totalPlayers)
       .fill(null)
       .map((_, idx) => new Player(idx, 1500))
