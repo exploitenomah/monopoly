@@ -52,6 +52,7 @@ export default class BoardGame {
   public currentChestCard: { card: GameCard; owner: number } | null = null
   public positionUpForBidding?: number
   public hasHandledAdvancement?: boolean
+  public bankruptPlayers: Player[] = []
 
   constructor(
     name: string,
@@ -297,6 +298,7 @@ export default class BoardGame {
         player.advance(advancement, isDouble || false)
         advancingPlayer = player
         if (player.isInJail) player.currentPosition = 10
+        player.isBankrupt = player.accountBalance <= 0
       }
     })
     this.handlePlayerAfterMotion(advancingPlayer)
@@ -472,6 +474,15 @@ export default class BoardGame {
     return this
   }
 
+  public updateBankruptPlayers(playerIds: number[]){
+    this.players.forEach(player => {
+      if(playerIds.includes(player.id) && !this.bankruptPlayers.find(it => it.id === player.id)){
+        this.bankruptPlayers.push(player)
+      }
+    })
+    return this
+  }
+
   public sendPlayerToJail(playerId: number) {
     this.players.forEach((player) => {
       if (player.id === playerId) {
@@ -573,6 +584,7 @@ export default class BoardGame {
       currentChestCard,
       positionUpForBidding,
       hasHandledAdvancement,
+      bankruptPlayers
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -608,7 +620,13 @@ export default class BoardGame {
       ? { ...currentChestCard, card: GameCard.revive(currentChestCard.card) }
       : currentChestCard
     revivedBoardGame.hasHandledAdvancement = hasHandledAdvancement
+    revivedBoardGame.bankruptPlayers = bankruptPlayers.map(player => Player.revive(player))
     return revivedBoardGame
+  }
+  public static flattenPropertiesAndRemoveSpaces(game: BoardGame | null){
+    if(!game) return []
+    return Object.values(game.properties).reduce((acc, curr) =>
+    ([...acc, ...curr]), []).filter(it => it.type === "HOUSING" || it.type === "STATION" || it.type === "UTILITY")
   }
 }
 
