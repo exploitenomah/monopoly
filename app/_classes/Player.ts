@@ -92,7 +92,7 @@ export default class Player {
   }
 
   public pay50ToGetOutOfJail() {
-    this.isBankrupt = this.accountBalance === 0
+    this.isBankrupt = this.accountBalance <= 0
     if (this.accountBalance < 50) {
       return this
     }
