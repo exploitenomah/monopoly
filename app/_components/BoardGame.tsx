@@ -9,6 +9,8 @@ import { useState , useEffect } from "react"
 import Banner from "./Banner"
 import useHandleNotification from "../_hooks/useHandleNotifications"
 import { useAppSelector, useAppDispatch } from "../_redux/hooks"
+import PlayersTitleDeeds from "./PlayersTitleDeeds"
+import PlayersAccountBalances from "./PlayersAccountBalances"
 import {
   authorize,
   setGame,
@@ -79,7 +81,13 @@ function MainGame() {
       <GameNavButton
         toggleShowSideBar={() => setShowSideBar((prev) => !prev)}
       />
-      <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} />
+      <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} >
+        <div>
+          <h3 className="sticky top-0 bg-primary-default z-[10] text-2xl capitalize font-bold text-primary-dark text-center p-3">{game?.name}</h3>
+          <PlayersAccountBalances game={game} />
+          <PlayersTitleDeeds game={game}/>
+        </div>
+      </GameSideBar>
       <div
         style={{
           perspective: "1000px",
