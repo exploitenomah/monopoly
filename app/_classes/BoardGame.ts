@@ -298,8 +298,8 @@ export default class BoardGame {
         player.advance(advancement, isDouble || false)
         advancingPlayer = player
         if (player.isInJail) player.currentPosition = 10
-        player.isBankrupt = player.accountBalance <= 0
       }
+      player.isBankrupt = player.accountBalance <= 0
     })
     this.handlePlayerAfterMotion(advancingPlayer)
     return this

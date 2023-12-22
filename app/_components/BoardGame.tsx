@@ -73,6 +73,7 @@ function MainGame() {
       appDispatch(sendPrisonersToJail())
     }
   }, [game, appDispatch])
+
   return (
     <div>
       <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>

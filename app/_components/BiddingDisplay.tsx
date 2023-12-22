@@ -4,7 +4,7 @@ import Player from "../_classes/Player"
 import { sellToHighestBidder, cancelBidding } from "../_redux/game.slice"
 import { useAppDispatch } from "../_redux/hooks"
 import CenterCard from "./CenterCard"
-
+import toast from "react-hot-toast"
 
 
 export default 
@@ -69,10 +69,18 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
           playerId: highestBidder.id,
         })
       )
+      toast.success(`${propertyToBidFor !== false && propertyToBidFor.name} has been purchased by
+        ${highestBidder.name} for ₦${highestBid}
+      `, {
+        duration: 6000
+      })
     } else if (hasPassed.length === game.players.length && !highestBidder) {
       dispatch(cancelBidding())
+      toast.success(`Bidding cancelled because all players passed on the property!`, {
+        duration: 6000
+      })
     }
-  }, [highestBid, hasBid, highestBidder, hasPassed])
+  }, [highestBid, hasBid, highestBidder, hasPassed, toast.success])
 
   return (
     <>
