@@ -16,8 +16,10 @@ import {
   setGame,
   initGame,
   advanceCurrentPlayer,
-  sendPrisonersToJail
+  sendPrisonersToJail,
+  eliminateBankruptPlayers
 } from "../_redux/game.slice"
+import toast from "react-hot-toast"
 
 export default function GameBoard({
   gameDetails,
@@ -73,6 +75,16 @@ function MainGame() {
       appDispatch(sendPrisonersToJail())
     }
   }, [game, appDispatch])
+
+  useEffect(() => {
+    const bankruptPlayersIds = game ? game.players.filter(it => it.isBankrupt === true).map(it => it.id) : []
+    bankruptPlayersIds.length > 0 &&
+    appDispatch(eliminateBankruptPlayers(bankruptPlayersIds))
+    const bankruptPlayers = game?.players
+    .filter(it => bankruptPlayersIds.includes(it.id))
+    .reduce((acc, curr, idx) => (`${acc} \n${idx + 1}. ${curr.name}`), "")
+    bankruptPlayersIds.length > 0 && toast(`The following players are bankrupt and have been eliminated\n${bankruptPlayers}`)
+  }, [game?.players, appDispatch])
 
   return (
     <div>
