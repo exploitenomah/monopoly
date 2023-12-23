@@ -72,12 +72,14 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
       toast.success(`${propertyToBidFor !== false && propertyToBidFor.name} has been purchased by
         ${highestBidder.name} for ₦${highestBid}
       `, {
-        duration: 6000
+        duration: 6000,
+        position: 'top-left',
       })
     } else if (hasPassed.length === game.players.length && !highestBidder) {
       dispatch(cancelBidding())
       toast.success(`Bidding cancelled because all players passed on the property!`, {
-        duration: 6000
+        duration: 6000,
+        position: 'top-left',
       })
     }
   }, [highestBid, hasBid, highestBidder, hasPassed, toast.success])
