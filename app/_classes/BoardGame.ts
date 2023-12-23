@@ -477,6 +477,21 @@ export default class BoardGame {
     return this
   }
 
+  public forfietAllProperties(ownerId: number){
+    Object.values(this.properties).forEach(line => {
+      line.forEach((property) => {
+        if("owner" in (property)){
+          if(property.owner === ownerId){
+            property.owner = null
+            property.isOwned = false
+            property.isMortgaged = false
+          }
+        }
+      })
+    })
+    return this
+  }
+
   public updateBankruptPlayers(playerIds: number[]){
     const allPlayers = this.players.map(el => el)
     this.players = this.players.filter(player => playerIds.includes(player.id) === false)
@@ -485,6 +500,7 @@ export default class BoardGame {
         !this.bankruptPlayers.find(it => it.id === player.id) && this.bankruptPlayers.push(player)
         this.runningOrder.splice(this.runningOrder.indexOf(player.turn as number), 1)
         if(this.currentTurn === player.turn) this.updateCurrentTurn()
+        this.forfietAllProperties(player.id)
       }
     })
     if(this.players.length === 1) this.winner = this.players[0]
