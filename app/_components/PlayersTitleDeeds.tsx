@@ -24,6 +24,7 @@ export default function PlayersTitleDeeds({ game }: { game: BoardGame | null }) 
 
   const titleDeeds = useMemo(() => (Object.entries(sortedPlayerPropertiesObject).map(([key, value]) => (
     <TitleDeedsContainer
+      key={key}
       player={game?.players.find((it) => it.id === Number(key))}
       properties={value}
     />
@@ -32,10 +33,10 @@ export default function PlayersTitleDeeds({ game }: { game: BoardGame | null }) 
 
   if (!game) return null
   return (
-    <div className="w-full p-4">
+    <div className="w- p-4">
       <button className="capitalize bg-primary-dark/90 text-primary-default rounded-lg px-4 py-3 font-medium text-lg" onClick={() => setShowTitleDeeds(prev => !prev)}>{ showTitleDeeds ? "hide" : "show" } title deeds</button>
       {titleDeeds.some(it => it.props.properties.length > 0) && showTitleDeeds &&
-        <ul className="px-4 py-6 overflow-x-auto flex flex-wap gap-5 sticky top-0">
+        <ul className="md:px-[2rem] py-6 flex flex-wrap gap-[5rem] sticky top-0 ">
           {titleDeeds}
         </ul>}
     </div>
