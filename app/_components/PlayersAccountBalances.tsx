@@ -7,6 +7,7 @@ export default function PlayersAccountBalances({ game }: { game: BoardGame | nul
 
   const accountBalances = useMemo(() => (game?.players?.map((player) => (
     <PlayerAccountBalance
+      key={player.id}
       player={player}
     />
   )
