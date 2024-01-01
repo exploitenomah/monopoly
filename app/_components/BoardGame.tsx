@@ -20,6 +20,7 @@ import {
   eliminateBankruptPlayers
 } from "../_redux/game.slice"
 import toast from "react-hot-toast"
+import BoardGame from "../_classes/BoardGame"
 
 export default function GameBoard({
   gameDetails,
@@ -77,7 +78,8 @@ function MainGame() {
   }, [game, appDispatch])
 
   useEffect(() => {
-    const bankruptPlayersIds = game ? game.players.filter(it => it.isBankrupt === true).map(it => it.id) : []
+    const bankruptPlayersIds = game ?
+     game.players.filter(it => BoardGame.checkIfPlayerIsBankrupt(it.id, game) === true).map(it => it.id) : []
     bankruptPlayersIds.length > 0 &&
     appDispatch(eliminateBankruptPlayers(bankruptPlayersIds))
     const bankruptPlayers = game?.players
