@@ -231,7 +231,7 @@ export default class BoardGame {
           this.shouldUpdateCurrentTurn = !player.prevRollWasDouble
         }
       }
-      player.isBankrupt = player.accountBalance <= 0
+      player.isBankrupt = BoardGame.checkIfPlayerIsBankrupt(player.id, this)
       player.justLandedOn = undefined
       player.hasActed = true
     }
@@ -301,7 +301,7 @@ export default class BoardGame {
         advancingPlayer = player
         if (player.isInJail) player.currentPosition = 10
       }
-      player.isBankrupt = player.accountBalance <= 0
+      player.isBankrupt = BoardGame.checkIfPlayerIsBankrupt(player.id, this)
     })
     this.handlePlayerAfterMotion(advancingPlayer)
     return this
@@ -389,7 +389,7 @@ export default class BoardGame {
           }
         }
       }
-      player.isBankrupt = player.accountBalance <= 0
+      player.isBankrupt = BoardGame.checkIfPlayerIsBankrupt(player.id, this)
     })
     return this
   }
@@ -412,7 +412,7 @@ export default class BoardGame {
           }
         }
       }
-      player.isBankrupt = player.accountBalance <= 0
+      player.isBankrupt = BoardGame.checkIfPlayerIsBankrupt(player.id, this)
     })
     return this
   }
@@ -516,6 +516,29 @@ export default class BoardGame {
       }
     })
     return this
+  }
+
+  static checkIfPlayerIsBankrupt(playerId: number, game: BoardGame){
+    const player = game.players.find(it => it.id === playerId)
+    if(player){
+      const isAllOwnedPropertiesMortgaged = BoardGame
+      .findPropertiesBelongingToOwner(playerId, game)
+      .every(property => {
+        "owner" in property && property.isMortgaged === true
+      })
+      return isAllOwnedPropertiesMortgaged && player.accountBalance <= 0
+    }
+    return false
+  }
+
+  static findPropertiesBelongingToOwner(owner: number, game: BoardGame){
+    return Object.values(game.properties)
+      .reduce((acc, el) => ([...acc,...el]), [])
+      .filter(it => {
+        if("owner" in it){
+          return it.owner === owner
+        }
+      }) as (HousingProperty | UtilityProperty | StationProperty)[]
   }
 
   static editLineContents(line: Line, player: Player) {
