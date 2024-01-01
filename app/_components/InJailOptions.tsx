@@ -23,18 +23,18 @@ function InJailOptions({
       </h3>
       <p>How would you like to get out?</p>
       <div className="flex flex-wrap gap-4 justify-center items-center mt-5">
-        {currentPlayer && currentPlayer.accountBalance >= 500 ? (
+        {currentPlayer && currentPlayer.accountBalance >= 50 ? (
           <button
             onClick={() => {
-              appDispatch(getOutOfJail("PAY-500"))
+              appDispatch(getOutOfJail("PAY-50"))
               hidePrisonerOptions()
             }}
             className="text-[1rem] underline font-semibold text-center"
           >
-            Pay 500
+            Pay 50
           </button>
         ) : (
-          <div className="w-full">You cannot afford to pay 500</div>
+          <div className="w-full">You cannot afford to pay 50</div>
         )}
 
         <button

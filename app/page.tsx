@@ -12,7 +12,19 @@ function Home() {
     useManageKeyInLocalStorage("CURRENT_GAME_ID", null)
   const [loading, setLoading] = useState(true)
   const [showGameCreationForm, setShowGameCreationForm] = useState(false)
+  const [monopolyVersion, updateMonopolyVersion, deleteMonopolyVersion] =
+    useManageKeyInLocalStorage(
+      "GAME_VERSION",
+      process.env.NEXT_PUBLIC_GAME_VERSION
+    )
 
+  useEffect(() => {
+    const gameVersion = process.env.NEXT_PUBLIC_GAME_VERSION
+    if (monopolyVersion !== gameVersion) {
+      localStorage.clear()
+      updateMonopolyVersion(gameVersion)
+    }
+  }, [monopolyVersion, updateMonopolyVersion])
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       setLoading(false)
