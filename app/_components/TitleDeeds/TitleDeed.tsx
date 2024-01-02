@@ -1,4 +1,3 @@
-import { CSSProperties } from "react"
 import HousingProperty from "../../_classes/HousingProperty"
 import StationProperty from "../../_classes/StationProperty"
 import UtilityProperty from "../../_classes/UtilityProperty"
