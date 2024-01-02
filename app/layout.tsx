@@ -1,3 +1,5 @@
+
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -19,11 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
-        <body className={inter.className}>
+        <body id="App" className={inter.className}>
           {children}
           <Toaster />
         </body>
       </ReduxProvider>
+      <SpeedInsights />
     </html>
   )
 }
