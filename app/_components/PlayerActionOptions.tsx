@@ -1,12 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BoardGame, {
   chanceTiles,
   communityChestTiles,
 } from "../_classes/BoardGame";
-import HousingProperty from "../_classes/HousingProperty";
 import Player from "../_classes/Player";
-import StationProperty from "../_classes/StationProperty";
-import UtilityProperty from "../_classes/UtilityProperty";
 import { declineToPurchase, playerAction } from "../_redux/game.slice";
 import { useAppDispatch } from "../_redux/hooks";
 import CenterCard from "./CenterCard";
@@ -14,6 +11,7 @@ import { createPortal } from "react-dom";
 import { TitleDeeds } from "./TitleDeeds/TitleDeedsContainer";
 import GameSideBar from "./GameSideBar";
 import toast from "react-hot-toast";
+import useGeneratePlayerActionText from "../_hooks/useGeneratePlayerActionText";
 
 export default function PlayerActionOptions({
   currentPlayer,
@@ -38,60 +36,10 @@ export default function PlayerActionOptions({
       BoardGame.findProperty(game, currentPlayer?.currentPosition as number),
     [game, currentPlayer?.currentPosition],
   );
-  const displayText = useMemo(() => {
-    if (!currentPlayer) return "";
-    if (chanceTiles.includes(currentPlayer.currentPosition)) {
-      return "";
-    } else if (communityChestTiles.includes(currentPlayer.currentPosition)) {
-      return "";
-    } else if (currentPlayer.currentPosition === 38)
-      return `${currentPlayer.name}, You have recieved the super tax of 100`;
-    else if (currentPlayer.currentPosition === 4)
-      return `${currentPlayer.name}, You have recieved the income tax of 200`;
-    else {
-      if (
-        currentPositionProperty &&
-        !chanceTiles.includes(currentPositionProperty.position as number) &&
-        !communityChestTiles.includes(
-          currentPositionProperty.position as number,
-        )
-      ) {
-        let lines = {
-          1: "LineOne",
-          2: "LineTwo",
-          3: "LineThree",
-          4: "LineFour",
-        };
-        const currentLineOfProperties = Math.ceil(
-          (currentPositionProperty.position as number) / 10,
-        ) as keyof typeof lines;
-        if (
-          currentPositionProperty.owner !== null &&
-          currentPositionProperty.owner !== currentPlayer.id
-        ) {
-          return `${
-            currentPlayer.name
-          }, you will now pay a rent amount of ${BoardGame.calculatePropertyRent(
-            currentPositionProperty,
-            game.properties[
-              currentLineOfProperties as keyof typeof game.properties
-            ] as (HousingProperty | UtilityProperty | StationProperty)[],
-            rollValue,
-          )} to ${game.players.find(
-            (it) => it.id === currentPositionProperty.owner,
-          )?.name}`;
-        } else if (currentPositionProperty.owner === null) {
-          return `${currentPlayer.name}, you have landed on ${currentPositionProperty.name}. It is unbought. Would you like to purchase it?`;
-        } else if (
-          currentPositionProperty.owner !== null &&
-          currentPositionProperty?.owner === currentPlayer.id
-        )
-          return "Because you own this property, you do not pay rent. You can either transact or pass onto the next turn";
-      } else {
-        return "Because you own this property, you do not pay rent. You can either transact or pass onto the next turn";
-      }
-    }
-  }, [currentPlayer, rollValue]);
+  const { infoText, toastText } = useGeneratePlayerActionText({
+    currentPlayer, game, rollValue, currentPositionProperty,
+  })
+  const toastMessage = toastText as { decline: string, accept: string }
   const showActionOptions = useMemo(() => {
     return (
       currentPlayer &&
@@ -124,6 +72,19 @@ export default function PlayerActionOptions({
     );
   }, [currentPlayer, currentPositionProperty]);
 
+  const handleDeclineToPurchase = useCallback(() => {
+    toastMessage.decline.length > 0 &&
+      toast(toastMessage.decline)
+    currentPlayer &&
+      appDispatch(declineToPurchase(currentPlayer.id))
+
+  }, [toastMessage.decline, currentPlayer, appDispatch])
+
+  const handlePlayerAction = useCallback(() => {
+    toastMessage.accept.length > 0 && toast(toastMessage.accept)
+    currentPlayer && appDispatch(playerAction(currentPlayer.id))
+  }, [currentPlayer, toastMessage.accept, appDispatch])
+
   if (!showActionOptions || !currentPositionProperty) return null;
   return (
     <>
@@ -136,11 +97,11 @@ export default function PlayerActionOptions({
       <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
         <CenterCard>
           <div className="min-h-[20vh] min-w-[280px]">
-            <div>{displayText}</div>
+            <div>{infoText as string}</div>
             {currentPlayer &&
               currentPlayer.accountBalance < currentPositionProperty?.price &&
               currentPositionProperty?.owner === null && (
-                <b className="text-rmax-edmax min-w-[40%]block my-1 ">
+                <b className="text-red-500  min-w-[40%] block my-1 ">
                   You cannot afford this property!!
                 </b>
               )}
@@ -156,10 +117,7 @@ export default function PlayerActionOptions({
                     Mortgage properties
                   </button>
                   <button
-                    onClick={() =>
-                      currentPlayer &&
-                      appDispatch(declineToPurchase(currentPlayer.id))
-                    }
+                    onClick={handleDeclineToPurchase}
                     className=" max-w-max min-w-[40%] shadow-lg p-4 rounded-lg border text-sm font-bold capitalize"
                   >
                     decline to purchase
@@ -175,11 +133,7 @@ export default function PlayerActionOptions({
               {playerCanActOnProperty && (
                 <button
                   className="capitalize max-w-max min-w-[40%] shadow-lg p-4 rounded-lg border text-primary-default bg-primary-dark"
-                  onClick={() =>
-                    {
-                    currentPlayer && appDispatch(playerAction(currentPlayer.id))
-                    }
-                  }
+                  onClick={handlePlayerAction}
                 >
                   {currentPositionProperty?.owner === currentPlayer?.id
                     ? "done"
