@@ -98,8 +98,7 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
         <p className="mb-3">
           {currentBidder.isInJail
             ? "You cannot bid in jail"
-            : <>Player <strong className="capitalize " style={{ color: currentBidder.color as string}}>{currentBidder.name}</strong>, enter an amount to bid for 
-          ${propertyToBidFor && propertyToBidFor.name}</>}
+            : <>Player <strong className="capitalize " style={{ color: currentBidder.color as string}}>{currentBidder.name}</strong>, enter an amount to bid for {propertyToBidFor && propertyToBidFor.name}</>}
         </p>
         <p className="text-red-700 mb-2">{error}</p>
         <form
