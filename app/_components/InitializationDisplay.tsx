@@ -28,8 +28,7 @@ export default function Initialization({
       "violet",
     ]
     return colors.filter(
-      (color) =>
-        playersDetails.find((player) => player.color === color) === undefined
+      (color) => playersDetails.every(player => player.color.toLocaleLowerCase() !== color.toLocaleLowerCase())
     ) as PlayerColor[]
   }, [playersDetails])
 
