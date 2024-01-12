@@ -7,7 +7,6 @@ import GameNavButton from "./GameNavButton"
 import GameSideBar from "./GameSideBar"
 import { useState , useEffect } from "react"
 import Banner from "./Banner"
-import useHandleNotification from "../_hooks/useHandleNotifications"
 import { useAppSelector, useAppDispatch } from "../_redux/hooks"
 import PlayersTitleDeeds from "./PlayersTitleDeeds"
 import PlayersAccountBalances from "./PlayersAccountBalances"
@@ -17,7 +16,8 @@ import {
   initGame,
   advanceCurrentPlayer,
   sendPrisonersToJail,
-  eliminateBankruptPlayers
+  eliminateBankruptPlayers,
+  pauseCurrentGame
 } from "../_redux/game.slice"
 import toast from "react-hot-toast"
 import BoardGame from "../_classes/BoardGame"
@@ -62,11 +62,14 @@ export default function GameBoard({
       />
     )
 
-  return <MainGame clearCurrentGameId={clearCurrentGameId} />
+  return <MainGame pauseGame={() => {
+    clearCurrentGameId()
+    appDispatch(pauseCurrentGame())
+  }} />
 }
 
-function MainGame({ clearCurrentGameId }: {
-  clearCurrentGameId: () => void
+function MainGame({ pauseGame }: {
+  pauseGame: () => void
 }) {
 
   const { game } = useAppSelector((store) => store.Game)
@@ -105,7 +108,7 @@ function MainGame({ clearCurrentGameId }: {
         <div className="flex pt-8 justify-center items-center sticky top-0 bg-primary-default z-[10] ">
           <h3 className="text-2xl capitalize font-bold text-primary-dark text-center">{game?.name}</h3>
           <button 
-            onClick={clearCurrentGameId}
+            onClick={pauseGame}
             className="bg-red-500 rounded-lg px-3 py-2 text-center text-sm font-bold absolute right-[5%]" title="Lock the game temporarily and continue when you are ready">Pause Game</button>
         </div>
         <PlayersTitleDeeds game={game}/>
