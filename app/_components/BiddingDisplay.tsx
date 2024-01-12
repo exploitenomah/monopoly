@@ -28,9 +28,10 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
   const [hasPassed, setHasPassed] = useState<number[]>([])
   const [bidValue, setBidValue] = useState("")
 
-  const handleBid: FormEventHandler<HTMLFormElement> = useCallback(
+  const handleBid: FormEventHandler<HTMLFormElement | HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
+      if(e.type === "submit" && bidValue.trim().length === 0) return setError("Please enter a bid value or pass on the bid")
       if (+bidValue <= highestBid && bidValue.length > 0) {
         return setError(
           `Your bid must be higher than the current highest bid of ${highestBid}`
@@ -97,10 +98,9 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
         <p className="mb-3">
           {currentBidder.isInJail
             ? "You cannot bid in jail"
-            : `Player ${currentBidder.name}, enter an amount to bid for 
-          ${propertyToBidFor && propertyToBidFor.name}`}
+            : <>Player <strong className="capitalize " style={{ color: currentBidder.color as string}}>{currentBidder.name}</strong>, enter an amount to bid for {propertyToBidFor && propertyToBidFor.name}</>}
         </p>
-        <p className="text-red-600 mb-2">{error}</p>
+        <p className="text-red-700 mb-2">{error}</p>
         <form
           onSubmit={handleBid}
           className="flex itemx-center flex-col gap-y-3"
@@ -108,6 +108,7 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
           {!currentBidder.isInJail && (
             <input
               type="number"
+              // min={highestBid + 1}
               value={bidValue}
               onChange={(e) => setBidValue(e.target.value)}
               className="w-full bg-transparent p-3 border border-primary-dark focus:outline-primary-dark"
@@ -117,6 +118,7 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
             {(bidValue.toString().length === 0 || currentBidder.isInJail) && (
               <button
                 type="submit"
+                onClick={handleBid}
                 className="px-5 py-3 border border-primary-dark  shadow-lg w-fit rounded-lg"
               >
                 pass

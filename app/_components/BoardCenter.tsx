@@ -50,3 +50,7 @@ export default function BoardCenter({
     </div>
   )
 }
+
+
+/* transform: 'rotate(45deg)'
+transform: 'rotate3d(1, 1, -0.5, 45deg) rotate(45deg) rotateY(45deg) translateZ(400px) translateX(-350px)'*/

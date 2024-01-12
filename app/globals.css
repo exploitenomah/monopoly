@@ -235,3 +235,20 @@ body {
   transform: rotateY(90deg);
   transform-origin: left;
 }
+
+.custom-toggle ~ div{
+  cursor: pointer;
+}
+.custom-toggle:not(:checked) ~ div{
+  opacity: 0.5;
+}
+.custom-toggle:checked ~ .toggle-dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
+
+/* Toggle B */
+.custom-toggle:checked ~ .toggle-dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}

@@ -29,6 +29,10 @@ const gameSlice = createSlice({
           process.env.NEXT_PUBLIC_JS_CRYPTO_KEY as string
         ) === action.payload
     },
+    pauseCurrentGame: (state) => {
+      state.isAuthorized = false
+      state.game = null
+    },
     initGame: (state, action) => {
       if (state.game !== null) {
         state.game = copyBoardGame(state.game as BoardGame).initialize(
@@ -91,6 +95,7 @@ const gameSlice = createSlice({
 export const {
   setGame,
   authorize,
+  pauseCurrentGame,
   initGame,
   advanceCurrentPlayer,
   getOutOfJail,

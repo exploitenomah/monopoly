@@ -2,6 +2,8 @@ import { useState, useCallback, FormEventHandler, useMemo } from "react"
 import { PlayerColor, PlayerDetail } from "../types"
 import useDice from "../_hooks/useDice"
 import Dice from "./Dice"
+import useGetRandomName from "../_hooks/useGetRandomName"
+import { names } from "unique-names-generator"
 
 export default function Form({
   colorOptions,
@@ -14,17 +16,15 @@ export default function Form({
   handlePlayerDetail: (data: PlayerDetail) => void
   takenNames: string[]
 }) {
-  const initialState = useMemo(() => {
-    return {
-      name: "",
-      color: "" as PlayerColor,
-      rollValue: NaN,
-    }
-  }, [])
+  const getRandomName = useGetRandomName({ dictionaries: [names] })
   const diceOne = useDice(500)
   const diceTwo = useDice(500)
   const [error, setError] = useState("")
-  const [playerDetails, setPlayerDetails] = useState<PlayerDetail>(initialState)
+  const [playerDetails, setPlayerDetails] = useState<PlayerDetail>({
+    name: "",
+    color: colorOptions[0] as PlayerColor,
+    rollValue: NaN,
+  })
   const [hasRolled, setHasRolled] = useState(false)
 
   const handleChange = useCallback((name: any, value: any) => {
@@ -48,7 +48,11 @@ export default function Form({
           ...playerDetails,
           rollValue: diceOne.rollValue + diceTwo.rollValue,
         })
-        setPlayerDetails(initialState)
+        setPlayerDetails({
+          name: "",
+          color: colorOptions.filter(it => it.toLocaleLowerCase() !== playerDetails.color.toLocaleLowerCase())[0] as PlayerColor,
+          rollValue: NaN,
+        })
         setHasRolled(false)
         diceOne.reset()
         diceTwo.reset()
@@ -56,11 +60,11 @@ export default function Form({
     },
     [
       playerDetails,
-      initialState,
       handlePlayerDetail,
       diceOne,
       diceTwo,
       takenNames,
+      colorOptions[0]
     ]
   )
 
@@ -78,6 +82,15 @@ export default function Form({
             onChange={(e) => handleChange("name", e.target.value)}
             className="rounded-lg bg-transparent invalid:focus:border-red-600 py-[0.83rem] px-[1rem] border-solid border border-primary-dark focus:border-dotted focus:border-blue-600 focus:outline-0"
           />
+          <button
+            type="button"
+            onClick={() => {
+              handleChange("name", getRandomName())
+            }}
+            className="self-end text-blue-800"
+          >
+            get random name
+          </button>
         </label>
         <label className="flex w-full flex-col gap-y-1">
           Pick a color

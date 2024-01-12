@@ -73,32 +73,32 @@ export default function Dice({
           transform: `perspective(1000px) rotate3d(${diceRotateValue})`,
         }}
       >
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="one">
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="one">
           <span className="dot"></span>
         </span>
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="two">
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </span>
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="three">
-          <span className="dot"></span>
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="two">
           <span className="dot"></span>
           <span className="dot"></span>
         </span>
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="four">
-          <span className="dot"></span>
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="three">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
         </span>
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="five">
-          <span className="dot"></span>
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="four">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
         </span>
-        <span className={`${disabled ? "blur-[4px]" : ""}`} id="six">
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="five">
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+        </span>
+        <span className={`${disabled ? "blur-[2px]" : ""}`} id="six">
           <span className="dot"></span>
           <span className="dot"></span>
           <span className="dot"></span>
