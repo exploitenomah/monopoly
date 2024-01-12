@@ -21,6 +21,7 @@ import {
 } from "../_redux/game.slice"
 import toast from "react-hot-toast"
 import BoardGame from "../_classes/BoardGame"
+import TurnAnnouncer from "./TurnAnnouncer"
 
 export default function GameBoard({
   gameDetails,
@@ -61,15 +62,16 @@ export default function GameBoard({
       />
     )
 
-  return <MainGame />
+  return <MainGame clearCurrentGameId={clearCurrentGameId} />
 }
 
-function MainGame() {
+function MainGame({ clearCurrentGameId }: {
+  clearCurrentGameId: () => void
+}) {
 
   const { game } = useAppSelector((store) => store.Game)
   const appDispatch = useAppDispatch()
   const [showSideBar, setShowSideBar] = useState(false)
-  const { notification } = useHandleNotification(game)
 
   useEffect(() => {
     if(game?.players.some(player => player.isInJail && player.currentPosition !== 10)){
@@ -91,17 +93,22 @@ function MainGame() {
   return (
     <div>
       <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>
-        <Banner notification={notification} />
+        <Banner>
+          <PlayersAccountBalances game={game} />
+          <TurnAnnouncer game={game} />
+        </Banner>
       </div>
       <GameNavButton
         toggleShowSideBar={() => setShowSideBar((prev) => !prev)}
       />
       <GameSideBar show={showSideBar} close={() => setShowSideBar(false)} >
-        <div>
-          <h3 className="sticky top-0 bg-primary-default z-[10] text-2xl capitalize font-bold text-primary-dark text-center p-3">{game?.name}</h3>
-          <PlayersAccountBalances game={game} />
-          <PlayersTitleDeeds game={game}/>
+        <div className="flex pt-8 justify-center items-center sticky top-0 bg-primary-default z-[10] ">
+          <h3 className="text-2xl capitalize font-bold text-primary-dark text-center">{game?.name}</h3>
+          <button 
+            onClick={clearCurrentGameId}
+            className="bg-red-500 rounded-lg px-3 py-2 text-center text-sm font-bold absolute right-[5%]" title="Lock the game temporarily and continue when you are ready">Pause Game</button>
         </div>
+        <PlayersTitleDeeds game={game}/>
       </GameSideBar>
       <div
         style={{
