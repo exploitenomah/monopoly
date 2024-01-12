@@ -4,13 +4,13 @@ import Game from "./_components/BoardGame"
 import HomeDefaultDisplay from "./_components/Home"
 import useManageKeyInLocalStorage from "./_hooks/useManageKeyInLocalStorage"
 import { useState, useEffect } from "react"
-import LoadingDisplay from "./_components/LoadingDisplay"
+// import LoadingDisplay from "./_components/LoadingDisplay"
 
 function Home() {
   const { games, createNewGame } = useManageGames("MONOPOLY_GAMES", [])
   const [currentGameId, updateCurrentGameId, clearCurrentGameId] =
     useManageKeyInLocalStorage("CURRENT_GAME_ID", null)
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   const [showGameCreationForm, setShowGameCreationForm] = useState(false)
   const [monopolyVersion, updateMonopolyVersion, deleteMonopolyVersion] =
     useManageKeyInLocalStorage(
@@ -25,17 +25,17 @@ function Home() {
       updateMonopolyVersion(gameVersion)
     }
   }, [monopolyVersion, updateMonopolyVersion])
-  useEffect(() => {
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false)
-    }, 1500)
+  // useEffect(() => {
+  //   const loadingTimeout = setTimeout(() => {
+  //     setLoading(false)
+  //   }, 1500)
 
-    return () => {
-      clearTimeout(loadingTimeout)
-    }
-  }, [])
+  //   return () => {
+  //     clearTimeout(loadingTimeout)
+  //   }
+  // }, [])
 
-  if (loading) return <LoadingDisplay />
+  // if (loading) return <LoadingDisplay />
   if (!currentGameId)
     return (
       <HomeDefaultDisplay
