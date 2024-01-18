@@ -1,6 +1,8 @@
 import BoardGame from "@/app/_classes/BoardGame"
+import { Action } from "@/app/_classes/GameCard"
+import Player from "@/app/_classes/Player"
 
-export const advanceToGo = function (game: BoardGame, playerId: number) {
+export const advanceToGo = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       game.advancePlayer(40 - player.currentPosition, player.prevRollWasDouble)
@@ -8,36 +10,52 @@ export const advanceToGo = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to Go and receives ₦200`
+  }
+})
 
-export const bankErrorInFavour = function (game: BoardGame, playerId: number) {
+export const bankErrorInFavour = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 200
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦200 from Bank error in favour.`
+  }
+})
 
-export const doctorsFee = function (game: BoardGame, playerId: number) {
+export const doctorsFee = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance -= 50
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} pays ₦50 for Doctor's fee`
+  }
+})
 
-export const fromSaleOfStock = function (game: BoardGame, playerId: number) {
+export const fromSaleOfStock = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 50
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦50 from sale of stock`
+  }
+})
 
-export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+export const getOutOfJailFree = Object.assign(function (game: BoardGame, playerId: number) {
   game.communityChestCards = game.communityChestCards.filter(
     (it) => it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
   )
@@ -47,36 +65,52 @@ export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} just got a Get Out Of Jail Free card from the community chest`
+  }
+})
 
-export const goToJail = function (game: BoardGame, playerId: number) {
+export const goToJail = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.isInJail = true
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} goes to jail`
+  }
+})
 
-export const holidayFundMatures = function (game: BoardGame, playerId: number) {
+export const holidayFundMatures = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 100
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦100 from holiday fund maturity`
+  }
+})
 
-export const incomeTaxRefund = function (game: BoardGame, playerId: number) {
+export const incomeTaxRefund = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 200
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives an income tax refund of ₦200`
+  }
+})
 
-export const lifeInsuranceMatures = function (
+export const lifeInsuranceMatures = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -86,9 +120,13 @@ export const lifeInsuranceMatures = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦100; Life insurance matures`
+  }
+})
 
-export const itsYourBirthday = function (game: BoardGame, playerId: number) {
+export const itsYourBirthday = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 10 * game.players.length
@@ -97,27 +135,39 @@ export const itsYourBirthday = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦${(currentGame?.players.length || 1) * 100} as a birthday gift from everyone`
+  }
+})
 
-export const payHospital = function (game: BoardGame, playerId: number) {
+export const payHospital = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance -= 100
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} pays a hospital bill of ₦100`
+  }
+})
 
-export const paySchoolFees = function (game: BoardGame, playerId: number) {
+export const paySchoolFees = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance -= 150
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} pays ₦${150} for school fees`
+  }
+})
 
-export const receiveConsultancyFee = function (
+export const receiveConsultancyFee = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -127,9 +177,13 @@ export const receiveConsultancyFee = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦25 consultation fee`
+  }
+})
 
-export const assessedForStreetRepairs = function (
+export const assessedForStreetRepairs = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -141,9 +195,15 @@ export const assessedForStreetRepairs = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    const costOfHouseRepairs = (currentPlayer?.totalHousesOwned || 0) * 40
+    const costOfHotelRepairs = (currentPlayer?.totalHotelsOwned || 0) * 115
+    return `${currentPlayer?.name} pays ₦${costOfHotelRepairs + costOfHouseRepairs} for street repairs`
+  }
+})
 
-export const secondPrizeInBeautyContest = function (
+export const secondPrizeInBeautyContest = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -153,18 +213,26 @@ export const secondPrizeInBeautyContest = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦10 prize for winning beauty contest`
+  }
+})
 
-export const inheritOneHundred = function (game: BoardGame, playerId: number) {
+export const inheritOneHundred = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance += 100
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦100 as inheritance`
+  }
+})
 
-export const communityChestIdMapping = {
+export const communityChestIdMapping: { [x: number]: Action} = {
   1: advanceToGo,
   2: bankErrorInFavour,
   3: doctorsFee,
