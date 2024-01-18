@@ -61,8 +61,8 @@ export default function Home({
               No Available Games
             </span>
           )}
-          <IntroMusicPlayer />
         </div>
+        <IntroMusicPlayer />
         <div className="w-full">
           <SavedGamesList startGame={updateCurrentGameId} games={games} />
           {games.length === 0 && (
