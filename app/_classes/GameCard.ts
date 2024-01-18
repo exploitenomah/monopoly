@@ -3,7 +3,10 @@ import { chanceIdMapping } from "../_data/cards/chanceActionHandlers"
 import { communityChestIdMapping } from "../_data/cards/communityChestActionHandlers"
 import BoardGame from './BoardGame'
 
-type Action = (game: BoardGame, playerId: number) => BoardGame
+export interface Action { 
+  (game: BoardGame, playerId: number): BoardGame
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame, ) => string
+}
 
 type CardType = "COMMUNITY-CHEST" | "CHANCE"
 
