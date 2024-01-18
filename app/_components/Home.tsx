@@ -4,6 +4,7 @@ import NewGameForm from "./NewGameForm"
 import Image from "next/image"
 import { useState, useRef } from "react"
 import useOutsideClick from "../_hooks/useOutsideClick"
+import { IntroMusicPlayer } from "./BackgroundMusic"
 
 export default function Home({
   games,
@@ -60,6 +61,7 @@ export default function Home({
               No Available Games
             </span>
           )}
+          <IntroMusicPlayer />
         </div>
         <div className="w-full">
           <SavedGamesList startGame={updateCurrentGameId} games={games} />

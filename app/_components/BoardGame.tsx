@@ -22,6 +22,7 @@ import {
 import toast from "react-hot-toast"
 import BoardGame from "../_classes/BoardGame"
 import TurnAnnouncer from "./TurnAnnouncer"
+import { MainMusicPlayer } from "./BackgroundMusic"
 
 export default function GameBoard({
   gameDetails,
@@ -97,8 +98,15 @@ function MainGame({ pauseGame }: {
     <div>
       <div style={{ filter: showSideBar ? "blur(3px)" : "" }}>
         <Banner>
-          <PlayersAccountBalances game={game} />
-          <TurnAnnouncer game={game} />
+          <div className="flex gap-3 w-full items-center flex-wrap">
+            <div className="relative grow shrink-0 max-w-full">
+              <PlayersAccountBalances game={game} />
+            </div>
+            <div className="relative shrink">
+              <MainMusicPlayer />
+            </div>
+            <div className="relative grow shrink-0"><TurnAnnouncer game={game} /></div>
+          </div>
         </Banner>
       </div>
       <GameNavButton

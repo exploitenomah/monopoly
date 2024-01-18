@@ -3,6 +3,7 @@ import { PlayerColor, PlayerDetail } from "../types"
 import Form from "./InitializationForm"
 import Finalization from "./InitializationFinalization"
 import InitializationInfo from "./InitializationDefault"
+import { IntroMusicPlayer } from "./BackgroundMusic"
 
 export default function Initialization({
   totalPlayers,
@@ -48,6 +49,7 @@ export default function Initialization({
   )
   return (
     <div className="bg-primary-default text-primary-dark rounded-lg px-6 py-12 w-[95vw] max-w-[580px] min-h-[600px]">
+      <IntroMusicPlayer />
       {currentPosition > totalPlayers && (
         <Finalization
           isATie={isATie}

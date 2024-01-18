@@ -15,7 +15,7 @@ export default function PlayersAccountBalances({ game }: { game: BoardGame | nul
   if (!game) return null
   return (
     <div className="w-full p-4">
-      <ul className="px-4 py-6 overflow-x-auto flex flex-wrap gap-5 sticky top-0">
+      <ul className="px-4 overflow-x-auto flex flex-wrap gap-5 sticky top-0">
         {accountBalances}
       </ul>
     </div>
