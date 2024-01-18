@@ -17,7 +17,7 @@ export default function TurnAnnouncer({ game }: {
     }
   }, [notification, announceTurn])
   return (
-    <div className="absolute text-red-900 right-0 w-1/2 font-bold text-[1.8vmin] leading-[1.5] flex flex-col items-center">
+    <div className="text-red-900 w-full font-bold text-[1.8vmin] leading-[1.5] flex flex-col items-center">
       <p className="text-lg uppercase" style={{ color: playerInTurn?.color as string}}>{notification}</p>
       { canAnnounce &&
         <div className="flex flex-col justify-center items-center gap-x-3 lowercase text-primary-dark">

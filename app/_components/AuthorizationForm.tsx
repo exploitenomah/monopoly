@@ -1,5 +1,6 @@
 import { useState, useCallback, FormEventHandler } from "react"
 import { GameDetails } from "../types"
+import { IntroMusicPlayer } from "./BackgroundMusic"
 
 export default function AuthorizationForm({
   gameDetails,
@@ -28,7 +29,7 @@ export default function AuthorizationForm({
     <div className="bg-primary-default text-primary-dark rounded-lg px-6 py-12 w-[95vw] max-w-[580px] min-h-[600px]">
       <h1 className="text-3xl text-center mb-5">
         Continue from where you left off!
-      </h1>
+      </h1> <IntroMusicPlayer />
       <form onSubmit={handleSubmit} className="mt-4">
         <label className="flex flex-col items-start gap-y-2">
           <span className="text-xl font-normal">

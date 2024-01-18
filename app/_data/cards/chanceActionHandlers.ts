@@ -1,6 +1,11 @@
 import BoardGame from "@/app/_classes/BoardGame"
+import { Action } from "@/app/_classes/GameCard"
+import Player from "@/app/_classes/Player"
+import StationProperty from "@/app/_classes/StationProperty"
+import UtilityProperty from "@/app/_classes/UtilityProperty"
+import { findNearestStationPositionToPlayerCurrentPosition, findNearestUtilityPosition, getPropertyByPosition } from "@/app/_utils/game"
 
-export const advanceToOilMillRoad = function (
+export const advanceToOilMillRoad = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -17,9 +22,13 @@ export const advanceToOilMillRoad = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to Oil Mill road`
+  }
+})
 
-export const advanceToGo = function (game: BoardGame, playerId: number) {
+export const advanceToGo = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       game.advancePlayer(40 - player.currentPosition, player.prevRollWasDouble)
@@ -27,9 +36,13 @@ export const advanceToGo = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to Go and receives ₦200`
+  }
+})
 
-export const advanceToTransAmadi = function (
+export const advanceToTransAmadi = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -40,9 +53,13 @@ export const advanceToTransAmadi = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to Trans Amadi`
+  }
+})
 
-export const advanceToRumuosi = function (game: BoardGame, playerId: number) {
+export const advanceToRumuosi = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       if (player.currentPosition >= 11)
@@ -56,41 +73,42 @@ export const advanceToRumuosi = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to Rumuosi`
+  }
+})
 
-export const advanceToTheNearestStation = function (
+export const advanceToTheNearestStation = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
-      let nearestStation
-      if (player.currentPosition < 5) nearestStation = 5
-      else if (player.currentPosition < 15) nearestStation = 15
-      else if (player.currentPosition < 25) nearestStation = 25
-      else if (player.currentPosition >= 35) nearestStation = 45
-      else nearestStation = 35
-
+      const nearestStationPosition = findNearestStationPositionToPlayerCurrentPosition(player)
       game.advancePlayer(
-        nearestStation - player.currentPosition,
+        nearestStationPosition - player.currentPosition,
         player.prevRollWasDouble
       )
       game.handleLandingOnPosition(player)
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    const nearestStationPosition = findNearestStationPositionToPlayerCurrentPosition(currentPlayer as Player)
+    const nearestStationProperty = getPropertyByPosition(nearestStationPosition)
+    return `${currentPlayer?.name} advances to ${(nearestStationProperty as StationProperty)?.name} Station`
+  }
+})
 
-export const advanceToTheNearestUtility = function (
+export const advanceToTheNearestUtility = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
-      let nearestUtility
-      if (player.currentPosition < 12 || player.currentPosition >= 28)
-        nearestUtility = 12
-      else nearestUtility = 28
+      const nearestUtility = findNearestUtilityPosition(player)
       game.advancePlayer(
         nearestUtility - player.currentPosition,
         player.prevRollWasDouble
@@ -99,9 +117,15 @@ export const advanceToTheNearestUtility = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    const nearestUtilityPosition = findNearestUtilityPosition(currentPlayer as Player)
+    const nearestUtilityProperty = getPropertyByPosition(nearestUtilityPosition)
+    return `${currentPlayer?.name} advances to ${(nearestUtilityProperty as UtilityProperty)?.name} Utility`
+  }
+})
 
-export const bankPaysDividendOfFifty = function (
+export const bankPaysDividendOfFifty = Object.assign(function(
   game: BoardGame,
   playerId: number
 ) {
@@ -111,9 +135,13 @@ export const bankPaysDividendOfFifty = function (
     }
   })
   return game
-}
+}, { 
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives a dividend of ₦50`
+  } 
+}) 
 
-export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
+export const getOutOfJailFree = Object.assign(function (game: BoardGame, playerId: number) {
   game.chanceCards = game.chanceCards.filter(
     (it) => it.content.toLowerCase() !== "Get Out Of Jail Free".toLowerCase()
   )
@@ -123,9 +151,13 @@ export const getOutOfJailFree = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} just got a Get Out Of Jail Free card from chance`
+  }
+})
 
-export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
+export const goBackThreeSpaces = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       game.regressPlayer(3, player.prevRollWasDouble)
@@ -133,38 +165,56 @@ export const goBackThreeSpaces = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} goes back 3 spaces`
+  }
+})
 
-export const goToJail = function (game: BoardGame, playerId: number) {
+export const goToJail = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.isInJail = true
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} goes to jail`
+  }
+})
 
-export const makeGeneralRepairs = function (game: BoardGame, playerId: number) {
+export const makeGeneralRepairs = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       const costOfHouseRepairs = player.totalHousesOwned * 25
-      const costOfHotelRepairs = player.totalHotelsOwned * 100
+      const costOfHotelRepairs = player.totalHotelsOwned * 100// player property/method
       player.accountBalance -= costOfHouseRepairs + costOfHotelRepairs
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    const costOfHouseRepairs = (currentPlayer?.totalHousesOwned || 0) * 25
+    const costOfHotelRepairs = (currentPlayer?.totalHotelsOwned || 0) * 100
+    return `${currentPlayer?.name} pays ₦${costOfHotelRepairs + costOfHouseRepairs} for street repairs`
+  }
+})
 
-export const speedingFine = function (game: BoardGame, playerId: number) {
+export const speedingFine = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player) => {
     if (player.id === playerId) {
       player.accountBalance -= 15
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} pays ₦15 for speeding`
+  }
+})
 
-export const takeATripToGIGMotors = function (
+export const takeATripToGIGMotors = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -181,9 +231,13 @@ export const takeATripToGIGMotors = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} advances to GIG Motors`
+  }
+})
 
-export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
+export const chairmanOfTheBoard = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player, _idx, players) => {
     if (player.id === playerId) {
       player.accountBalance -= players.length * 50
@@ -192,9 +246,13 @@ export const chairmanOfTheBoard = function (game: BoardGame, playerId: number) {
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} is now chairman of the board and pays ₦50 to each player`
+  }
+})
 
-export const buildingLoanMatures = function (
+export const buildingLoanMatures = Object.assign(function (
   game: BoardGame,
   playerId: number
 ) {
@@ -204,18 +262,26 @@ export const buildingLoanMatures = function (
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} receives ₦150 for matured building loan`
+  }
+})
 
-export const xmasFundMatures = function (game: BoardGame, playerId: number) {
+export const xmasFundMatures = Object.assign(function (game: BoardGame, playerId: number) {
   game.players.forEach((player, _idx, players) => {
     if (player.id === playerId) {
       player.accountBalance += 100
     }
   })
   return game
-}
+}, {
+  getToastMessage: (currentPlayer?: Player, currentGame?: BoardGame) => {
+    return `${currentPlayer?.name} pays ₦100 for maturity of xmas fund`
+  }
+})
 
-export const chanceIdMapping = {
+export const chanceIdMapping: { [x:string]: Action} = {
   1: advanceToGo,
   2: advanceToOilMillRoad,
   3: advanceToTransAmadi,
