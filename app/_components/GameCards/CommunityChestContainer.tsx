@@ -3,18 +3,24 @@ import GameCard from "@/app/_classes/GameCard"
 import CommunityChestCard from "./CommunityChestCard"
 import { useAppDispatch } from "@/app/_redux/hooks"
 import { playerAction } from "@/app/_redux/game.slice"
+import BoardGame from "@/app/_classes/BoardGame"
+import Player from "@/app/_classes/Player"
+import { communityChestIdMapping } from "@/app/_data/cards/communityChestActionHandlers"
+import toast from "react-hot-toast"
 
 export default function CommunityChestContainer({
   cards,
   currentCard,
-  currentPlayerId,
+  currentPlayer,
+  game
 }: {
   cards: GameCard[]
   currentCard: {
     card: GameCard
     owner: number
   } | null
-  currentPlayerId?: number
+  currentPlayer?: Player
+  game: BoardGame
 }) {
   const appDispatch = useAppDispatch()
 
@@ -29,10 +35,12 @@ export default function CommunityChestContainer({
     >
       {cards.map((card, idx, arr) => (
         <CommunityChestCard
-          handleDone={() =>
-            typeof currentPlayerId === "number" &&
-            appDispatch(playerAction(currentPlayerId))
-          }
+          handleDone={() => {
+            const toastMessage = communityChestIdMapping[card.id as keyof typeof communityChestIdMapping].getToastMessage(currentPlayer as Player, game)           
+            typeof currentPlayer?.id === "number" &&
+            appDispatch(playerAction(currentPlayer.id))
+            toast.success(toastMessage)
+          }}
           key={card.id}
           card={card}
           zIndex={arr.length - idx}
