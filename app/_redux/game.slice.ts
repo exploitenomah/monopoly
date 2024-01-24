@@ -88,6 +88,9 @@ const gameSlice = createSlice({
     },
     eliminateBankruptPlayers: (state, { payload }: { payload: number[]}) => {
       state.game = copyBoardGame(state.game as BoardGame).updateBankruptPlayers(payload)
+    },
+    toggleSound: (state) => {
+      state.game = copyBoardGame(state.game as BoardGame).toggleSound()
     }
   },
 })
@@ -105,5 +108,6 @@ export const {
   cancelBidding,
   sellToHighestBidder,
   eliminateBankruptPlayers,
+  toggleSound,
 } = gameSlice.actions
 export default gameSlice.reducer

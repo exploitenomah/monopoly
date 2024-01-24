@@ -3,7 +3,8 @@ import useDice from "@/app/_hooks/useDice"
 import {
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  useRef
 } from "react"
 import BoardGame from "@/app/_classes/BoardGame"
 import Player from "@/app/_classes/Player"
@@ -22,6 +23,7 @@ export default function GameDiceContainer({
   game: BoardGame
   diceDisabled: boolean
 }) {
+  const diceSoundRef = useRef<HTMLAudioElement | null>(null)
   const [hasRolled, setHasRolled] = useState(false)
   const diceOne = useDice(500)
   const diceTwo = useDice(500)
@@ -60,6 +62,10 @@ export default function GameDiceContainer({
     }
   }, [currentPlayer?.isInJail])
 
+  useEffect(() => {
+    if(diceOne.isRolling || diceTwo.isRolling) !game?.isMuted && diceSoundRef.current?.play()
+  }, [diceOne.isRolling, diceTwo.isRolling, !game?.isMuted])
+
   if (typeof game.positionUpForBidding === "number")
     return <BiddingDisplay game={game} />
 
@@ -86,6 +92,9 @@ export default function GameDiceContainer({
           rollValue={diceTwo.rollValue}
           isRolling={diceTwo.isRolling}
         />
+        <audio ref={diceSoundRef} autoPlay={false}>
+          <source src="/dice-roll.mp3"></source>
+        </audio>
       </div>
       <PlayerActionOptions
         game={game}

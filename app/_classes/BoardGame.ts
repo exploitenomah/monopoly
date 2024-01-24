@@ -22,6 +22,7 @@ export const chanceTiles = [7, 22, 36]
 export const communityChestTiles = [2, 17, 33]
 
 export default class BoardGame {
+  public isMuted: boolean = false
   public Go: Space = Go
   public GoToJail: Space = GoToJail
   public Jail: Space = Jail
@@ -518,6 +519,11 @@ export default class BoardGame {
     return this
   }
 
+  public toggleSound(){
+    this.isMuted = !this.isMuted
+    return this
+  }
+
   static checkIfPlayerIsBankrupt(playerId: number, game: BoardGame){
     const player = game.players.find(it => it.id === playerId)
     if(player){
@@ -632,7 +638,8 @@ export default class BoardGame {
       positionUpForBidding,
       hasHandledAdvancement,
       bankruptPlayers,
-      winner
+      winner,
+      isMuted
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -670,6 +677,7 @@ export default class BoardGame {
     revivedBoardGame.hasHandledAdvancement = hasHandledAdvancement
     revivedBoardGame.bankruptPlayers = bankruptPlayers.map(player => Player.revive(player))
     revivedBoardGame.winner = winner ? Player.revive(winner) : winner
+    revivedBoardGame.isMuted = Boolean(isMuted)
     return revivedBoardGame
   }
   public static flattenPropertiesAndRemoveSpaces(game: BoardGame | null){
