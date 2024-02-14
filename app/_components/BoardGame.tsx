@@ -17,7 +17,8 @@ import {
   advanceCurrentPlayer,
   sendPrisonersToJail,
   eliminateBankruptPlayers,
-  pauseCurrentGame
+  pauseCurrentGame,
+  toggleSound
 } from "../_redux/game.slice"
 import toast from "react-hot-toast"
 import BoardGame from "../_classes/BoardGame"
@@ -103,7 +104,9 @@ function MainGame({ pauseGame }: {
               <PlayersAccountBalances game={game} />
             </div>
             <div className="relative shrink">
-              <MainMusicPlayer />
+              <div onClick={() => appDispatch(toggleSound())}>
+                <MainMusicPlayer autoPlay={game?.isMuted ? false : true}/>
+              </div>
             </div>
             <div className="relative grow shrink-0"><TurnAnnouncer game={game} /></div>
           </div>

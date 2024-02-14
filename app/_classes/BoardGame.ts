@@ -16,12 +16,14 @@ import GoToJail from "../_lines/GoToJail"
 import Jail from "../_lines/Jail"
 import FreeParking from "../_lines/FreeParking"
 import shuffleArray from "@/app/_utils/shuffleArray"
+import Property from "./Property"
 
 type Line = (HousingProperty | UtilityProperty | StationProperty | Space)[]
 export const chanceTiles = [7, 22, 36]
 export const communityChestTiles = [2, 17, 33]
 
 export default class BoardGame {
+  public isMuted: boolean = false
   public Go: Space = Go
   public GoToJail: Space = GoToJail
   public Jail: Space = Jail
@@ -213,7 +215,7 @@ export default class BoardGame {
         } else if (player.currentPosition === 4) {
           player.accountBalance -= 200
         } else {
-          const property = BoardGame.findProperty(this, player.currentPosition)
+          const property = BoardGame.findPropertyByPosition(this, player.currentPosition)
           if (property) {
             if (property.owner === null) {
               this.buyPropertyWithDefaultPrice(player.id)
@@ -337,6 +339,41 @@ export default class BoardGame {
     return this
   }
 
+  public mortgageProperties(idsOfProperties: string[], playerId: number){
+    const properties = idsOfProperties.map(id => BoardGame.findPropertyById(this, id))
+    const totalMortgageValue = properties.reduce((acc, curr) => curr?.mortgageValue || 0 + acc, 0)
+    this.players.forEach(player => {
+      if(player.id === playerId){
+        player.addToAccount(totalMortgageValue)
+        player.mortgagedProperties = Array.from(new Set([...player.mortgagedProperties, ...idsOfProperties]))
+      }
+    })
+    properties.forEach(prop => {
+      if(prop) {
+        if (Boolean(
+          (prop as HousingProperty).hotelsCount || 
+          (prop as HousingProperty).housesCount) === false) prop.isMortgaged = true
+      }
+    })
+    return this
+  }
+
+  public redeemProperty(propertyId: string){
+    const property = BoardGame.findPropertyById(this, propertyId)
+    if(property){
+      this.players.forEach(player => {
+        if(player.properties.includes(propertyId)){
+          if(player.accountBalance > property.redemptionValue){
+            player.mortgagedProperties = player.mortgagedProperties.filter(it => it !== propertyId)
+            property.isMortgaged = false 
+            player.accountBalance -= property.redemptionValue
+          }
+        }
+      })
+    }
+    return this
+  }
+
   public handleRentCollection(
     player: Player,
     property: HousingProperty | StationProperty | UtilityProperty
@@ -354,7 +391,7 @@ export default class BoardGame {
           it.accountBalance -= rentAmount
         }
         if (it.id === property.owner) {
-          it.accountBalance += rentAmount
+          it.accountBalance += Number(rentAmount)
         }
         it.isBankrupt = it.accountBalance <= 0
       })
@@ -378,7 +415,7 @@ export default class BoardGame {
   public buyPropertyWithDefaultPrice(playerId: number) {
     this.players.forEach((player) => {
       if (player.id === playerId) {
-        const property = BoardGame.findProperty(this, player.currentPosition)
+        const property = BoardGame.findPropertyByPosition(this, player.currentPosition)
         if (player.properties.includes(property.id)) return
         else if (property && property.owner === null) {
           if (player.accountBalance >= property.price) {
@@ -401,7 +438,7 @@ export default class BoardGame {
   ) {
     this.players.forEach((player) => {
       if (player.id === playerId) {
-        const property = BoardGame.findProperty(this, propertyPosition)
+        const property = BoardGame.findPropertyByPosition(this, propertyPosition)
         if (player.properties.find((it) => it === property.id)) return
         else if (property && property.owner === null) {
           if (player.accountBalance >= bidPrice) {
@@ -518,6 +555,11 @@ export default class BoardGame {
     return this
   }
 
+  public toggleSound(){
+    this.isMuted = !this.isMuted
+    return this
+  }
+
   static checkIfPlayerIsBankrupt(playerId: number, game: BoardGame){
     const player = game.players.find(it => it.id === playerId)
     if(player){
@@ -583,7 +625,7 @@ export default class BoardGame {
     else return 0
   }
 
-  static findProperty(game: BoardGame, propertyPosition: number) {
+  static findPropertyByPosition(game: BoardGame, propertyPosition: number) {
     let property
     if (propertyPosition <= 10) {
       property = game.properties[1].find(
@@ -603,6 +645,14 @@ export default class BoardGame {
       )
     }
     return property as HousingProperty | StationProperty | UtilityProperty
+  }
+
+  static findPropertyById(game: BoardGame, propertyId: string){
+    let property
+    Object.values(game.properties).flat(2).forEach(it => {
+      if(it.id === propertyId) property = it
+    })
+    return property as Property | undefined
   }
 
   public static isGetOutOfJailFree(text?: string) {
@@ -632,7 +682,8 @@ export default class BoardGame {
       positionUpForBidding,
       hasHandledAdvancement,
       bankruptPlayers,
-      winner
+      winner,
+      isMuted
     } = objectLikeBoardGame
     const revivedBoardGame = new BoardGame(name, id, password, players.length)
     revivedBoardGame.chanceCards = chanceCards.map((card) =>
@@ -670,6 +721,7 @@ export default class BoardGame {
     revivedBoardGame.hasHandledAdvancement = hasHandledAdvancement
     revivedBoardGame.bankruptPlayers = bankruptPlayers.map(player => Player.revive(player))
     revivedBoardGame.winner = winner ? Player.revive(winner) : winner
+    revivedBoardGame.isMuted = Boolean(isMuted)
     return revivedBoardGame
   }
   public static flattenPropertiesAndRemoveSpaces(game: BoardGame | null){

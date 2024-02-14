@@ -21,7 +21,7 @@ function BiddingDisplay({ game }: { game: BoardGame }) {
   const propertyToBidFor = useMemo(
     () =>
       typeof game.positionUpForBidding === "number" &&
-      BoardGame.findProperty(game, game.positionUpForBidding),
+      BoardGame.findPropertyByPosition(game, game.positionUpForBidding),
     [currentBidderIdx]
   )
   const [hasBid, setHasBid] = useState<number[]>([])
