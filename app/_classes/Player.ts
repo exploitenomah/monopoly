@@ -6,6 +6,7 @@ export default class Player {
   public accountBalance: number
   public id: number
   public properties: string[]
+  public mortgagedProperties: string[] = []
   public isBankrupt: boolean = false
   public getOutOfJailCards: {
     chance: null | GameCard
@@ -37,6 +38,11 @@ export default class Player {
   private collectSalary() {
     if (this.isBankrupt) return this
     this.accountBalance = this.accountBalance + 200
+    return this
+  }
+
+  public addToAccount(value: number){
+    this.accountBalance += Number(value)
     return this
   }
 
@@ -128,6 +134,7 @@ export default class Player {
       totalHotelsOwned,
       hasJustAdvanced,
       prevRollWasDouble,
+      mortgagedProperties = []
     } = objectLikePlayer
     const revivedPlayer = new Player(id, accountBalance)
     revivedPlayer.turn = turn
@@ -148,6 +155,7 @@ export default class Player {
     revivedPlayer.totalHotelsOwned = totalHotelsOwned
     revivedPlayer.hasJustAdvanced = hasJustAdvanced
     revivedPlayer.prevRollWasDouble = prevRollWasDouble
+    revivedPlayer.mortgagedProperties = mortgagedProperties
     return revivedPlayer
   }
 }

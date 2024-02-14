@@ -5,6 +5,7 @@ import BoardGame from "@/app/_classes/BoardGame"
 import { decrypt } from "@/app/_utils/auth"
 import { copyBoardGame } from "./utils"
 import { GetOutOfJailChoice } from "@/app/types"
+import Player from "../_classes/Player"
 
 const initialState: {
   game: BoardGame | null
@@ -89,6 +90,12 @@ const gameSlice = createSlice({
     eliminateBankruptPlayers: (state, { payload }: { payload: number[]}) => {
       state.game = copyBoardGame(state.game as BoardGame).updateBankruptPlayers(payload)
     },
+    mortgageProperties: (state, { payload }: { payload: { playerId: number, properties: string[]}}) => {
+      state.game = copyBoardGame(state.game as BoardGame).mortgageProperties(payload.properties, payload.playerId)
+    },
+    redeemProperty: (state, { payload }: { payload: string }) => {
+      state.game = copyBoardGame(state.game as BoardGame).redeemProperty(payload)
+    }, 
     toggleSound: (state) => {
       state.game = copyBoardGame(state.game as BoardGame).toggleSound()
     }
@@ -109,5 +116,7 @@ export const {
   sellToHighestBidder,
   eliminateBankruptPlayers,
   toggleSound,
+  mortgageProperties,
+  redeemProperty,
 } = gameSlice.actions
 export default gameSlice.reducer

@@ -24,6 +24,8 @@ export function HousingTitleDeed({
         <div> 1 houses: {property.rent.twoHouses}</div>
         <div> 2 houses: {property.rent.threeHouses}</div>
         <div> 3 houses: {property.rent.fourHouses}</div>
+        <b>Mortgage value: {property.mortgageValue}</b> <br/>
+        <b>Redemption value: {property.redemptionValue}</b>
       </ul>
     </div>
   )
@@ -40,6 +42,8 @@ export function UtilityTitleDeed({
     >
       <h4>{property.name}</h4>
       <ul>Rent</ul>
+      <b>Mortgage value: {property.mortgageValue}</b> <br/>
+      <b>Redemption value: {property.redemptionValue}</b>
     </div>
   )
 }
@@ -60,6 +64,8 @@ export function StationTitleDeed({
         <div>2 Stations Owned: {property.rent.twoStationsOwned}</div>
         <div>3 Stations Owned: {property.rent.threeStationsOwned}</div>
         <div>4 Stations Owned: {property.rent.fourStationsOwned}</div>
+        <b>Mortgage value: {property.mortgageValue}</b> <br/>
+        <b>Redemption value: {property.redemptionValue}</b>
       </ul>
     </div>
   )
